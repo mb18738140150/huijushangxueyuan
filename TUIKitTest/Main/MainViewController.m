@@ -43,6 +43,8 @@
     NSDictionary *infoDic = notification.object;
     NSLog(@"%@", infoDic);
     
+    // test
+    
 }
 
 - (void)orderState:(NSNotification *)notification
