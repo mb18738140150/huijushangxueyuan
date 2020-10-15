@@ -1,0 +1,8 @@
+source ‘https://github.com/CocoaPods/Specs.git’
+platform :ios, '9.0'
+inhibit_all_warnings!
+
+target 'TUIKitTest' do
+        #use_frameworks!   // TUIKit 使用到了第三方静态库，这个设置需要屏蔽
+pod 'TXIMSDK_TUIKit_iOS_Professional' 
+end

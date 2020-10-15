@@ -1,0 +1,2 @@
+Pods/TXLiteAVSDK_Professional/TXLiteAVSDK_Professional/TXLiteAVSDK_Professional.framework/TXLiteAVSDK_Professional filter=lfs diff=lfs merge=lfs -text
+Pods/TXIMSDK_iOS/ImSDK.framework/ImSDK filter=lfs diff=lfs merge=lfs -text

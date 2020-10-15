@@ -1,0 +1,109 @@
+//
+//  PrefixHeader.pch
+//  huijushangxueyuan
+//
+//  Created by aaa on 2020/9/21.
+//  Copyright © 2020 mcb. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+//#ifdef __OBJC__
+
+#import "UIMacro.h"
+#import "TestMacro.h"
+#import "SettingMacro.h"
+#import "QuestionMacro.h"
+#import "NotificaitonMacro.h"
+#import "NetMacro.h"
+#import "MainViewMacro.h"
+#import "CommonMacro.h"
+#import "ImageManager.h"
+#import "UIView+HDExtension.h"
+#import "UIImageView+WebCache.h"
+#import "AFNetworking.h"
+
+#import "SVProgressHUD.h"
+#import "MJRefresh.h"
+#import "AppDelegate.h"
+#import "JSONKit.h"
+#import "DateUtility.h"
+#import "DBManager.h"
+#import "UserManager.h"
+#import "FailView.h"
+#import "TeamHitBarButtonItem.h"
+#import "TestManager.h"
+#import "UIUtility.h"
+#import "NSString+MD5.h"
+#import "UIImage+Base64.h"
+#import "ViewController.h"
+#import "HttpUploaderManager.h"
+#import "WXApi.h"
+#import "WXApiRequestHandler.h"
+#import "WXApiManager.h"
+#import "UIAlertView+WX.h"
+
+#import "UIViewController+Cloudox.h"
+#import "UINavigationController+Cloudox.h"
+#import <WebKit/WebKit.h>
+#import "CourseraManager.h"
+#import "TestManager.h"
+#import "SoftManager.h"
+#import "bottomAlertView.h"
+#import "HttpRequestManager.h"
+#import "HttpRequestProtocol.h"
+#import "DownloaderManager.h"
+
+#import "HYSegmentedControl.h"
+#import "ZWMSegmentView.h"
+#import "Masonry.h"
+#import "MJExtension.h"
+#import "LXAVPlayer.h"
+#import "LxButton.h"
+#import "UIView+LX_Frame.h"
+#import "UILabel+LXLabel.h"
+#import "UIColor+Expanded.h"
+
+#import "TBCityIconFont.h"
+#import "TBCityIconInfo.h"
+#import "UIImage+TBCityIconFont.h"
+
+//#import <KSYMediaPlayer/KSYMediaPlayer.h>
+
+#import "TUIKit.h"
+#import "ImSDK.h"
+//#ifdef __OBJC__
+//
+//#endif
+
+#import "UIImage+Scale.h"
+#import "UIView+Size.h"
+
+#import "UIButton+Edge.h"
+
+#import "NSString+Size.h"
+
+#import "MyObject.h"
+
+#import "LivingStateView.h"
+
+#define Token @"access_token"
+
+#define LXWS(weakSelf)  __weak __typeof(&*self)weakSelf = self
+
+#define scrnW [UIScreen mainScreen].bounds.size.width
+#define scrnH [UIScreen mainScreen].bounds.size.height
+
+#define NAVH (MAX(Device_Width, Device_Height)  >= 812 ? 88 : 64)
+#define TABBARH (MAX(Device_Width, Device_Height)  >= 812 ? 83 : 49)
+
+#define LXColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+#define LXRandomColor LXColor(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
+#define IS_PAD ([[UIDevice currentDevice].model isEqualToString:@"iPad"])
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+//#endif
+
+
+#endif /* PrefixHeader_pch */
