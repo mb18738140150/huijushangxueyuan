@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MainMyVIPCardListCollectionViewCell : UICollectionViewCell
 
-
+@property (nonatomic, copy)void (^myVIPCardClickBlock)(NSDictionary *info);
 - (void)resetUIWithInfoArray:(NSArray *)array;
 
 @end

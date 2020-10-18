@@ -68,6 +68,7 @@
 #import "TBCityIconFont.h"
 #import "TBCityIconInfo.h"
 #import "UIImage+TBCityIconFont.h"
+#import "NSString+HTML.h"
 
 //#import <KSYMediaPlayer/KSYMediaPlayer.h>
 
@@ -104,6 +105,16 @@
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 //#endif
+
+typedef enum : NSUInteger {
+    CategoryType_myNotification = 10000,
+    CategoryType_myBuyCourse,
+    CategoryType_daiFuKuan,
+    CategoryType_daiFaHuo,
+    CategoryType_daiShouHuo,
+    CategoryType_allOrder,
+    CategoryType_ShoppingCar,
+} CategoryType;
 
 
 #endif /* PrefixHeader_pch */

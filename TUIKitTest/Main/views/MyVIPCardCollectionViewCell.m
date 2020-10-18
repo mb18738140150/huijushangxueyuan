@@ -21,7 +21,7 @@
     self.backView = [[UIView alloc]initWithFrame:CGRectMake(15, 10, self.hd_width - 30, (self.hd_width - 30) / 3 + 50)];
     self.backView.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.backView];
-    self.backView.layer.cornerRadius = 10;
+    self.backView.layer.cornerRadius = 5;
     self.backView.backgroundColor = [UIColor whiteColor];
     self.backView.layer.shadowColor = UIColorFromRGB(0xf1f1f1).CGColor;
     self.backView.layer.shadowOpacity = 1;
@@ -33,15 +33,15 @@
     self.iconImageVIew = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.hd_width - 30, (self.hd_width - 30) / 3)];
     [self.iconImageVIew sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[infoDic objectForKey:@"thumb"]]] placeholderImage:[UIImage imageNamed:@"placeholdImage"] options:SDWebImageAllowInvalidSSLCertificates];
     
-    [self.backView addSubview:self.iconImageVIew];
-    UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.iconImageVIew.bounds byRoundingCorners:UIRectCornerTopLeft|UIRectCornerTopRight cornerRadii:CGSizeMake(10, 10)];
+    UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.iconImageVIew.bounds byRoundingCorners:UIRectCornerTopLeft|UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
     CAShapeLayer * shapLayer = [[CAShapeLayer alloc]init];
     shapLayer.frame = self.iconImageVIew.bounds;
     shapLayer.path = bezierpath.CGPath;
     [self.iconImageVIew.layer setMask: shapLayer];
+    [self.backView addSubview:self.iconImageVIew];
     
     self.xufeiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    
+    self.xufeiBtn.frame = CGRectMake(_iconImageVIew.hd_width - 40, 0, 40, 20);
     
     CALayer *gradientLayer = [CALayer layer];
     gradientLayer.frame = self.xufeiBtn.bounds;
@@ -59,14 +59,19 @@
     xufeishapLayer.frame = self.xufeiBtn.bounds;
     xufeishapLayer.path = xufeibezierpath.CGPath;
     
-    [gradientLayer setMask:shapLayer];
-    
+    [gradientLayer setMask:xufeishapLayer];
     [self.xufeiBtn.layer addSublayer:gradientLayer];
+    
+    [self.xufeiBtn setTitle:@"续费" forState:UIControlStateNormal];
+    [self.xufeiBtn setTitleColor:UIColorFromRGB(0x333333) forState:UIControlStateNormal];
+    self.xufeiBtn.titleLabel.font = kMainFont_12;
+    [self.iconImageVIew addSubview:self.xufeiBtn];
+    self.xufeiBtn.enabled = NO;
     
     CGFloat seperateWidth = 5;
     
     // title
-    self.titleLB = [[UILabel alloc]initWithFrame:CGRectMake(self.iconImageVIew.hd_x , CGRectGetMaxY(self.iconImageVIew.frame) + seperateWidth, self.backView.hd_width - 30, 15)];
+    self.titleLB = [[UILabel alloc]initWithFrame:CGRectMake(self.iconImageVIew.hd_x + 10, CGRectGetMaxY(self.iconImageVIew.frame) + seperateWidth, self.backView.hd_width - 30, 15)];
     self.titleLB.numberOfLines = 0;
     self.titleLB.font = kMainFont_12;
     self.titleLB.textColor = UIColorFromRGB(0x333333);
@@ -79,7 +84,9 @@
     self.priceLB = [[UILabel alloc]initWithFrame:CGRectMake(self.titleLB.hd_x, CGRectGetMaxY(self.titleLB.frame) + seperateWidth, 180, 15)];
     self.priceLB.font = kMainFont_10;
     self.priceLB.textColor = UIColorFromRGB(0xC2905B);
-    self.priceLB.text = [NSString stringWithFormat:@"到期时间：%@",  [infoDic objectForKey:@"end_time"]];
+    NSString * timeStr = [infoDic objectForKey:@"end_time"];
+    timeStr = [[timeStr componentsSeparatedByString:@" "] firstObject];
+    self.priceLB.text = [NSString stringWithFormat:@"到期时间：%@",  timeStr];
     [self.backView addSubview:self.priceLB];
     
 }

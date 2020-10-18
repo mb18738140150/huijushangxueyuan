@@ -18,6 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong)ZWMSegmentView * zixunSegment;
 @property (nonatomic, strong)NSArray * dataArray;
 - (void)refreshWith:(NSArray *)dataArray;
+- (void)hideSearchView;
+
+- (instancetype)initWithFrame:(CGRect)frame withImageName:(NSString *)imageName;
+
+- (void)setSegmentColor:(UIColor *)color;
+
 @end
 
 NS_ASSUME_NONNULL_END

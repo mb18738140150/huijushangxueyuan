@@ -64,18 +64,18 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *lastVersions = [defaults stringForKey:@"lastVersions"];
     NSString *newVersions = [[NSBundle mainBundle].infoDictionary objectForKey:@"CFBundleVersion"];
-    if([newVersions isEqualToString:lastVersions]){
-        [self mainViewSetup];
-        
-    }else
-    {
-        //设置介绍APP界面为跟视图()
-        WelcomeViewController * welcomeVC = [[WelcomeViewController alloc]init];
-        self.window.rootViewController = welcomeVC;
-        //并储存新版本号
-        [defaults setObject:newVersions forKey:@"lastVersions"];
-        [defaults synchronize];
-    }
+    [self mainViewSetup];
+//    if([newVersions isEqualToString:lastVersions]){
+//        
+//    }else
+//    {
+//        //设置介绍APP界面为跟视图()
+//        WelcomeViewController * welcomeVC = [[WelcomeViewController alloc]init];
+//        self.window.rootViewController = welcomeVC;
+//        //并储存新版本号
+//        [defaults setObject:newVersions forKey:@"lastVersions"];
+//        [defaults synchronize];
+//    }
     
     [DownloaderManager sharedManager];
        

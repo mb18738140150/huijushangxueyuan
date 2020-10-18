@@ -328,9 +328,12 @@
 
 - (void)doLogin
 {
-    NSString * htmlStr = @"&lsqb;&#x60CA;&#x8BB6;&rsqb;";
-    htmlStr = [htmlStr stringByDecodingHTMLEntities];
-    NSLog(@"$$$$$$$$$$ %@", htmlStr);
+    /*
+     <p style="text-align: left;"><br/></p><p style="text-align:center"><img title="uploads/0708/159419762891408860.jpg" style="width: 100%;" alt="报名介绍图.jpg" src="https://qiniu.luezhi.com/uploads/0708/159419762891408860.jpg?imageslim"/></p><p><br/></p><p><br/></p><p style="text-align: center;"><br/></p><p><br/></p><p style="text-align: center;">                          </p>
+
+     */
+    
+    NSString * htmlStr = @"";
     
     
 //     [[UserManager sharedManager] didRequestTabbarWithWithDic:@{kUrlName:@"api/index/navigation"} WithNotifedObject:nil];

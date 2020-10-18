@@ -18,6 +18,9 @@
 #define kMainOperationListTableViewCell @"MainOperationListTableViewCell"
  
 #import "MainVipCardListViewController.h"
+#import "UserCenterViewController.h"
+#import "MyNotificationListViewController.h"
+#import "MyBuyCourseViewController.h"
 
 @interface MainViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -34,7 +37,7 @@
     [self navigationViewSetup];
     [self prepareUI];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(category:) name:kNotificationOfMainMyCategory object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orderState:) name:kNotificationOfMainMyCategory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orderState:) name:kNotificationOfMainMyOrderState object:nil];
 }
 
@@ -43,14 +46,60 @@
     NSDictionary *infoDic = notification.object;
     NSLog(@"%@", infoDic);
     
-    // test
     
 }
 
 - (void)orderState:(NSNotification *)notification
 {
     NSDictionary *infoDic = notification.object;
-    NSLog(@"%@", infoDic);
+    int courseCategoryId = [[infoDic objectForKey:@"courseCategoryId"] intValue];
+    
+    switch (courseCategoryId) {
+        case CategoryType_myNotification:
+        {
+            MyNotificationListViewController * vc = [[MyNotificationListViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case CategoryType_myBuyCourse:
+        {
+            MyBuyCourseViewController * vc = [[MyBuyCourseViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case CategoryType_daiFuKuan:
+        {
+            NSLog(@"CategoryType_daiFuKuan");
+        }
+            break;
+        case CategoryType_daiShouHuo:
+        {
+            NSLog(@"我CategoryType_daiShouHuo");
+        }
+            break;
+        case CategoryType_daiFaHuo:
+        {
+            NSLog(@"CategoryType_daiFaHuo");
+        }
+            break;
+        case CategoryType_allOrder:
+        {
+            NSLog(@"CategoryType_allOrder");
+        }
+            break;
+        case CategoryType_ShoppingCar:
+        {
+            NSLog(@"CategoryType_ShoppingCar");
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+//    NSLog(@"%@", infoDic);
 }
 
 #pragma mark - ui
@@ -160,6 +209,15 @@
             MainVipCardListViewController * vc = [[MainVipCardListViewController alloc]init];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
+        }else if (indexPath.row == 0)
+        {
+            __weak typeof(self)weakSelf = self;
+            UserCenterViewController * vc = [[UserCenterViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+            vc.updateBaseInfoBlock = ^(BOOL update) {
+                [weakSelf.tableView reloadData];
+            };
         }
     }
 }

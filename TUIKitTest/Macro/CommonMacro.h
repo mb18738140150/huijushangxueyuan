@@ -14,6 +14,9 @@
 
 #define kAppointUserID      @"10214哈哈哈"
 
+#define kVIPCardID @"869"
+#define kPartnerCardID @"2250"
+
 #define kCurrentCatogoryInfo    @"currentCatogoryInfo"
 #define kCurrentTestSecondCatogoryInfo    @"currentTestSecondCatogoryInfo"
 

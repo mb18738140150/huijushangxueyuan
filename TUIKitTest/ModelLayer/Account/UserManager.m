@@ -72,6 +72,8 @@
 #import "ShutupOperation.h"
 #import "MockVIPBuyOperation.h"
 #import "MockPartnerBuyOperation.h"
+#import "VIPCardDetailOperation.h"
+#import "MyNotificationOperation.h"
 
 @interface UserManager()
 @property (nonatomic,strong) TabbarOperation       *tabbarOperation;
@@ -83,6 +85,8 @@
 @property (nonatomic, strong)ShutupOperation * shutupOperation;
 @property (nonatomic, strong)MockVIPBuyOperation * mockVIPBuyOperation;
 @property (nonatomic, strong)MockPartnerBuyOperation * mockPartnerBuyOperation;
+@property (nonatomic, strong)VIPCardDetailOperation * vipCardDetailOperation;
+@property (nonatomic, strong)MyNotificationOperation * myNotificationOperation;
 
 
 
@@ -174,6 +178,8 @@
         self.shutupOperation = [[ShutupOperation alloc]init];
         self.mockVIPBuyOperation = [[MockVIPBuyOperation alloc]init];
         self.mockPartnerBuyOperation = [[MockPartnerBuyOperation alloc]init];
+        self.vipCardDetailOperation = [[VIPCardDetailOperation alloc]init];
+        self.myNotificationOperation = [[MyNotificationOperation alloc]init];
 
         
         self.SecondCategoryOperation = [[SecondCategoryOperation alloc]init];
@@ -418,6 +424,16 @@
     return self.myVIPCardOperation.vipCardInfo;
 }
 
+// 会员卡详情
+- (void)didRequestMyVIPCardDetailWithInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_MyVIPCardDetailInfo>)object
+{
+    [self.vipCardDetailOperation didRequestMyVIPCardDetailWithInfo:infoDic withNotifiedObject:object];
+}
+- (NSDictionary *)getVIPCardDetailInfo
+{
+    return self.vipCardDetailOperation.vipCardDetailInfo;
+}
+
 // 禁言
 - (void)didRequestShutupWithInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_Shutup>)object
 {
@@ -443,6 +459,24 @@
 {
     return self.mockPartnerBuyOperation.partnerBuyInfo;
 }
+
+// 完善个人信息
+- (void)completeUserInfoWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_CompleteUserInfoProtocol>)object;
+{
+    [self.completeOperation didRequestCompleteUserInfoWithWithDic:infoDic withNotifiedObject:object];
+}
+
+// 我的消息
+- (void)didRequestNotificationListWithInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_NotificationList>)object
+{
+    [self.myNotificationOperation didRequestNotificationListWithInfo:infoDic withNotifiedObject:object];
+}
+- (NSArray *)getNotificationArray
+{
+    return self.myNotificationOperation.list;
+}
+
+
 
 
 
@@ -608,10 +642,7 @@
     [self.forgetPsdOperation didRequestForgetPsdWithWithDic:infoDic withNotifiedObject:object];
 }
 
-- (void)completeUserInfoWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_CompleteUserInfoProtocol>)object;
-{
-    [self.completeOperation didRequestCompleteUserInfoWithWithDic:infoDic withNotifiedObject:object];
-}
+
 
 - (void)bindRegCodeWithRegCode:(NSString *)regCode withNotifiedObject:(id<UserModule_bindRegCodeProtocol>)object
 {
@@ -831,6 +862,10 @@
 - (NSDictionary *)getUserInfos
 {
     NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+    if (self.userModuleModels.currentUserModel.userID == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfLoginClick object:nil];
+        return dic;
+    }
     [dic setObject:self.userModuleModels.currentUserModel.userName forKey:kUserName];
     [dic setObject:@(self.userModuleModels.currentUserModel.userID) forKey:kUserId];
     [dic setObject:self.userModuleModels.currentUserModel.userNickName forKey:kUserNickName];

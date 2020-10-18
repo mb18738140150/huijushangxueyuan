@@ -36,7 +36,7 @@
 //    self.backView.layer.shadowRadius = 3;
     
     CategoryView *cateView = [[CategoryView alloc] initWithFrame:CGRectMake(self.backView.hd_width / 4 - (kScreenWidth)/8 , 8, ((kScreenWidth)/4), kCellHeightOfCategoryView)];
-    cateView.categoryId = 1000;
+    cateView.categoryId = CategoryType_myNotification;
     cateView.pageType = page_MyNotification;
     cateView.categoryName = @"我的消息";
     cateView.categoryCoverUrl = @"main_我的消息";
@@ -49,7 +49,7 @@
     [self.backView addSubview:separateView];
     
     CategoryView *mycateView = [[CategoryView alloc] initWithFrame:CGRectMake(self.backView.hd_width / 4 * 3 - (kScreenWidth)/8 , 8, ((kScreenWidth)/4), kCellHeightOfCategoryView)];
-    mycateView.categoryId = 1001;
+    mycateView.categoryId = CategoryType_myBuyCourse;
     mycateView.pageType = page_MyNotification;
     mycateView.categoryName = @"已购课程";
     mycateView.categoryCoverUrl = @"main_课程";

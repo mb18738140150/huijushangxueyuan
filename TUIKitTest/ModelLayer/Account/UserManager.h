@@ -69,6 +69,10 @@
 - (void)didRequestMyVIPCardWithInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_MyVIPCardInfo>)object;
 - (NSDictionary *)getVIPCardInfo;
 
+// 会员卡详情
+- (void)didRequestMyVIPCardDetailWithInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_MyVIPCardDetailInfo>)object;
+- (NSDictionary *)getVIPCardDetailInfo;
+
 // 禁言
 - (void)didRequestShutupWithInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_Shutup>)object;
 
@@ -79,6 +83,15 @@
 // 模拟合伙人购买
 - (void)didRequestMockPartnerBuyWithInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_MockPartnerBuy>)object;
 - (NSDictionary *)getPartnerBuyInfo;
+
+// 完善个人信息
+- (void)completeUserInfoWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_CompleteUserInfoProtocol>)object;
+
+// 我的消息
+- (void)didRequestNotificationListWithInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_NotificationList>)object;
+- (NSArray *)getNotificationArray;
+
+
 
 - (NSArray *)getHomeAnswerArray;
 - (NSArray *)getHomeFreeArray;
@@ -186,8 +199,6 @@
 
 - (void)getVerifyAccountWithAccountNumber:(NSString *)accountNumber withNotifiedObject:(id<UserModule_VerifyAccountProtocol>)object;
 
-// 完善个人信息
-- (void)completeUserInfoWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_CompleteUserInfoProtocol>)object;
 
 - (void)bindRegCodeWithRegCode:(NSString *)regCode withNotifiedObject:(id<UserModule_bindRegCodeProtocol>)object;
 

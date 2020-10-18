@@ -21,6 +21,15 @@
 
 @implementation SearchAndCategoryView
 
+- (instancetype)initWithFrame:(CGRect)frame withImageName:(NSString *)imageName
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self prepareImageUI:imageName];
+    }
+    return self;
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -58,6 +67,24 @@
     [self addSubview:seperateLine];
 }
 
+- (void)prepareImageUI:(NSString *)imageName
+{
+    self.backView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.hd_width , 100)];
+    self.backView.backgroundColor = UIColorFromRGB(0xf2f2f2);
+    [self addSubview:self.backView];
+    
+    UIImageView * imageView = [[UIImageView alloc]initWithFrame:self.backView.bounds];
+    imageView.image = [UIImage imageNamed:imageName];
+    [self.backView addSubview:imageView];
+    
+}
+
+- (void)hideSearchView
+{
+    self.backView.hidden = YES;
+    self.zixunSegment.hd_y = 10;
+}
+
 - (void)refreshWith:(NSArray *)dataArray
 {
     self.dataArray = dataArray;
@@ -69,14 +96,16 @@
     self.zixunSegment = [[ZWMSegmentView alloc] initWithFrame:CGRectMake(17.5, CGRectGetMaxY(self.backView.frame), self.backView.hd_width, 44) titles:titleArray];
        __weak typeof(self)weakSelf = self;
        _zixunSegment.backgroundColor=[UIColor whiteColor];
-       _zixunSegment.indicateColor = UIRGBColor(237, 0, 0);
+       _zixunSegment.indicateColor = kCommonMainBlueColor;
+    _zixunSegment.segmentTintColor = kCommonMainBlueColor;
     
-//       [_zixunSegment selectedAtIndex:^(NSUInteger index, UIButton * _Nonnull button) {
-//           if (weakSelf.scategorySelectBlock) {
-//               weakSelf.scategorySelectBlock(weakSelf.dataArray[index]);
-//           }
-//       }];
        [self addSubview:_zixunSegment];
+}
+
+- (void)setSegmentColor:(UIColor *)color
+{
+    _zixunSegment.indicateColor = color;
+ _zixunSegment.segmentTintColor = color;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

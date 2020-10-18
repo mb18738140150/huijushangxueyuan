@@ -31,6 +31,12 @@
 		0028EB93252A4A2E00D76BF0 /* CustomTUIChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0028EB92252A4A2E00D76BF0 /* CustomTUIChatController.m */; };
 		0028EB99252A595B00D76BF0 /* CustomTUITextMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0028EB98252A595B00D76BF0 /* CustomTUITextMessageCell.m */; };
 		0028EB9F252A62A800D76BF0 /* CustomTUIImageMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0028EB9E252A62A800D76BF0 /* CustomTUIImageMessageCell.m */; };
+		00391B042539704400B47668 /* MyNotificationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 00391B032539704400B47668 /* MyNotificationOperation.m */; };
+		00391B0A2539713700B47668 /* MyNotificationListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00391B092539713700B47668 /* MyNotificationListViewController.m */; };
+		00391B102539743E00B47668 /* MyNotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00391B0F2539743E00B47668 /* MyNotificationTableViewCell.m */; };
+		00391B162539885E00B47668 /* MyBuyCourseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00391B152539885E00B47668 /* MyBuyCourseViewController.m */; };
+		00391B1C2539AA6600B47668 /* MyBuyCourseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00391B1B2539AA6600B47668 /* MyBuyCourseTableViewCell.m */; };
+		00391B222539D57500B47668 /* VIPCourseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00391B212539D57500B47668 /* VIPCourseListViewController.m */; };
 		003E6CD2252F417500314535 /* MainUserInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 003E6CD1252F417500314535 /* MainUserInfoTableViewCell.m */; };
 		0040F1DD2531492E009446F1 /* MainVipCardListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0040F1DC2531492E009446F1 /* MainVipCardListViewController.m */; };
 		0040F1E325314AE1009446F1 /* MainVipCardHeadCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0040F1E225314AE1009446F1 /* MainVipCardHeadCollectionViewCell.m */; };
@@ -58,6 +64,8 @@
 		0040F22E2531F227009446F1 /* huiyuan1-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0040F22B2531F226009446F1 /* huiyuan1-01@2x.png */; };
 		0040F22F2531F227009446F1 /* huiyuan1-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0040F22C2531F226009446F1 /* huiyuan1-01.png */; };
 		0040F2352531F6A4009446F1 /* VIPCardTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0040F2342531F6A4009446F1 /* VIPCardTypeTableViewCell.m */; };
+		00415CCB25381C6A00A97AC9 /* UserCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00415CCA25381C6A00A97AC9 /* UserCenterViewController.m */; };
+		00415CD4253849DC00A97AC9 /* VIPCardDetailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 00415CD3253849DC00A97AC9 /* VIPCardDetailOperation.m */; };
 		0044BF1E2532E25E00FACCE8 /* living_guanbi.png in Resources */ = {isa = PBXBuildFile; fileRef = 0044BF1D2532E25E00FACCE8 /* living_guanbi.png */; };
 		0044BF242533402C00FACCE8 /* LivingCourseDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0044BF232533402C00FACCE8 /* LivingCourseDetailTableViewCell.m */; };
 		0044BF29253352F100FACCE8 /* livingTime.png in Resources */ = {isa = PBXBuildFile; fileRef = 0044BF28253352F100FACCE8 /* livingTime.png */; };
@@ -685,6 +693,18 @@
 		0028EB98252A595B00D76BF0 /* CustomTUITextMessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomTUITextMessageCell.m; sourceTree = "<group>"; };
 		0028EB9D252A62A800D76BF0 /* CustomTUIImageMessageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomTUIImageMessageCell.h; sourceTree = "<group>"; };
 		0028EB9E252A62A800D76BF0 /* CustomTUIImageMessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomTUIImageMessageCell.m; sourceTree = "<group>"; };
+		00391B022539704400B47668 /* MyNotificationOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyNotificationOperation.h; sourceTree = "<group>"; };
+		00391B032539704400B47668 /* MyNotificationOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyNotificationOperation.m; sourceTree = "<group>"; };
+		00391B082539713700B47668 /* MyNotificationListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyNotificationListViewController.h; sourceTree = "<group>"; };
+		00391B092539713700B47668 /* MyNotificationListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyNotificationListViewController.m; sourceTree = "<group>"; };
+		00391B0E2539743E00B47668 /* MyNotificationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyNotificationTableViewCell.h; sourceTree = "<group>"; };
+		00391B0F2539743E00B47668 /* MyNotificationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyNotificationTableViewCell.m; sourceTree = "<group>"; };
+		00391B142539885E00B47668 /* MyBuyCourseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBuyCourseViewController.h; sourceTree = "<group>"; };
+		00391B152539885E00B47668 /* MyBuyCourseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyBuyCourseViewController.m; sourceTree = "<group>"; };
+		00391B1A2539AA6600B47668 /* MyBuyCourseTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBuyCourseTableViewCell.h; sourceTree = "<group>"; };
+		00391B1B2539AA6600B47668 /* MyBuyCourseTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyBuyCourseTableViewCell.m; sourceTree = "<group>"; };
+		00391B202539D57500B47668 /* VIPCourseListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VIPCourseListViewController.h; sourceTree = "<group>"; };
+		00391B212539D57500B47668 /* VIPCourseListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VIPCourseListViewController.m; sourceTree = "<group>"; };
 		003E6CD0252F417500314535 /* MainUserInfoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainUserInfoTableViewCell.h; sourceTree = "<group>"; };
 		003E6CD1252F417500314535 /* MainUserInfoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainUserInfoTableViewCell.m; sourceTree = "<group>"; };
 		0040F1DB2531492E009446F1 /* MainVipCardListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainVipCardListViewController.h; sourceTree = "<group>"; };
@@ -721,6 +741,10 @@
 		0040F22C2531F226009446F1 /* huiyuan1-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "huiyuan1-01.png"; sourceTree = "<group>"; };
 		0040F2332531F6A4009446F1 /* VIPCardTypeTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VIPCardTypeTableViewCell.h; sourceTree = "<group>"; };
 		0040F2342531F6A4009446F1 /* VIPCardTypeTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VIPCardTypeTableViewCell.m; sourceTree = "<group>"; };
+		00415CC925381C6900A97AC9 /* UserCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCenterViewController.h; sourceTree = "<group>"; };
+		00415CCA25381C6A00A97AC9 /* UserCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCenterViewController.m; sourceTree = "<group>"; };
+		00415CD2253849DC00A97AC9 /* VIPCardDetailOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VIPCardDetailOperation.h; sourceTree = "<group>"; };
+		00415CD3253849DC00A97AC9 /* VIPCardDetailOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VIPCardDetailOperation.m; sourceTree = "<group>"; };
 		0044BF1D2532E25E00FACCE8 /* living_guanbi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = living_guanbi.png; sourceTree = "<group>"; };
 		0044BF222533402C00FACCE8 /* LivingCourseDetailTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivingCourseDetailTableViewCell.h; sourceTree = "<group>"; };
 		0044BF232533402C00FACCE8 /* LivingCourseDetailTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivingCourseDetailTableViewCell.m; sourceTree = "<group>"; };
@@ -1884,6 +1908,10 @@
 				0040F2242531F171009446F1 /* VIPJurisdictionTableViewCell.m */,
 				0040F2332531F6A4009446F1 /* VIPCardTypeTableViewCell.h */,
 				0040F2342531F6A4009446F1 /* VIPCardTypeTableViewCell.m */,
+				00391B0E2539743E00B47668 /* MyNotificationTableViewCell.h */,
+				00391B0F2539743E00B47668 /* MyNotificationTableViewCell.m */,
+				00391B1A2539AA6600B47668 /* MyBuyCourseTableViewCell.h */,
+				00391B1B2539AA6600B47668 /* MyBuyCourseTableViewCell.m */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -2518,12 +2546,16 @@
 				009692DF252EFFD7005AF491 /* ShareListOperation.m */,
 				0040F217253164C0009446F1 /* MyVIPCardOperation.h */,
 				0040F218253164C0009446F1 /* MyVIPCardOperation.m */,
+				00415CD2253849DC00A97AC9 /* VIPCardDetailOperation.h */,
+				00415CD3253849DC00A97AC9 /* VIPCardDetailOperation.m */,
 				000A74FB253558C10065A62C /* ShutupOperation.h */,
 				000A74FC253558C10065A62C /* ShutupOperation.m */,
 				000A750125357B220065A62C /* MockVIPBuyOperation.h */,
 				000A750225357B220065A62C /* MockVIPBuyOperation.m */,
 				000A750725357B820065A62C /* MockPartnerBuyOperation.h */,
 				000A750825357B820065A62C /* MockPartnerBuyOperation.m */,
+				00391B022539704400B47668 /* MyNotificationOperation.h */,
+				00391B032539704400B47668 /* MyNotificationOperation.m */,
 				0079EB6D25217AF800307D71 /* newOperation  */,
 				0079EB9625217AF800307D71 /* ResetPwdOperation.h */,
 				0079EBD725217AF800307D71 /* ResetPwdOperation.m */,
@@ -3498,10 +3530,18 @@
 				0079EDCF25217AFC00307D71 /* SGWebView.m */,
 				004FAF16252F1721004A50E7 /* MainViewController.h */,
 				004FAF17252F1721004A50E7 /* MainViewController.m */,
+				00415CC925381C6900A97AC9 /* UserCenterViewController.h */,
+				00415CCA25381C6A00A97AC9 /* UserCenterViewController.m */,
 				0040F1DB2531492E009446F1 /* MainVipCardListViewController.h */,
 				0040F1DC2531492E009446F1 /* MainVipCardListViewController.m */,
 				0040F21D2531F0AF009446F1 /* VIPCardDetailViewController.h */,
 				0040F21E2531F0AF009446F1 /* VIPCardDetailViewController.m */,
+				00391B082539713700B47668 /* MyNotificationListViewController.h */,
+				00391B092539713700B47668 /* MyNotificationListViewController.m */,
+				00391B142539885E00B47668 /* MyBuyCourseViewController.h */,
+				00391B152539885E00B47668 /* MyBuyCourseViewController.m */,
+				00391B202539D57500B47668 /* VIPCourseListViewController.h */,
+				00391B212539D57500B47668 /* VIPCourseListViewController.m */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -4243,6 +4283,7 @@
 				0079EEA625217AFE00307D71 /* BindJPushOperation.m in Sources */,
 				0079EE9525217AFD00307D71 /* UserModel1.m in Sources */,
 				0079EEEA25217AFE00307D71 /* MJRefreshBackNormalFooter.m in Sources */,
+				00391B222539D57500B47668 /* VIPCourseListViewController.m in Sources */,
 				0079EF8525217AFE00307D71 /* CGXPickerViewManager.m in Sources */,
 				0079EF8925217AFE00307D71 /* CGXPickerUIBaseView.m in Sources */,
 				0079EE5A25217AFD00307D71 /* TestMyCollectionQuestionListOperation.m in Sources */,
@@ -4296,8 +4337,10 @@
 				0079EEB325217AFE00307D71 /* UIView+HDExtension.m in Sources */,
 				0079EE3325217AFD00307D71 /* LivingJurisdictionOperation.m in Sources */,
 				0079EE1925217AFD00307D71 /* NoteManager.m in Sources */,
+				00391B162539885E00B47668 /* MyBuyCourseViewController.m in Sources */,
 				005BC84A2522E9E500323103 /* AFAutoPurgingImageCache.m in Sources */,
 				0079EE7425217AFD00307D71 /* DownLoadModel.m in Sources */,
+				00415CCB25381C6A00A97AC9 /* UserCenterViewController.m in Sources */,
 				0079EF2725217AFE00307D71 /* MJPropertyType.m in Sources */,
 				0079EE3C25217AFD00307D71 /* CourseCategoryOperation.m in Sources */,
 				0079EF1725217AFE00307D71 /* UIView+LX_Frame.m in Sources */,
@@ -4383,6 +4426,7 @@
 				0079EE9725217AFD00307D71 /* RegistOperation.m in Sources */,
 				0040F21F2531F0B0009446F1 /* VIPCardDetailViewController.m in Sources */,
 				0079EE1725217AFD00307D71 /* DeleteVideoNoteOperation.m in Sources */,
+				00391B1C2539AA6600B47668 /* MyBuyCourseTableViewCell.m in Sources */,
 				0079EEE525217AFE00307D71 /* UIScrollView+MJExtension.m in Sources */,
 				0079EF3F25217AFE00307D71 /* ZXVideoPlayerController.m in Sources */,
 				0079EE7125217AFD00307D71 /* QuestionPublishOperation.m in Sources */,
@@ -4403,6 +4447,7 @@
 				0079EEAE25217AFE00307D71 /* CancelOrderLivingCourseOperation.m in Sources */,
 				0079EE4925217AFD00307D71 /* TestSimulateInfoOperation.m in Sources */,
 				0028EB93252A4A2E00D76BF0 /* CustomTUIChatController.m in Sources */,
+				00415CD4253849DC00A97AC9 /* VIPCardDetailOperation.m in Sources */,
 				0044BF39253359E400FACCE8 /* LivingTeacherIntroTableViewCell.m in Sources */,
 				0079EE9025217AFD00307D71 /* NewsCategoryOperation.m in Sources */,
 				0079EE8525217AFD00307D71 /* CategoryCourseOperation.m in Sources */,
@@ -4521,6 +4566,7 @@
 				0079EF7925217AFE00307D71 /* TAPageControl.m in Sources */,
 				000A74FD253558C10065A62C /* ShutupOperation.m in Sources */,
 				0079EE9B25217AFE00307D71 /* VerifyInAppPuchaseOperation.m in Sources */,
+				00391B042539704400B47668 /* MyNotificationOperation.m in Sources */,
 				0079EE6F25217AFD00307D71 /* QuestionDetailOperation.m in Sources */,
 				0079EF8D25217AFE00307D71 /* JSONKit.m in Sources */,
 				0079EEBA25217AFE00307D71 /* ToolTipView.m in Sources */,
@@ -4554,6 +4600,7 @@
 				0079EF1C25217AFE00307D71 /* UIViewController+LXPlayerRotation.m in Sources */,
 				0079EEA325217AFE00307D71 /* OrderList_NoPayOperation.m in Sources */,
 				006D426B252D93270009072A /* LiveChatRecordOpreation.m in Sources */,
+				00391B0A2539713700B47668 /* MyNotificationListViewController.m in Sources */,
 				0079EE5525217AFD00307D71 /* TestMyWrongQuestionOperation.m in Sources */,
 				0079EEA225217AFE00307D71 /* SubmitOpinionOperation.m in Sources */,
 				0079EEBB25217AFE00307D71 /* UIImage+Scale.m in Sources */,
@@ -4662,6 +4709,7 @@
 				0079EE4325217AFD00307D71 /* TestAnswerModel.m in Sources */,
 				0079EE7325217AFD00307D71 /* QuestionReplayOperation.m in Sources */,
 				0079EE4825217AFD00307D71 /* TestErrorQuestionOperation.m in Sources */,
+				00391B102539743E00B47668 /* MyNotificationTableViewCell.m in Sources */,
 				0079EEED25217AFE00307D71 /* MJRefreshAutoNormalFooter.m in Sources */,
 				0079EF2225217AFE00307D71 /* LXProgressView.m in Sources */,
 			);

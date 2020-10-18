@@ -56,7 +56,7 @@
     UICollectionViewFlowLayout * layout = [[UICollectionViewFlowLayout alloc]init];
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     
-    self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth , kScreenHeight- kNavigationBarHeight - kStatusBarHeight - kTabBarHeight) collectionViewLayout:layout];
+    self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth , kScreenHeight- kNavigationBarHeight - kStatusBarHeight) collectionViewLayout:layout];
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
@@ -110,6 +110,7 @@
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    __weak typeof(self)weakSelf = self;
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             MainVipCardHeadCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kMainVipCardHeadCollectionViewCell forIndexPath:indexPath];
@@ -119,6 +120,13 @@
         MainMyVIPCardListCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kMainMyVIPCardListCollectionViewCell forIndexPath:indexPath];
         if ([[self.vipCardInfo objectForKey:@"my"] isKindOfClass:[NSDictionary class]]) {
             [cell resetUIWithInfoArray:@[[self.vipCardInfo objectForKey:@"my"]]];
+            
+            cell.myVIPCardClickBlock = ^(NSDictionary * _Nonnull info) {
+                VIPCardDetailViewController * vc = [[VIPCardDetailViewController alloc]init];
+                vc.info = info;
+                vc.myInfo = info;
+                [weakSelf.navigationController pushViewController:vc animated:YES];
+            };
         }
         return cell;
     }
@@ -135,7 +143,7 @@
     }else
     {
         if (indexPath.row == 0) {
-            return CGSizeMake(collectionView.hd_width, 110);
+            return CGSizeMake(collectionView.hd_width, 140);
         }
         return CGSizeMake(collectionView.hd_width, (kScreenWidth / 3 - 30) / 3 + 50 + 30 + 40);
     }
@@ -147,12 +155,8 @@
     if (indexPath.section == 1) {
         VIPCardDetailViewController * vc = [[VIPCardDetailViewController alloc]init];
         vc.info = self.dataSource[indexPath.item];
-        
-        if (indexPath.row == 0) {
-            vc.vipCardType = VIPCardType_VIP;
-        }else
-        {
-            vc.vipCardType = VIPCardType_HeHuoRen;
+        if ([self.vipCardInfo objectForKey:@"my"] != nil && [[self.vipCardInfo objectForKey:@"my"] allKeys].count > 0) {
+            vc.myInfo = [self.vipCardInfo objectForKey:@"my"];
         }
         [self.navigationController pushViewController:vc animated:YES];
     }

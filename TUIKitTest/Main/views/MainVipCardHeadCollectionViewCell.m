@@ -32,7 +32,7 @@
     self.backImageView.image = [UIImage imageNamed:@"main_会员中心头部卡片"];
     [self.contentView addSubview:self.backImageView];
     
-    self.iconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(18, 20, self.backImageView.hd_height - 40, self.backImageView.hd_height - 40)];
+    self.iconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(18, 30, self.backImageView.hd_height - 60, self.backImageView.hd_height - 60)];
     [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [info objectForKey:kUserHeaderImageUrl]]] placeholderImage:[UIImage imageNamed:@""] options:SDWebImageAllowInvalidSSLCertificates];
     self.iconImageView.layer.cornerRadius = self.iconImageView.hd_height / 2;
     self.iconImageView.layer.masksToBounds = YES;
@@ -44,13 +44,13 @@
     self.titleLB.textColor = UIColorFromRGB(0x3D3731);
     [self.backImageView addSubview:self.titleLB];
     
-    UIImageView * huangguanImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.iconImageView.frame) + 10, self.iconImageView.hd_y + self.iconImageView.hd_height / 4 * 3 - 4, 8, 8)];
+    UIImageView * huangguanImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.iconImageView.frame) + 10, self.iconImageView.hd_y + self.iconImageView.hd_height / 4 * 3 - 5, 15, 10)];
     huangguanImageView.image = [UIImage imageNamed:@"huiyuan-2"];
     [self.backImageView addSubview:huangguanImageView];
     
     UILabel * contentLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(huangguanImageView.frame) + 10, self.iconImageView.hd_y + self.iconImageView.hd_height / 2, 200, self.iconImageView.hd_height / 2)];
     contentLB.font = kMainFont_12;
-    contentLB.text = [NSString stringWithFormat:@"%@", [info objectForKey:kUserNickName]];
+    contentLB.text = @"欢迎来到会员中心";
     contentLB.textColor = UIColorFromRGB(0x3D3731);
     [self.backImageView addSubview:contentLB];
     

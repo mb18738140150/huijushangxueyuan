@@ -62,6 +62,13 @@
 
 @end
 
+@protocol UserModule_MyVIPCardDetailInfo <NSObject>
+
+- (void)didRequestMyVIPCardDetailInfoSuccessed;
+- (void)didRequestMyVIPCardDetailInfoFailed:(NSString *)failedInfo;
+
+@end
+
 @protocol UserModule_Shutup <NSObject>
 
 - (void)didRequestShutupSuccessed;
@@ -83,6 +90,12 @@
 
 @end
 
+@protocol UserModule_NotificationList <NSObject>
+
+- (void)didRequestNotificationListSuccessed;
+- (void)didRequestNotificationListFailed:(NSString *)failedInfo;
+
+@end
 
 
 

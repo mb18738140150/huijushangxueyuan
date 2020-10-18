@@ -34,7 +34,7 @@
     for (int i = 0; i < 5; i++) {
         NSDictionary * info = dataArray[i];
         CategoryView *cateView = [[CategoryView alloc] initWithFrame:CGRectMake(self.backView.hd_width / 5 * i , 8, ((self.backView.hd_width)/5), kCellHeightOfCategoryView)];
-        cateView.categoryId = 1000 + i;
+        cateView.categoryId = 10002 + i;
         cateView.pageType = Page_MyOrderState;
         cateView.categoryName = [info objectForKey:@"title"];
         cateView.categoryCoverUrl = [info objectForKey:@"image"];

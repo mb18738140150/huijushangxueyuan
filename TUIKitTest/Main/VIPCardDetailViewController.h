@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VIPCardDetailViewController : ViewController
 
+@property (nonatomic, strong)NSDictionary * myInfo;
 @property (nonatomic, strong)NSDictionary * info;
 @property (nonatomic, assign)VIPCardType vipCardType;
 

@@ -32,7 +32,7 @@
     UICollectionViewFlowLayout * layout = [[UICollectionViewFlowLayout alloc]init];
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     layout.minimumInteritemSpacing = 20;
-    layout.itemSize = CGSizeMake(kScreenWidth / 3, (kScreenWidth / 3 - 30) / 3 + 50 + 30 );
+    layout.itemSize = CGSizeMake(kScreenWidth / 2, (kScreenWidth / 2 - 30) / 3 + 50 + 30 );
     
     self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(topLN.frame), kScreenWidth, (kScreenWidth / 3 - 30) / 3 + 50 + 30) collectionViewLayout:layout];
     self.collectionView.delegate = self;
@@ -54,6 +54,13 @@
     MyVIPCardCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cellID" forIndexPath:indexPath];
     [cell refreshUIWith:self.dataSource[indexPath.item]];
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.myVIPCardClickBlock) {
+        self.myVIPCardClickBlock(self.dataSource[indexPath.item]);
+    }
 }
 
 @end

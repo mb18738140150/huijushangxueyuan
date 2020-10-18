@@ -29,6 +29,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 #define UIColorFromRGBValue(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 #define kCommonMainOringeColor UIRGBColor(245.0,104.0,6.0)
+#define kCommonMainBlueColor UIColorFromRGB(0x2A75ED)
+
 #define kCommonMainRedColor UIColorFromRGB(0xF02C36)
 #define kCommonMainColor UIColorFromRGB(0xff4550)
 #define kCommonMainWriteColor UIRGBColor(20.0,120.0,210.0)

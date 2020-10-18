@@ -87,7 +87,7 @@
     
     
     if ([[successInfo objectForKey:@"phone"] class] == [NSNull class] || [successInfo objectForKey:@"phone"] == nil || [[successInfo objectForKey:@"phone"] isEqualToString:@""]) {
-        self.userModel.telephone = @"未绑定";
+        self.userModel.telephone = @"";
     }else{
         self.userModel.telephone = [successInfo objectForKey:@"phone"];
     }
