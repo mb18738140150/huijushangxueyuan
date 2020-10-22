@@ -46,6 +46,12 @@
     self.bannerScrollView.layer.cornerRadius = 5;
     self.bannerScrollView.layer.masksToBounds = YES;
     [self.contentView addSubview:self.bannerScrollView];
+    __weak typeof(self)weakSelf = self;
+    self.bannerScrollView.clickItemOperationBlock = ^(NSInteger currentIndex) {
+        if (weakSelf.bannerClickBlock) {
+            weakSelf.bannerClickBlock(@{@"index":@(currentIndex)});
+        }
+    };
     
      self.backimageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, self.y, kScreenWidth, self.height)];
     self.backimageView.image = [UIImage imageNamed:@"zw_pic"];

@@ -15,6 +15,7 @@
 @property (nonatomic, strong)UIButton * searchImageBtn;
 @property (nonatomic, strong)UIButton * cleanKeyBtn;
 @property (nonatomic, strong)UIButton * cancelBtn;
+@property (nonatomic, strong)UIView * separateView;
 
 
 @end
@@ -65,6 +66,7 @@
     UIView * seperateLine = [[UIView alloc]initWithFrame:CGRectMake(self.backView.hd_x, self.hd_height - 4, self.backView.hd_width, 1)];
     seperateLine.backgroundColor = UIColorFromRGB(0xf2f2f2);
     [self addSubview:seperateLine];
+    self.separateView = seperateLine;
 }
 
 - (void)prepareImageUI:(NSString *)imageName
@@ -83,6 +85,11 @@
 {
     self.backView.hidden = YES;
     self.zixunSegment.hd_y = 10;
+}
+
+- (void)hideSeparateView
+{
+    self.separateView.hidden = YES;
 }
 
 - (void)refreshWith:(NSArray *)dataArray

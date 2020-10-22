@@ -10,6 +10,6 @@
 
 @interface OrderListOperation : NSObject
 @property (nonatomic, strong)NSMutableArray *orderList;
-@property (nonatomic, strong)NSDictionary *orderListInfo;
+@property (nonatomic, assign)int orderTotalCount;
 - (void)didRequestOrderListWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_OrderListProtocol>)object;
 @end

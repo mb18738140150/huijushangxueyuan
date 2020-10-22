@@ -486,6 +486,9 @@
         self.livePlayer = nil;
     }
     NSLog(@"界面释放了");
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationOfShutUpNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationOfMockVIPBuyNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationOfAddChatRecord object:nil];
 }
 
 

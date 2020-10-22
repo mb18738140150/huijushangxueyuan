@@ -31,6 +31,9 @@ typedef NS_ENUM(NSInteger, LXPanDirection){
 // 记录学习时长
 @property (nonatomic, copy) void(^StudyTimeBlock)(double time);
 
+// 进度
+@property (nonatomic, copy) void(^CurrentTimeBlock)(int time);
+
 
 /**销毁播放器*/
 -(void)destroyPlayer;
@@ -38,6 +41,11 @@ typedef NS_ENUM(NSInteger, LXPanDirection){
 - (NSDictionary *)getCurrentProgress;
 
 - (void)seekToTimeWithDragedSeconds:(NSInteger )dragedSeconds;
+
+- (void)addPlayerToFatherView:(UIView *)view;
+
+// 隐藏顶部
+-(void)hiddenTopView;
 
 #pragma mark---播放
 -(void)play;
@@ -47,5 +55,7 @@ typedef NS_ENUM(NSInteger, LXPanDirection){
 - (void)backstop;
 
 - (NSInteger)getPlayState;
+
+- (float)getPlayRate;
 
 @end

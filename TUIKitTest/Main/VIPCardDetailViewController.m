@@ -35,6 +35,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSMutableArray *imageViews;
 @property (nonatomic, strong)NSMutableArray * urlDictsArray;
 @property (nonatomic, strong)NSString * detailHtml;
+@property (nonatomic, strong)UILabel * expiredLB;
 
 @end
 
@@ -71,7 +72,7 @@ typedef enum : NSUInteger {
 //
 //
 //    [_webView loadHTMLString:[headerString stringByAppendingString:@""] baseURL:nil];
-    [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+    
     
     [self prepareUI];
     
@@ -133,6 +134,7 @@ typedef enum : NSUInteger {
     expiredLB.numberOfLines = 0;
     [self.view addSubview:expiredLB];
     expiredLB.hidden = YES;
+    self.expiredLB = expiredLB;
     
     self.applyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.applyBtn.frame = CGRectMake(15, kScreenHeight - kNavigationBarHeight - kStatusBarHeight - 54 , kScreenWidth - 30, 44);
@@ -173,10 +175,6 @@ typedef enum : NSUInteger {
             expiredLB.attributedText = mStr;
             [self.applyBtn setTitle:@"立即续费" forState:UIControlStateNormal];
         }
-//        else if ([[self.myInfo objectForKey:@"id"] intValue] == kPartnerCardID.intValue)
-//        {
-//            self.applyBtn.hidden = YES;
-//        }
     }
     
     [self.applyBtn addTarget:self action:@selector(applyAction) forControlEvents:UIControlEventTouchUpInside];
@@ -194,7 +192,7 @@ typedef enum : NSUInteger {
     int vip_type = [[self.vipCardDetailInfo objectForKey:@"vip_type"] intValue];
     int discount = [[self.vipCardDetailInfo objectForKey:@"discount"] intValue];
     if (vip_type == 3) {
-        [self.freeArray addObject:@{@"image":@"main_免费专区",@"id":[self.vipCardDetailInfo objectForKey:@"id"],@"courseType":@1}];
+        [self.freeArray addObject:@{@"image":@"店铺全部免费",@"id":[self.vipCardDetailInfo objectForKey:@"id"],@"courseType":@1}];
     }else if(vip_type == 1 && discount == 0)
     {
         [self.freeArray addObject:@{@"image":@"main_免费专区",@"id":[self.vipCardDetailInfo objectForKey:@"id"],@"courseType":@1}];
@@ -253,6 +251,23 @@ typedef enum : NSUInteger {
     }else
     {
         self.applyBtn.hidden = NO;
+    }
+    
+    if (self.myInfo) {
+        // 当前为vip
+        if ([[self.myInfo objectForKey:@"id"] intValue] == kVIPCardID.intValue && [[self.info objectForKey:@"id"] intValue] != kPartnerCardID.intValue) {
+            _expiredLB.hidden = NO;
+            self.applyBtn.frame = CGRectMake(kScreenWidth / 2 + 15, kScreenHeight - kNavigationBarHeight - kStatusBarHeight - 54 , kScreenWidth / 2 - 30, 44);
+            
+            NSString * timeStr = [self.myInfo objectForKey:@"end_time"];
+            timeStr = [[timeStr componentsSeparatedByString:@" "] firstObject];
+            NSString * expireStr = [NSString stringWithFormat:@"到期时间\n%@",  timeStr];
+            NSDictionary * attribute = @{NSFontAttributeName:kMainFont,NSForegroundColorAttributeName:UIColorFromRGB(0x333333)};
+            NSMutableAttributedString * mStr = [[NSMutableAttributedString alloc]initWithString:expireStr];
+            [mStr addAttributes:attribute range:NSMakeRange(4, expireStr.length - 4)];
+            _expiredLB.attributedText = mStr;
+            [self.applyBtn setTitle:@"立即续费" forState:UIControlStateNormal];
+        }
     }
     
 }
@@ -372,6 +387,9 @@ typedef enum : NSUInteger {
     [self.tableView.mj_header endRefreshing];
     
     self.vipCardDetailInfo = [[UserManager sharedManager] getVIPCardDetailInfo];
+    if (self.myInfo == nil) {
+        self.myInfo = [self.vipCardDetailInfo objectForKey:@"my"];
+    }
     [self refreshData];
 }
 
@@ -414,7 +432,26 @@ typedef enum : NSUInteger {
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation{
     
-    
+//    [webView evaluateJavaScript:@"document.body.offsetHeight" completionHandler:^(id _Nullable Result, NSError * _Nullable error) {
+//        NSString * heightStr = [NSString stringWithFormat:@"%@", Result];
+//        CGFloat height = heightStr.floatValue + 15;
+//        self.webView.frame = CGRectMake(0, 0, kScreenWidth, height);
+//        _webViewHeight = height;
+//        [self.tableView reloadData];
+//    }];
+//
+//    for(UIView * view in webView.subviews)
+//    {
+//        NSLog(@"%@", [view class]);
+//        if ([view isKindOfClass:[NSClassFromString(@"WKScrollView") class]]) {
+//            UIScrollView * scrollView = (UIScrollView *)view;
+//            CGFloat height = scrollView.contentSize.height;
+//            _webViewHeight = height;
+//            self.webView.frame = CGRectMake(0, 0, kScreenWidth, height);
+//            [self.tableView reloadData];
+//        }
+//
+//    }
     
 }
 // 页面加载失败时调用
@@ -551,6 +588,7 @@ typedef enum : NSUInteger {
 //    NSLog(@"%@", html);
     
     [self.webView loadHTMLString:html baseURL:nil];
+    [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)downloadImageWithUrl:(NSString *)src {

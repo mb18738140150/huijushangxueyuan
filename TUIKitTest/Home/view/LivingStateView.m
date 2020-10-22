@@ -34,7 +34,7 @@
     
     self.stateBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.stateBtn.frame = CGRectMake(0, 0, 100, 20);
-    [self.backView addSubview:self.stateBtn];
+    
 
 }
 
@@ -43,21 +43,22 @@
     _livingState = livingState;
     
     switch (livingState) {
-        case HomeLivingStateType_end:
+        case HomeLivingStateType_living:
         {
             self.backView.frame = CGRectMake(0, 0, 78, 20);
             self.backView.layer.cornerRadius = 2;
             self.backView.layer.masksToBounds = YES;
             self.stateBtn.frame = self.backView.bounds;
             
+            self.stateBtn.frame = CGRectMake(0, 0, 78, 20);
             self.stateBtn.backgroundColor = UIColorFromRGB(0x2A75ED);
             [self.stateBtn setImage:[UIImage imageNamed:@"homeLivingTipImage"] forState:UIControlStateNormal];
-            [self.stateBtn setTitle:@"Live直播中" forState:UIControlStateNormal];
+            [self.stateBtn setTitle:@"直播中" forState:UIControlStateNormal];
             [self.stateBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
             self.stateBtn.titleLabel.font = kMainFont_12;
         }
             break;
-        case HomeLivingStateType_living:
+        case HomeLivingStateType_end:
         {
             self.backView.frame = CGRectMake(0, 0, 53, 20);
             self.backView.layer.cornerRadius = 2;
@@ -107,7 +108,7 @@
             shapLayer.path = bezierpath.CGPath;
             [self.backView.layer setMask: shapLayer];
             
-            [self.stateBtn setImage:[UIImage imageNamed:@"home_image"] forState:UIControlStateNormal];
+            [self.stateBtn setImage:[UIImage imageNamed:@"home_audio"] forState:UIControlStateNormal];
             [self.stateBtn setTitle:@"音频" forState:UIControlStateNormal];
             [self.stateBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
             self.stateBtn.titleLabel.font = kMainFont_12;
@@ -125,7 +126,7 @@
                 shapLayer.path = bezierpath.CGPath;
                 [self.backView.layer setMask: shapLayer];
                 
-                [self.stateBtn setImage:[UIImage imageNamed:@"home_audio"] forState:UIControlStateNormal];
+                [self.stateBtn setImage:[UIImage imageNamed:@"home_imageAndText"] forState:UIControlStateNormal];
                 [self.stateBtn setTitle:@"图片" forState:UIControlStateNormal];
                 [self.stateBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
                 self.stateBtn.titleLabel.font = kMainFont_12;
@@ -182,7 +183,7 @@
                 self.backView.layer.cornerRadius = 2;
                 self.backView.layer.masksToBounds = YES;
                 
-                [self.stateBtn setImage:[UIImage imageNamed:@"home_audio"] forState:UIControlStateNormal];
+                [self.stateBtn setImage:[UIImage imageNamed:@"home_imageAndText"] forState:UIControlStateNormal];
                 [self.stateBtn setTitle:@"图片" forState:UIControlStateNormal];
                 [self.stateBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
                 self.stateBtn.titleLabel.font = kMainFont_12;
@@ -195,7 +196,7 @@
                 self.backView.layer.cornerRadius = 2;
                 self.backView.layer.masksToBounds = YES;
                 
-                [self.stateBtn setImage:[UIImage imageNamed:@"home_image"] forState:UIControlStateNormal];
+                [self.stateBtn setImage:[UIImage imageNamed:@"home_audio"] forState:UIControlStateNormal];
                 [self.stateBtn setTitle:@"音频" forState:UIControlStateNormal];
                 [self.stateBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
                 self.stateBtn.titleLabel.font = kMainFont_12;
@@ -210,6 +211,7 @@
                 
                 [self.stateBtn setImage:[UIImage imageNamed:@"home_video"] forState:UIControlStateNormal];
                 [self.stateBtn setTitle:@"视频" forState:UIControlStateNormal];
+                
                 [self.stateBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
                 self.stateBtn.titleLabel.font = kMainFont_12;
             }
@@ -217,6 +219,8 @@
         default:
             break;
     }
+    self.stateBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, -5);
+    [self.backView addSubview:self.stateBtn];
 }
 
 @end

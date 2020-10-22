@@ -40,6 +40,7 @@
     for (int i = 0; i < infoArray.count; i++) {
         CategoryView *cateView = [[CategoryView alloc] initWithFrame:CGRectMake(i%4 * ((kScreenWidth)/4), i/4 * (kCellHeightOfCategoryView + kspace)+kspace, ((kScreenWidth)/4), kCellHeightOfCategoryView)];
         NSDictionary *cateInfo = [infoArray objectAtIndex:i];
+        cateView.info = cateInfo;
         cateView.categoryId = [[cateInfo objectForKey:@"id"] intValue];
         cateView.pageType = self.pageType;
         cateView.categoryName = [cateInfo objectForKey:@"title"];

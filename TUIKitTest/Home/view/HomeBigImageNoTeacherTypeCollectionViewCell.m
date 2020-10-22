@@ -38,7 +38,34 @@
     
     // 直播状态
     self.livingStateView = [[LivingStateView alloc]initWithFrame:CGRectMake(5, self.iconImageVIew.hd_height - 25, 100, 20)];
-    self.livingStateView.livingState = HomeLivingStateType_living;
+    if ([infoDic objectForKey:@"topic_status"])
+    {
+        // topic_status 1.直播中 2.未开始 3.已结束
+        int livingStatus = [[infoDic objectForKey:@"topic_status"] intValue];
+        switch (livingStatus) {
+            case 1:
+            {
+                self.livingStateView.frame = CGRectMake(5, self.iconImageVIew.hd_height - 25, 100, 20);
+                self.livingStateView.livingState = HomeLivingStateType_living;
+                
+            }
+                break;
+            case 2:
+            {
+                self.livingStateView.livingState = HomeLivingStateType_noStart;
+            }
+                break;
+            case 3:
+            {
+                self.livingStateView.livingState = HomeLivingStateType_end;
+            }
+                break;
+                
+            default:
+                self.livingStateView.livingState = HomeLivingStateType_living;
+                break;
+        }
+    }
     [self.iconImageVIew addSubview:self.livingStateView];
     
     CGFloat seperateWidth = 10;

@@ -17,7 +17,6 @@
 #import "CancelOrderLivingCourseOperation.h"
 #import "BindRegCodeOperation.h"
 #import "DiscountCouponOperation.h"
-#import "OrderListOperation.h"
 #import "VerifyCodeOperation.h"
 #import "RegistOperation.h"
 #import "ForgetPsdOperation.h"
@@ -74,6 +73,18 @@
 #import "MockPartnerBuyOperation.h"
 #import "VIPCardDetailOperation.h"
 #import "MyNotificationOperation.h"
+#import "AddressListOperation.h"
+#import "EditAddressInfoOperation.h"
+#import "DeleteAddressOperation.h"
+
+#import "AddShoppingCarOperation.h"
+#import "DeleteShoppingCarOperation.h"
+#import "CleanShoppingCarOperation.h"
+#import "ShoppingCarListOperation.h"
+#import "CreateOrderOperation.h"
+#import "OrderListOperation.h"
+#import "CommentZanOperation.h"
+#import "AddCommentOperation.h"
 
 @interface UserManager()
 @property (nonatomic,strong) TabbarOperation       *tabbarOperation;
@@ -87,7 +98,20 @@
 @property (nonatomic, strong)MockPartnerBuyOperation * mockPartnerBuyOperation;
 @property (nonatomic, strong)VIPCardDetailOperation * vipCardDetailOperation;
 @property (nonatomic, strong)MyNotificationOperation * myNotificationOperation;
+@property (nonatomic, strong)AddressListOperation            *addressListOperation;
+@property (nonatomic, strong)EditAddressInfoOperation            *editAddressOperation;
+@property (nonatomic, strong)DeleteAddressOperation         *deleteAddressOperation;
+@property (nonatomic, strong)CommentZanOperation         *commentZanOperation;
+@property (nonatomic, strong)AddCommentOperation         *addCommentOperation;
 
+
+
+@property (nonatomic, strong)AddShoppingCarOperation         *addShoppingCarOperation;
+@property (nonatomic, strong)DeleteShoppingCarOperation         *deleteShoppingCarOperation;
+@property (nonatomic, strong)CleanShoppingCarOperation         *cleanShoppingCarOperation;
+@property (nonatomic, strong)ShoppingCarListOperation         *shoppingCarListOperation;
+@property (nonatomic, strong)CreateOrderOperation         *createOrderOperation;
+@property (nonatomic, strong)OrderListOperation         *orderListOperation;
 
 
 @property (nonatomic, strong)SecondCategoryOperation          *SecondCategoryOperation;
@@ -112,7 +136,6 @@
 @property (nonatomic, strong)BindRegCodeOperation       *bindRegCodeOperation;
 @property (nonatomic, strong)PayCourseOperation         *payOrderOperation;
 @property (nonatomic, strong)DiscountCouponOperation    *discountCouponOperation;
-@property (nonatomic, strong)OrderListOperation         *orderListOperation;
 @property (nonatomic, strong)RecommendOperation         *recommendOperation;
 @property (nonatomic, strong)AssistantCenterOperation   *assistantCenterOperation;
 @property (nonatomic, strong)MemberLevelDetail          *memberLevelDetailOperation;
@@ -180,6 +203,17 @@
         self.mockPartnerBuyOperation = [[MockPartnerBuyOperation alloc]init];
         self.vipCardDetailOperation = [[VIPCardDetailOperation alloc]init];
         self.myNotificationOperation = [[MyNotificationOperation alloc]init];
+        self.addressListOperation = [[AddressListOperation alloc]init];
+        self.editAddressOperation = [[EditAddressInfoOperation alloc]init];
+        self.deleteAddressOperation = [[DeleteAddressOperation alloc]init];
+        self.addShoppingCarOperation = [[AddShoppingCarOperation alloc]init];
+        self.deleteShoppingCarOperation = [[DeleteShoppingCarOperation alloc]init];
+        self.cleanShoppingCarOperation = [[CleanShoppingCarOperation alloc]init];
+        self.shoppingCarListOperation = [[ShoppingCarListOperation alloc]init];
+        self.createOrderOperation = [[CreateOrderOperation alloc]init];
+        self.orderListOperation = [[OrderListOperation alloc]init];
+        self.commentZanOperation = [[CommentZanOperation alloc]init];
+        self.addCommentOperation = [[AddCommentOperation alloc]init];
 
         
         self.SecondCategoryOperation = [[SecondCategoryOperation alloc]init];
@@ -206,7 +240,6 @@
         self.discountCouponOperation = [[DiscountCouponOperation alloc]init];
         self.acquireDisCountOperation = [[AcquireDiscountCouponOperation alloc]init];
         self.acquireDisCountSuccessOperation = [[AcquireDiscountCouponSuccess alloc]init];
-        self.orderListOperation = [[OrderListOperation alloc]init];
         self.recommendOperation = [[RecommendOperation alloc]init];
         self.assistantCenterOperation = [[AssistantCenterOperation alloc]init];
         self.memberLevelDetailOperation = [[MemberLevelDetail alloc]init];
@@ -476,6 +509,86 @@
     return self.myNotificationOperation.list;
 }
 
+// 获取收货地址
+- (void)getAddressListWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_AddressListProtocol>)object
+{
+    [self.addressListOperation didRequestAddressListWithWithDic:infoDic withNotifiedObject:object];
+}
+// 编辑收货地址
+- (void)editAddressWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_EditAddressProtocol>)object
+{
+    [self.editAddressOperation didRequestEditAddressWithWithDic:infoDic withNotifiedObject:object];
+}
+- (NSArray *)getAddressList
+{
+    return self.addressListOperation.addressList;
+}
+
+// 删除地址
+- (void)didRequestDeleteAddressWithCourseInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_DeleteAddressProtocol>)object
+{
+    [self.deleteAddressOperation didRequestDeleteAddressWithCourseInfo:infoDic withNotifiedObject:object];
+}
+
+// 添加购物车
+- (void)didRequestAddShoppingCarWith:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_AddShoppingCarProtocol>)object
+{
+    [self.addShoppingCarOperation didRequestAddShoppingCarWithCourseInfo:infoDic withNotifiedObject:object];
+}
+// 删除购物车
+- (void)didRequestDeleteShoppingCarWith:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_DeleteShoppingCarProtocol>)object
+{
+    [self.deleteShoppingCarOperation didRequestDeleteShoppingCarWithCourseInfo:infoDic withNotifiedObject:object];
+}
+// 清空购物车
+- (void)didRequestCleanShoppingCarWith:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_CleanShoppingCarProtocol>)object
+{
+    [self.cleanShoppingCarOperation didRequestCleanShoppingCarWithCourseInfo:infoDic withNotifiedObject:object];
+}
+// 我的购物车
+- (void)didRequestShoppingCarListWith:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_ShoppingCarListProtocol>)object
+{
+    [self.shoppingCarListOperation didRequestShoppingCarListWithCourseInfo:infoDic withNotifiedObject:object];
+}
+// 获取购物车列表
+- (NSArray *)getShoppingCarList
+{
+    return self.shoppingCarListOperation.shoppingList;
+}
+
+// 获取订单列表
+- (void)didRequestOrderListWithCourseInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_OrderListProtocol>)object
+{
+    [self.orderListOperation didRequestOrderListWithCourseInfo:infoDic withNotifiedObject:object];
+}
+- (NSArray *)getMyOrderList
+{
+    return self.orderListOperation.orderList;
+}
+- (int )getMyOrderListTotalCount
+{
+    return self.orderListOperation.orderTotalCount;
+}
+
+// 创建订单
+- (void)didRequestCreateOrderWithCourseInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_CreateOrderProtocol>)object
+{
+    [self.createOrderOperation didRequestCreateOrderWithCourseInfo:infoDic withNotifiedObject:object];
+}
+
+// 评论
+- (void)didRequestCommentZantWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_CommentZanProtocol>)object
+{
+    [self.commentZanOperation didRequestCommentZantWithCourseInfo:infoDic withNotifiedObject:object];
+}
+- (void)didRequestAddCommentWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_AddCommentProtocol>)object
+{
+    [self.addCommentOperation didRequestAddCommentWithCourseInfo:infoDic withNotifiedObject:object];
+}
+
+
+
+
 
 
 
@@ -675,10 +788,7 @@
     [self.infoOperation didRequestAppInfoWithNotifedObject:object];
 }
 
-- (void)didRequestOrderListWithCourseInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_OrderListProtocol>)object
-{
-    [self.orderListOperation didRequestOrderListWithCourseInfo:infoDic withNotifiedObject:object];
-}
+
 
 - (void)didRequestMyDiscountCouponWithCourseInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_discountCouponProtocol>)object
 {
@@ -919,35 +1029,6 @@
 - (NSDictionary *)getPayOrderDetailInfo
 {
     return self.payOrderOperation.payOrderDetailInfo;
-}
-
-- (NSDictionary *)getMyOrderListInfo
-{
-    return self.orderListOperation.orderListInfo;
-}
-
-
-- (NSArray *)getMyOrderList
-{
-//    NSMutableArray *dataArr = [NSMutableArray array];
-//    NSMutableArray * allOrderArr = [NSMutableArray array];
-//    NSMutableArray * notPayOrderArr = [NSMutableArray array];
-//    NSMutableArray * complateOrderArr = [NSMutableArray array];
-//
-//    for (NSDictionary * orderInfo in self.orderListOperation.orderList) {
-//        [allOrderArr addObject:orderInfo];
-//        if ([[orderInfo objectForKey:kOrderStatus] intValue] == 1) {
-//            [complateOrderArr addObject:orderInfo];
-//        }else
-//        {
-//            [notPayOrderArr addObject:orderInfo];
-//        }
-//    }
-//    [dataArr addObject:allOrderArr];
-//    [dataArr addObject:notPayOrderArr];
-//    [dataArr addObject:complateOrderArr];
-    
-    return self.orderListOperation.orderList;
 }
 
 

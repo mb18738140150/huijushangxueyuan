@@ -60,6 +60,7 @@
 #define kzong       @"zong"
 #define kSJID       @"SJID"
 
+#define kAmount                         @"amount"
 
 
 #define kCourseName         @"courseName"

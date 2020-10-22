@@ -116,5 +116,11 @@ typedef enum : NSUInteger {
     CategoryType_ShoppingCar,
 } CategoryType;
 
+typedef enum : NSUInteger {
+    p_a_yModeType_zhi_f_b,
+    p_a_yModeType_wechat,
+    p_a_yModeType_yue,
+} p_a_yModeType;
+
 
 #endif /* PrefixHeader_pch */

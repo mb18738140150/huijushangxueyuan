@@ -11,6 +11,9 @@
 
 @interface UserManager : NSObject
 
+@property (nonatomic, strong)NSDictionary * currentSelectAddressInfo;// 当前选中门店
+
+
 + (instancetype)sharedManager;
 
 /**
@@ -90,6 +93,36 @@
 // 我的消息
 - (void)didRequestNotificationListWithInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_NotificationList>)object;
 - (NSArray *)getNotificationArray;
+
+// 获取收货地址
+- (void)getAddressListWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_AddressListProtocol>)object;
+// 编辑收货地址
+- (void)editAddressWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_EditAddressProtocol>)object;
+- (NSArray *)getAddressList;
+// 删除地址
+- (void)didRequestDeleteAddressWithCourseInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_DeleteAddressProtocol>)object;
+
+// 添加购物车
+- (void)didRequestAddShoppingCarWith:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_AddShoppingCarProtocol>)object;
+// 删除购物车
+- (void)didRequestDeleteShoppingCarWith:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_DeleteShoppingCarProtocol>)object;
+// 清空购物车
+- (void)didRequestCleanShoppingCarWith:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_CleanShoppingCarProtocol>)object;
+// 我的购物车
+- (void)didRequestShoppingCarListWith:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_ShoppingCarListProtocol>)object;
+// 获取购物车列表
+- (NSArray *)getShoppingCarList;
+
+// 获取我的订单列表
+- (void)didRequestOrderListWithCourseInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_OrderListProtocol>)object;
+- (NSArray *)getMyOrderList;
+- (int )getMyOrderListTotalCount;
+- (void)didRequestCreateOrderWithCourseInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_CreateOrderProtocol>)object;
+
+// 评论
+- (void)didRequestCommentZantWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_CommentZanProtocol>)object;
+- (void)didRequestAddCommentWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_AddCommentProtocol>)object;
+
 
 
 
@@ -304,12 +337,6 @@
 - (NSDictionary *)getPayOrderDetailInfo;
 
 - (void)payOrderByCoinWith:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_PayOrderByCoinProtocol>)object;
-
-
-
-// 获取我的订单列表
-- (void)didRequestOrderListWithCourseInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_OrderListProtocol>)object;
-- (NSArray *)getMyOrderList;
 
 // 获取我的订单_未支付列表
 - (void)didRequestOrderList_NoPayWithCourseInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_OrderList_NoPayProtocol>)object;

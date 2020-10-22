@@ -17,7 +17,8 @@ typedef enum {
     Page_Home,
     page_MyNotification,
     Page_MYBuyCourse,
-    Page_MyOrderState
+    Page_MyOrderState,
+    Page_Store,
 }PageType;
 
 @interface CategoryView : UIView
@@ -36,11 +37,15 @@ typedef enum {
 @property (nonatomic, strong)NSString * icon_type; // image:图片 icon:图标
 @property (nonatomic, strong)NSString * need_redirect;// 内部页面参数
 
+@property (nonatomic, strong)NSDictionary * info;
 @property (nonatomic,assign) PageType                pageType;
 
 - (void)setupContents;
 - (void)setupNaviContents;
-- (void)resetImageSize:(CGSize)size;
 
+- (void)setupSmallContent;
+
+- (void)resetImageSize:(CGSize)size;
+- (void)resetNumber:(NSString *)number;
 
 @end

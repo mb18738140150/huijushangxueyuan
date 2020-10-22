@@ -20,7 +20,8 @@
 - (void)resetCellContent:(NSDictionary *)info
 {
     [self.contentView removeAllSubviews];
-    
+    self.info = info;
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
     float cellWidth = self.hd_width;
     
     // 90
@@ -34,9 +35,23 @@
     [self.contentView addSubview:self.courseImageView];
     [self.courseImageView addSubview:self.payCountLabel];
     
+    // 会员专属 228 69 41
+    UILabel * hzuanshuLB = [[UILabel alloc] initWithFrame:CGRectMake(0, 7, 60, 15)];
+    hzuanshuLB.backgroundColor = UIRGBColor(228, 69, 41);
+    hzuanshuLB.font = kMainFont;
+    hzuanshuLB.textColor = UIColorFromRGB(0xffffff);
+    hzuanshuLB.textAlignment = NSTextAlignmentCenter;
+    hzuanshuLB.text = @"会员专属";
+    UIBezierPath * huiyuanPath = [UIBezierPath bezierPathWithRoundedRect:hzuanshuLB.bounds byRoundingCorners:UIRectCornerTopRight|UIRectCornerBottomRight cornerRadii:CGSizeMake(7.5, 7.5)];
+    CAShapeLayer * layer = [[CAShapeLayer alloc]init];
+    layer.frame = hzuanshuLB.bounds;
+    layer.path = huiyuanPath.CGPath;
+    [hzuanshuLB.layer setMask:layer];
+    [self.courseImageView addSubview:self.courseChapterNameLabel];
+    
+    
     // 直播状态
     self.livingStateView = [[LivingStateView alloc]initWithFrame:CGRectMake(0, self.courseImageView.hd_height - 20, 100, 20)];
-    self.livingStateView.livingState = HomeLivingStateType_video;
     [self.courseImageView addSubview:self.livingStateView];
     
     
@@ -70,6 +85,61 @@
     self.payCountLabel.textAlignment = NSTextAlignmentRight;
     [self.contentView addSubview:self.payCountLabel];
     
+    if ([info objectForKey:@"type"]) {
+        NSString * type = [info objectForKey:@"type"];
+        if ([type isEqualToString:@"article"]) {
+            self.livingStateView.livingState = HomeLivingStateType_imageAndText;
+        }else if ([type isEqualToString:@"image"])
+        {
+            self.livingStateView.livingState = HomeLivingStateType_image;
+
+        }else if ([type isEqualToString:@"audio"])
+        {
+            self.livingStateView.livingState = HomeLivingStateType_audio;
+
+        }else if ([type isEqualToString:@"video"])
+        {
+            self.livingStateView.livingState = HomeLivingStateType_video;
+
+        }
+    }else if ([info objectForKey:@"topic_status"])
+    {
+        // topic_status 1.直播中 2.未开始 3.已结束
+        int livingStatus = [[info objectForKey:@"topic_status"] intValue];
+        switch (livingStatus) {
+            case 1:
+            {
+                self.livingStateView.frame = CGRectMake(5, self.courseImageView.hd_height - 25, 100, 20);
+                self.livingStateView.livingState = HomeLivingStateType_living;
+                self.priceLabel.text = @"进入";
+                self.priceLabel.textColor = UIRGBColor(110, 203, 139);
+            }
+                break;
+            case 2:
+            {
+                self.livingStateView.livingState = HomeLivingStateType_noStart;
+            }
+                break;
+            case 3:
+            {
+                self.livingStateView.livingState = HomeLivingStateType_end;
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
+    BOOL vip_exclusive = [[info objectForKey:@"vip_exclusive"] boolValue];
+    if (vip_exclusive) {
+        hzuanshuLB.hidden = NO;
+        self.livingStateView.hidden = YES;
+    }else
+    {
+        hzuanshuLB.hidden = YES;
+        self.livingStateView.hidden = NO;
+    }
     
 }
 

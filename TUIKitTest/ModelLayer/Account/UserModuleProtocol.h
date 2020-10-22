@@ -97,6 +97,99 @@
 
 @end
 
+@protocol UserModule_EditAddressProtocol <NSObject>
+
+- (void)didEditAddressSuccessed;
+
+- (void)didEditAddressFailed:(NSString *)failedInfo;
+
+@end
+
+@protocol UserModule_DeleteAddressProtocol <NSObject>
+
+- (void)didRequestDeleteAddressSuccessed;
+- (void)didRequestDeleteAddressFailed:(NSString *)failedInfo;
+
+@end
+
+@protocol UserModule_AddressListProtocol <NSObject>
+
+- (void)didAddressListSuccessed;
+
+- (void)didAddressListFailed:(NSString *)failedInfo;
+
+@end
+
+@protocol UserModule_DeleteShoppingCarProtocol <NSObject>
+
+- (void)didRequestDeleteShoppingCarSuccessed;
+- (void)didRequestDeleteShoppingCarFailed:(NSString *)failedInfo;
+
+@end
+
+@protocol UserModule_ShoppingCarListProtocol <NSObject>
+
+- (void)didRequestShoppingCarListSuccessed;
+- (void)didRequestShoppingCarListFailed:(NSString *)failedInfo;
+
+@end
+
+@protocol UserModule_CleanShoppingCarProtocol <NSObject>
+
+- (void)didRequestCleanShoppingCarSuccessed;
+- (void)didRequestCleanShoppingCarFailed:(NSString *)failedInfo;
+
+@end
+@protocol UserModule_AddShoppingCarProtocol <NSObject>
+
+- (void)didRequestAddShoppingCarSuccessed;
+- (void)didRequestAddShoppingCarFailed:(NSString *)failedInfo;
+
+@end
+
+@protocol UserModule_OrderListProtocol <NSObject>
+
+- (void)didRequestOrderListSuccessed;
+- (void)didRequestOrderListFailed:(NSString *)failedInfo;
+
+@end
+
+@protocol UserModule_CreateOrderProtocol <NSObject>
+
+- (void)didRequestCreateOrderSuccessed;
+- (void)didRequestCreateOrderFailed:(NSString *)failedInfo;
+
+@end
+
+@protocol UserModule_AddCommentProtocol <NSObject>
+
+- (void)didRequestAddCommentSuccessed;
+- (void)didRequestAddCommentFailed:(NSString *)failedInfo;
+
+@end
+
+@protocol UserModule_CommentZanProtocol <NSObject>
+
+- (void)didRequestCommentZanSuccessed;
+- (void)didRequestCommentZanFailed:(NSString *)failedInfo;
+
+@end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -287,13 +380,6 @@
 
 - (void)didRequestAcquireDiscountCouponSuccessed;
 - (void)didRequestAcquireDiscountCouponFailed:(NSString *)failedInfo;
-
-@end
-
-@protocol UserModule_OrderListProtocol <NSObject>
-
-- (void)didRequestOrderListSuccessed;
-- (void)didRequestOrderListFailed:(NSString *)failedInfo;
 
 @end
 

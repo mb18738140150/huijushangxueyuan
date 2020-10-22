@@ -37,7 +37,19 @@
     
     // 直播状态
     self.livingStateView = [[LivingStateView alloc]initWithFrame:CGRectMake(0, self.courseImageView.hd_height - 20, 100, 20)];
-    self.livingStateView.livingState = HomeLivingStateType_video;
+    NSString * types = [info objectForKey:@"types"];
+    if ([types isEqualToString:@"article"]) {
+        self.livingStateView.livingState = HomeLivingStateType_imageAndText_right;
+    }else if ([types isEqualToString:@"image"])
+    {
+        self.livingStateView.livingState = HomeLivingStateType_image_right;
+    }else if ([types isEqualToString:@"audio"])
+    {
+        self.livingStateView.livingState = HomeLivingStateType_audio_right;
+    }else if ([types isEqualToString:@"video"])
+    {
+        self.livingStateView.livingState = HomeLivingStateType_video_right;
+    }
     [self.courseImageView addSubview:self.livingStateView];
     
     

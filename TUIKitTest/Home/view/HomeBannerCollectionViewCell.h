@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface HomeBannerCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic,strong) NSArray *bannerImgUrlArray;
+@property (nonatomic, copy)void (^bannerClickBlock)(NSDictionary * info);
 
 - (void)resetCornerRadius:(CGFloat)radius;
 

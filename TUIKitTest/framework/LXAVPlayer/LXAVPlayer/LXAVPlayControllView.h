@@ -87,7 +87,8 @@ typedef void (^RateChangeBlock) (float rate);
 //展示加载动画
 -(void)showLoadingAnimation:(BOOL)isShow;
 
-
+// 隐藏顶部试图
+-(void)hiddenTopView;
 //重置播放状态
 -(void)resetPlayState;
 

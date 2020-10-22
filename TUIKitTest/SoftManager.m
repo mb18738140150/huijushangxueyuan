@@ -27,6 +27,38 @@
     return manager;
 }
 
+- (float)getAllPrice:(NSArray *)selectArray
+{
+    if (selectArray.count == 0) {
+        return 0.00;
+    }else
+    {
+        float allPrice = 0.00;
+        for (NSDictionary * infoDic in selectArray) {
+            float price = [[infoDic objectForKey:@"price"] doubleValue];
+            int count = [[infoDic objectForKey:@"count"] intValue];
+            allPrice += price * count;
+        }
+        return allPrice;
+    }
+    
+}
 
+- (int)getAllPoint:(NSArray *)selectArray
+{
+    if (selectArray.count == 0) {
+        return 0;
+    }else
+    {
+        float allpoint = 0;
+        for (NSDictionary * infoDic in selectArray) {
+            int  point = [[infoDic objectForKey:@"point"] doubleValue];
+            int count = [[infoDic objectForKey:@"count"] intValue];
+            allpoint += point * count;
+        }
+        return allpoint;
+    }
+    
+}
 
 @end

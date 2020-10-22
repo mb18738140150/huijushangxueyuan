@@ -13,6 +13,7 @@
 #import "ZWMSegmentView.h"
 #define kDataArray @"dataArray"
 #import "LivingCourseDetailViewController.h"
+#import "ArticleDetailViewController.h"
 
 @interface SecongListViewController()<UITableViewDelegate, UITableViewDataSource,UserModule_SecondCategoryProtocol,UserModule_CategoryCourseProtocol>
 @property (nonatomic, assign)int page;
@@ -27,6 +28,10 @@
 @property (nonatomic, strong)SearchAndCategoryView * topView;
 @property (nonatomic, strong)NSString * keyword;
 
+@property (nonatomic, strong)NSString * categoryUrl;
+@property (nonatomic, strong)NSString * courseListUrl;
+
+
 @end
 
 @implementation SecongListViewController
@@ -36,9 +41,18 @@
 {
     [super viewDidLoad];
     
+    if (self.secondType == SecondListType_artical) {
+        self.categoryUrl = @"api/article/categories";
+        self.courseListUrl = @"api/article/lists";
+    }else{
+        self.categoryUrl = @"api/topic/categories";
+        self.courseListUrl = @"api/topic/lists";
+    }
+    
     [self navigationViewSetup];
     
-    [[UserManager sharedManager] getSecondCategoryeWith:@{kUrlName:@"api/topic/categories"} withNotifiedObject:self];
+    [SVProgressHUD show];
+    [[UserManager sharedManager] getSecondCategoryeWith:@{kUrlName:self.categoryUrl} withNotifiedObject:self];
     self.keyword = @"";
     [self prepareUI];
 }
@@ -46,7 +60,7 @@
 #pragma mark - ui
 - (void)navigationViewSetup
 {
-    self.navigationItem.title = @"直播列表";
+    self.navigationItem.title = self.secondType == SecondListType_living ? @"直播列表" : @"图文音视频列表";
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -88,7 +102,7 @@
 - (void)doResetQuestionRequest
 {
     if (self.categoryArray.count == 0) {
-        [[UserManager sharedManager] getSecondCategoryeWith:@{kUrlName:@"api/topic/categories"} withNotifiedObject:self];
+        [[UserManager sharedManager] getSecondCategoryeWith:@{kUrlName:self.categoryUrl} withNotifiedObject:self];
         return;
     }
     
@@ -123,11 +137,12 @@
     NSMutableArray * mArray = [pageNoInfo objectForKey:kDataArray];
     self.itemArray = mArray;
     
+    [SVProgressHUD show];
     if (self.keyword.length > 0) {
-        [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:@"api/topic/lists",@"cid":[cateInfo objectForKey:@"id"],@"keyword":[self.keyword stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],@"page":@(pageNo)} withNotifiedObject:self];
+        [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:self.courseListUrl,@"cid":[cateInfo objectForKey:@"id"],@"keyword":[self.keyword stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],@"page":@(pageNo),@"requestType":@"get"} withNotifiedObject:self];
     }else
     {
-        [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:@"api/topic/lists",@"cid":[cateInfo objectForKey:@"id"],@"page":@(pageNo)} withNotifiedObject:self];
+        [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:self.courseListUrl,@"cid":[cateInfo objectForKey:@"id"],@"page":@(pageNo),@"requestType":@"get"} withNotifiedObject:self];
     }
     
     [self.tableView reloadData];
@@ -155,6 +170,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary * info = [self.itemArray objectAtIndex:indexPath.row];
+    if (self.secondType == SecondListType_artical) {
+        ArticleDetailViewController * vc = [[ArticleDetailViewController alloc]init];
+        vc.infoDic = info;
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    }
+    
     LivingCourseDetailViewController * vc = [[LivingCourseDetailViewController alloc]init];
     vc.info = info;
     vc.index = indexPath.row;
@@ -165,6 +187,7 @@
 
 - (void)didRequestNewsListSuccessed
 {
+    [SVProgressHUD dismiss];
     [self.tableView.mj_header endRefreshing];
     
     NSDictionary * pageNoInfo = [self.pageIndexArray objectAtIndex:self.courseSegment.index];
@@ -204,6 +227,7 @@
 
 - (void)didCategoryCourseSuccessed
 {
+    [SVProgressHUD dismiss];
     [self.tableView.mj_header endRefreshing];
     
     NSDictionary * pageNoInfo = [self.pageIndexArray objectAtIndex:self.courseSegment.index];

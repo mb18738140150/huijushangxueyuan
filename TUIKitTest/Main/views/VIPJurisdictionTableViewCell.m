@@ -13,6 +13,7 @@
 {
     [self.contentView removeAllSubviews];
     self.backgroundColor = [UIColor whiteColor];
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     UIImageView * vipImageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, 0, self.contentView.hd_width - 30, self.hd_height - 10)];
     vipImageView.image = [UIImage imageNamed:[info objectForKey:@"image"]];

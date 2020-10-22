@@ -179,7 +179,12 @@ typedef NS_ENUM(NSInteger, LXPlayerState) {
     
     self.backgroundColor = [UIColor blackColor];
     
-    self.playerItem =[AVPlayerItem playerItemWithAsset:[AVAsset assetWithURL:[NSURL URLWithString:self.currentModel.playUrl]]];
+    // 设置播放请求头
+    NSMutableDictionary * headers = [NSMutableDictionary dictionary];
+    [headers setObject:@"https://h5.luezhi.com" forKey:@"Referer"];
+    
+    AVAsset * asset = [AVURLAsset URLAssetWithURL:[NSURL URLWithString:self.currentModel.playUrl] options:@{@"AVURLAssetHTTPHeaderFieldsKey" : headers}];
+    self.playerItem =[AVPlayerItem playerItemWithAsset:asset];
     self.playerItem.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmTimeDomain;
     [self.contollView showLoadingAnimation:YES];
     
@@ -202,6 +207,7 @@ typedef NS_ENUM(NSInteger, LXPlayerState) {
     }
     _playerItem = playerItem;
     _playerItem.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmTimeDomain;
+    
     self.player =[AVPlayer playerWithPlayerItem:_playerItem];
     
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
@@ -264,7 +270,10 @@ typedef NS_ENUM(NSInteger, LXPlayerState) {
                     weakSelf.contollView.endTime =[LXAVPlayView durationStringWithTime:(NSInteger)totalTime];
                     //设置播放进度
                     weakSelf.contollView.slideValue = value;
-
+                    
+                    if (weakSelf.CurrentTimeBlock) {
+                        weakSelf.CurrentTimeBlock(currentTime);
+                    }
                 
                 }
             }
@@ -504,6 +513,7 @@ typedef NS_ENUM(NSInteger, LXPlayerState) {
         int time = duration * value;
         // 更新时间
         weakSelf.contollView.startTime = [LXAVPlayView durationStringWithTime:(NSInteger) time];
+        
     };
     
     
@@ -580,6 +590,11 @@ typedef NS_ENUM(NSInteger, LXPlayerState) {
 - (NSInteger)getPlayState
 {
     return self.player.status;
+}
+
+- (float)getPlayRate
+{
+    return self.player.rate;
 }
 
 - (NSDictionary *)getCurrentProgress
@@ -1058,6 +1073,12 @@ typedef NS_ENUM(NSInteger, LXPlayerState) {
     [self submitStudyTime];
     [self.player pause];
 }
+
+    
+-(void)hiddenTopView
+    {
+        [self.contollView hiddenTopView];
+    }
 
 
 #pragma mark - 观看时长

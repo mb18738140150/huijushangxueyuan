@@ -10,11 +10,19 @@
 
 @interface SoftManager : NSObject
 
+
 @property (nonatomic, assign)CGFloat length;
 @property (nonatomic, assign)BOOL isCamera;
 
+@property (nonatomic, assign)BOOL isPhontoLibrary;// iPad 调用系统相册
+
 @property (nonatomic, strong)NSString * coinName;
 
+@property (nonatomic, strong)NSIndexPath * currentIndexPath;
+
 + (instancetype)shareSoftManager;
+
+- (float)getAllPrice:(NSArray *)selectArray;
+- (int)getAllPoint:(NSArray *)selectArray;
 
 @end

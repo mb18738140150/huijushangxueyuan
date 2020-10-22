@@ -8,6 +8,12 @@
 
 #import "HomeViewController.h"
 #import "SecongListViewController.h"
+#import "MainVipCardListViewController.h"
+#import "VIPCardDetailViewController.h"
+#import "ScanSuccessJumpVC.h"
+#import "MyBuyCourseViewController.h"
+#import "StoreViewController.h"
+#import "ArticleDetailViewController.h"
 
 
 #import "HomeSearchCollectionViewCell.h"
@@ -41,21 +47,7 @@
 #import "HomeAdverCollectionViewCell.h"
 #define kHomeAdverCollectionViewCell @"HomeAdverCollectionViewCell"
 
-typedef enum : NSUInteger {
-    HomeCellType_search,
-    HomeCellType_banner,
-    HomeCellType_category,
-    HomeCellType_openVIP,
-    HomeCellType_BigImageType,
-    HomeCellType_BigImageNoTeacherType,
-    HomeCellType_JustaposeType,
-    HomeCellType_ListType,
-    HomeCellType_TeacherList,
-    HomeCellType_PublicNumber,
-    HomeCellType_Community,
-    HomeCellType_VipCard,
-    HomeCellType_adver,
-} HomeCellType;
+
 
 /*
  名称    分组    更新时间
@@ -90,6 +82,9 @@ typedef enum : NSUInteger {
     [self navigationViewSetup];
     [self loadData];
     [self prepareUI];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(categoryClick:) name:kNotificationOfMainPageCategoryClick object:nil];
+    
 }
 - (void)navigationViewSetup
 {
@@ -161,6 +156,7 @@ typedef enum : NSUInteger {
 {
     NSDictionary * info = [self.dataArray objectAtIndex:indexPath.section];
     NSString * type = [info objectForKey:@"type"];
+    __weak typeof(self)weakSelf = self;
     switch ([self getHomeCellType:info]) {
         case HomeCellType_search:
         {
@@ -173,6 +169,7 @@ typedef enum : NSUInteger {
         {
             HomeBannerCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeBannerCollectionViewCell forIndexPath:indexPath];
             NSMutableArray * imageUrlArray = [NSMutableArray array];
+            NSArray * bannerInfos = [info objectForKey:@"data"];
             for (NSDictionary * bannerInfo in [info objectForKey:@"data"]) {
                 if ([UIUtility judgeStr:[bannerInfo objectForKey:@"image"]]) {
                     [imageUrlArray addObject:[bannerInfo objectForKey:@"image"]];
@@ -181,6 +178,10 @@ typedef enum : NSUInteger {
             cell.bannerImgUrlArray = imageUrlArray;
             [cell resetCornerRadius:10];
             [cell resetSubviews];
+            cell.bannerClickBlock = ^(NSDictionary * _Nonnull info) {
+                [weakSelf operationInfo:[bannerInfos objectAtIndex:[[info objectForKey:@"index"] intValue]]];
+            };
+            
             return cell;
         }
             break;
@@ -188,6 +189,7 @@ typedef enum : NSUInteger {
         {
             NSArray * navbars = [info objectForKey:@"data"];
             HomeCategoryCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeCategoryCollectionViewCell forIndexPath:indexPath];
+            cell.pageType = PageMain;
             [cell resetWithCategoryInfos:navbars];
             return cell;
         }
@@ -311,6 +313,74 @@ typedef enum : NSUInteger {
     return cell;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary * info = [self.dataArray objectAtIndex:indexPath.section];
+    NSString * type = [info objectForKey:@"type"];
+    switch ([self getHomeCellType:info]) {
+        case HomeCellType_JustaposeType:
+        {
+            NSDictionary * courseInfo = [info objectForKey:@"data"];
+            
+        }
+            break;
+        case HomeCellType_adver:
+        {
+            // 广告
+            NSDictionary * courseInfo = [info objectForKey:@"data"];
+            
+        }
+            break;
+        case HomeCellType_BigImageType:// topic
+        {
+            NSDictionary * courseInfo = [info objectForKey:@"data"];
+        }
+            break;
+        case HomeCellType_BigImageNoTeacherType: // series
+        {
+            NSDictionary * courseInfo = [info objectForKey:@"data"];
+            
+        }
+            break;
+        case HomeCellType_ListType:
+        {
+            NSArray * dataArray = [info objectForKey:@"data"];
+            ArticleDetailViewController * vc = [[ArticleDetailViewController alloc]init];
+            
+            if ([dataArray isKindOfClass:[NSDictionary class]]) {
+                vc.infoDic = (NSDictionary *)dataArray;
+            }else
+            {
+                vc.infoDic = dataArray[indexPath.item];
+            }
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        
+        case HomeCellType_VipCard:
+        {
+            NSDictionary * courseInfo = [info objectForKey:@"data"];
+            VIPCardDetailViewController * vc = [[VIPCardDetailViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.info = courseInfo;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case HomeCellType_openVIP:
+        {
+            MainVipCardListViewController * vc = [[MainVipCardListViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        
+        default:
+            break;
+    }
+}
+
+
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -325,9 +395,7 @@ typedef enum : NSUInteger {
         headview.moreBlock = ^(NSDictionary * _Nonnull info) {
             NSString * type = [info objectForKey:@"type"];
             if ([type isEqualToString:@"topic"] || [type isEqualToString:@"series"]) {
-                SecongListViewController * vc = [[SecongListViewController alloc]init];
-                vc.hidesBottomBarWhenPushed = YES;
-                [weakSelf.navigationController pushViewController:vc animated:YES];
+                [weakSelf pushSecondVC:SecondListType_living];
             }
         };
         reusableview = headview;
@@ -521,6 +589,85 @@ typedef enum : NSUInteger {
         [SVProgressHUD dismiss];
     });
 }
+
+- (void)categoryClick:(NSNotification *)notification
+{
+    NSDictionary *infoDic = notification.object;
+    
+    [self operationInfo:infoDic];
+}
+
+- (void)operationInfo:(NSDictionary *)info
+{
+    NSLog(@"info = %@", info);
+    NSString * url_type = [info objectForKey:@"url_type"];
+    if ([url_type isEqualToString:@"none"]) {
+        
+    }else if ([url_type isEqualToString:@"inner"])
+    {
+        NSString * innerType = [UIUtility judgeStr:[info objectForKey:@"url"]];
+        /*
+         index    首页
+         center    个人中心
+         yd_payred_index    图文音视频
+         ask_expert    问答
+         zb_topics    直播
+         yx_activiy    优惠券
+         zb_series    直播专栏
+         yd_serialize    普通专栏
+         saas_bargain    砍价
+         vip_introduce    会员
+         shop_index    商城
+         mypay    我的已购
+         yx_extension_recruit    推广中心
+         yd_detail    图文音视频详情
+         
+         */
+        if ([innerType isEqualToString:@"index"]) {
+            NSLog(@"首页");
+        }else if ([innerType isEqualToString:@"center"])
+        {
+            NSLog(@"个人中心");
+        }
+        else if ([innerType isEqualToString:@"zb_topics"])
+        {
+            [self pushSecondVC:SecondListType_living];
+        }
+        else if ([innerType isEqualToString:@"mypay"])
+        {
+            MyBuyCourseViewController * vc = [[MyBuyCourseViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else if([innerType isEqualToString:@"shop_index"])
+        {
+            StoreViewController * vc = [[StoreViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else if ([innerType isEqualToString:@"yd_payred_index"])
+        {
+            [self pushSecondVC:SecondListType_artical];
+        }
+        
+    }else
+    {
+        // 跳转外部链接
+        ScanSuccessJumpVC * WebVC = [[ScanSuccessJumpVC alloc]init];
+        WebVC.comeFromVC = ScanSuccessJumpComeFromWB;
+        WebVC.jump_URL = [UIUtility judgeStr:[info objectForKey:@"url"]];
+        WebVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:WebVC animated:YES];
+    }
+    
+}
+
+- (void)pushSecondVC:(SecondListType)type
+{
+    SecongListViewController * vc = [[SecongListViewController alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.secondType = type;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 /*
 #pragma mark - Navigation

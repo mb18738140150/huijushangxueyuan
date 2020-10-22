@@ -21,6 +21,8 @@
 #import "UserCenterViewController.h"
 #import "MyNotificationListViewController.h"
 #import "MyBuyCourseViewController.h"
+#import "MyPresentRecordViewController.h"
+#import "AddressListViewController.h"
 
 @interface MainViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -218,6 +220,18 @@
             vc.updateBaseInfoBlock = ^(BOOL update) {
                 [weakSelf.tableView reloadData];
             };
+        }
+    }else
+    {
+        if (indexPath.row == 1) {
+            MyPresentRecordViewController * vc = [[MyPresentRecordViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else if(indexPath.row == 3)
+        {
+            AddressListViewController * setVC = [[AddressListViewController alloc]init];
+            setVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:setVC animated:YES];
         }
     }
 }

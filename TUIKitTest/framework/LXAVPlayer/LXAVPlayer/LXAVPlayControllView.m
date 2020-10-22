@@ -543,4 +543,10 @@
     tableView.hidden = YES;
 }
 
+// 隐藏顶部试图
+-(void)hiddenTopView
+{
+    self.topView.hidden = YES;
+}
+
 @end

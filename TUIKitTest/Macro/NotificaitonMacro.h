@@ -60,6 +60,7 @@
 #define kNotificationOfMockVIPBuyNotification                 @"NotificationOfMockVIPBuyNotification"
 
 #define kNotificationOfAddChatRecord                 @"NotificationOfAddChatRecord"
+#define kNotificationOfStoreAction                 @"NotificationOfStoreAction"
 
 
 #endif /* NotificaitonMacro_h */
