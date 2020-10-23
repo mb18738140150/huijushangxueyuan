@@ -15,6 +15,10 @@
 #import "MainOpenVIPCardTableViewCell.h"
 #define kMainOpenVIPCardTableViewCell @"MainOpenVIPCardTableViewCell"
 #import "MainVipCardListViewController.h"
+#import "TeacherDetailViewController.h"
+#import "ShareAndPaySelectView.h"
+#import "MainVipCardListViewController.h"
+#import "ShareClickView.h"
 
 typedef enum : NSUInteger {
     topic_type_free = 1,
@@ -29,7 +33,7 @@ typedef enum : NSUInteger {
     Topic_style_sanfang,
 } Topic_style;
 
-@interface LivingCourseDetailViewController ()<UserModule_CourseDetailProtocol,UITableViewDelegate, UITableViewDataSource>
+@interface LivingCourseDetailViewController ()<UserModule_CourseDetailProtocol,UITableViewDelegate, UITableViewDataSource,UserModule_PayOrderProtocol>
 
 @property (nonatomic, strong)UITableView * tableView;
 
@@ -38,6 +42,12 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong)UIButton *playBackBtn;
 @property (nonatomic, assign)Topic_type topic_type; // 收费类型 1.免费 2.收费 3.加密
 @property (nonatomic, assign)Topic_style topic_style;// 课程类型 1.音频直播 2.直播 3.录播 4.三方直播
+
+@property (nonatomic, assign)PayStateType payStateType; // 支付类型
+
+@property (nonatomic, strong)ShareClickView * shareView;
+@property (nonatomic, assign)BOOL isWechat;
+@property (nonatomic, strong)UIImageView * shareImageView;
 
 @end
 
@@ -50,7 +60,121 @@ typedef enum : NSUInteger {
     [self prepareUI];
     
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payClick:) name:kNotificationOfShareAndPay object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccedsss:) name:kNotificationOfBuyCourseSuccess object:nil];
 }
+
+- (void)paySuccedsss:(NSNotification *)notification
+{
+    NSLog(@"paySuccedsss");
+}
+
+- (void)payClick:(NSNotification *)notification
+{
+    NSDictionary *infoDic = notification.object;
+    
+    if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_wechatPay) {
+        NSLog(@"微信支付");
+        [SVProgressHUD show];
+        self.isWechat = YES;
+        [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/topic",@"topic_id":[NSString stringWithFormat:@"%@", [self.info objectForKey:@"id"]],@"pay_type":@"wechat"} withNotifiedObject:self];
+    }else if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_zhifubPay)
+    {
+        self.isWechat = NO;
+        NSLog(@"支付宝支付");
+        [SVProgressHUD show];
+        [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/topic",@"topic_id":[NSString stringWithFormat:@"%@", [self.info objectForKey:@"id"]],@"pay_type":@"alipay"} withNotifiedObject:self];
+    }else if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_shareFriend)
+    {
+        
+        NSDictionary * shareInfo = [self.courseDetailInfo objectForKey:@"share"];
+        UIImage *thumbImage = self.shareImageView.image;
+        NSString * urlStr = [UIUtility judgeStr:[shareInfo objectForKey:@"link"]];
+        [WXApiRequestHandler sendLinkURL:urlStr
+                                 TagName:@""
+                                   Title:[UIUtility judgeStr:[shareInfo objectForKey:@"title"]]
+                             Description:[UIUtility judgeStr:[shareInfo objectForKey:@"desc"]]
+                              ThumbImage:thumbImage
+                                 InScene:WXSceneSession];
+    }else if (([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_shareCircle))
+    {
+        NSDictionary * shareInfo = [self.courseDetailInfo objectForKey:@"share"];
+        UIImage *thumbImage = self.shareImageView.image;
+        NSString * urlStr = [UIUtility judgeStr:[shareInfo objectForKey:@"link"]];
+        [WXApiRequestHandler sendLinkURL:urlStr
+                                 TagName:@""
+                                   Title:[UIUtility judgeStr:[shareInfo objectForKey:@"title"]]
+                             Description:[UIUtility judgeStr:[shareInfo objectForKey:@"desc"]]
+                              ThumbImage:thumbImage
+                                 InScene:WXSceneTimeline];
+    }
+}
+
+- (void)didRequestPayOrderSuccessed
+{
+    [SVProgressHUD dismiss];
+    NSDictionary * info = [[UserManager sharedManager]getPayOrderInfo];
+    if (_isWechat) {
+        [self weichatPay:[info objectForKey:@"wechat"]];
+    }else
+    {
+        [self alipay:[info objectForKey:@"alipay"]];
+    }
+}
+
+- (void)weichatPay:(NSDictionary *)info
+{
+    NSDictionary * dict = info;
+    NSMutableString *stamp  = [dict objectForKey:@"timestamp"];
+    
+    //调起微信支付
+    PayReq* req             = [[PayReq alloc] init];
+    req.openID              = [dict objectForKey:@"appid"];
+    req.partnerId           = [dict objectForKey:@"partnerid"];
+    req.prepayId            = [dict objectForKey:@"prepayid"];
+    req.nonceStr            = [dict objectForKey:@"noncestr"];
+    req.timeStamp           = stamp.intValue;
+    req.package             = [dict objectForKey:@"package"];
+    req.sign                = [dict objectForKey:@"sign"];
+    [WXApi sendReq:req completion:nil];
+    
+}
+
+- (void)alipay:(NSString *)url
+{
+    [[AlipaySDK defaultService] payOrder:url fromScheme:@"alipay" callback:^(NSDictionary *resultDic) {
+        NSLog(@"%@",resultDic);
+        NSString *str = resultDic[@"memo"];
+        [SVProgressHUD showErrorWithStatus:str];
+        
+        NSString *resultStatus = resultDic[@"resultStatus"];
+        switch (resultStatus.integerValue) {
+            case 9000:// 成功
+                NSLog(@"支付成功");
+                break;
+            case 6001:// 取消
+                NSLog(@"用户中途取消");
+                break;
+            default:
+                NSLog(@"支付失败");
+                break;
+        }
+        
+    }];
+    
+}
+
+- (void)didRequestPayOrderFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
+
 #pragma mark - ui
 - (void)navigationViewSetup
 {
@@ -98,15 +222,24 @@ typedef enum : NSUInteger {
     [_playBackBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
     [_playBackBtn addTarget:self action:@selector(playAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_playBackBtn];
+    
+    __weak typeof(self)weakSelf = self;
+    self.shareView = [[ShareClickView alloc]initWithFrame:CGRectMake(kScreenWidth - 60, 40, 60, 30)];
+    [self.view addSubview:self.shareView];
+    self.shareView.shareBlock = ^(NSDictionary * _Nonnull info) {
+        [weakSelf shareAction];
+    };
+    
 }
 
 - (void)resetPayBtn
 {
     _topic_style = [[self.courseDetailInfo objectForKey:@"topic_style"] intValue];
     _topic_type = [[self.courseDetailInfo objectForKey:@"topic_type"] intValue];
+    _payStateType = _topic_type;
     
     if (_topic_type != 1) {
-        [_playBackBtn setTitle:[NSString stringWithFormat:@"￥%@购买", [self.courseDetailInfo objectForKey:@"show_paymoney"]] forState:UIControlStateNormal];
+        [_playBackBtn setTitle:[NSString stringWithFormat:@"￥%@购买", [self.courseDetailInfo objectForKey:@"pay_paymoney"]] forState:UIControlStateNormal];
     }else
     {
         [_playBackBtn setTitle:@"进入观看" forState:UIControlStateNormal];
@@ -116,20 +249,26 @@ typedef enum : NSUInteger {
 
 - (void)playAction
 {
-    switch (_topic_type) {
-        case topic_type_free:
+    switch (_payStateType) {
+        case PayStateType_free:
         {
             [self getChatRoomInfo];
         }
             break;
-        case topic_type_buy:
+        case PayStateType_buy:
         {
             NSLog(@"购买");
+            ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
+            UIWindow * window = [UIApplication sharedApplication].delegate.window;
+            [window addSubview:payView];
         }
             break;
-        case topic_type_secret:
+        case PayStateType_Vip:
         {
-            NSLog(@"加密");
+            
+            MainVipCardListViewController * vc = [[MainVipCardListViewController alloc]init];
+            
+            [self.navigationController pushViewController:vc animated:YES];
         }
             break;
             
@@ -138,6 +277,15 @@ typedef enum : NSUInteger {
     }
     
 }
+
+#pragma mark - share
+- (void)shareAction
+{
+    ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:YES];
+    UIWindow * window = [UIApplication sharedApplication].delegate.window;
+    [window addSubview:payView];
+}
+
 
 #pragma mark - tableviewdelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -251,8 +399,10 @@ typedef enum : NSUInteger {
         [self.navigationController pushViewController:vc animated:YES];
     }
     if (indexPath.section == 1) {
-        NSDictionary * teacherInfo = [[self.courseDetailInfo objectForKey:@"author"] objectForKey:@"data"];
-        NSLog(@"teacherInfo = %@", teacherInfo);
+        NSDictionary * teacherInfo = [self.courseDetailInfo objectForKey:@"author"];
+        TeacherDetailViewController * vc = [[TeacherDetailViewController alloc]init];
+        vc.info = teacherInfo;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -263,8 +413,22 @@ typedef enum : NSUInteger {
     [self.tableView.mj_header endRefreshing];
     self.courseDetailInfo = [[UserManager sharedManager] getCourseDetailInfo];
     [self resetPayBtn];
+//    [self reloadDataWithSegmentIndex:0];
+    
+    [self getShareInfo:self.courseDetailInfo];
     [self.tableView reloadData];
     NSLog(@"self.courseDetailInfo = %@", self.courseDetailInfo);
+}
+
+- (void)getShareInfo:(NSDictionary *)info
+{
+    NSDictionary * shareInfo = [info objectForKey:@"share"];
+    self.shareImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
+    [self.view addSubview:self.shareImageView];
+    self.shareImageView.hidden = YES;
+    
+    [self.shareImageView sd_setImageWithURL:[NSURL URLWithString:[[UIUtility judgeStr:[shareInfo objectForKey:@"thumb"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:[UIImage imageNamed:@"courseDefaultImage"] options:SDWebImageAllowInvalidSSLCertificates];
+    
 }
 
 - (void)didCourseDetailFailed:(NSString *)failedInfo
@@ -447,10 +611,54 @@ typedef enum : NSUInteger {
 
 
 
+- (void)reloadDataWithSegmentIndex:(NSUInteger)index
+{
+    
+    NSDictionary * purchase = [self.courseDetailInfo objectForKey:@"purchase"];
+    NSString * type = [purchase objectForKey:@"type"];
+    if ([type isEqualToString:@"free"]) {
+        [_playBackBtn setTitle:@"进入观看" forState:UIControlStateNormal];
+        self.payStateType = PayStateType_free;
+    }else if ([type isEqualToString:@"purchased"])
+    {
+        [_playBackBtn setTitle:@"已购买" forState:UIControlStateNormal];
+        self.payStateType = PayStateType_free;
+    }else if ([type isEqualToString:@"vip-free"])
+    {
+        [_playBackBtn setTitle:@"会员免费观看" forState:UIControlStateNormal];
+        self.payStateType = PayStateType_free;
+    }else if ([type isEqualToString:@"plain"])
+    {
+        NSDictionary * info = [purchase objectForKey:@"info"];
+        [_playBackBtn setTitle:[NSString stringWithFormat:@"%@%@", [SoftManager shareSoftManager].coinName, [info objectForKey:@"money"]] forState:UIControlStateNormal];
+        self.payStateType = PayStateType_buy;
+    }
+    else if ([type isEqualToString:@"vip-discount"])
+    {
+        NSDictionary * info = [purchase objectForKey:@"info"];
+        float price = [[info objectForKey:@"money"] floatValue] * [[info objectForKey:@"discount"] floatValue];
+        [_playBackBtn setTitle:[NSString stringWithFormat:@"%@%.2f", [SoftManager shareSoftManager].coinName, price] forState:UIControlStateNormal];
+        self.payStateType = PayStateType_buy;
+    }
+    else if ([type isEqualToString:@"need_vip"])
+    {
+        [_playBackBtn setTitle:@"开通会员免费观看" forState:UIControlStateNormal];
+        self.payStateType = PayStateType_Vip;
+    }else
+    {
+        [_playBackBtn setTitle:@"进入观看" forState:UIControlStateNormal];
+        self.payStateType = PayStateType_free;
+    }
+    
+    
+}
+
+
+
 - (void)dealloc
 {
     
-
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     NSLog(@"界面销毁");
 }
 

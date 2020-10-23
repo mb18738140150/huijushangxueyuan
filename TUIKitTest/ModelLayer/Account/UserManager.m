@@ -22,7 +22,7 @@
 #import "ForgetPsdOperation.h"
 #import "VerifyAccountOperation.h"
 #import "CompleteUserInfoOperation.h"
-#import "PayCourseOperation.h"
+
 #import "PathUtility.h"
 #import "RecommendOperation.h"
 #import "AssistantCenterOperation.h"
@@ -87,7 +87,7 @@
 #import "AddCommentOperation.h"
 #import "TeacherOperation.h"
 #import "TeacherDetailOperation.h"
-
+#import "PayCourseOperation.h"
 
 @interface UserManager()
 @property (nonatomic,strong) TabbarOperation       *tabbarOperation;
@@ -108,7 +108,7 @@
 @property (nonatomic, strong)AddCommentOperation         *addCommentOperation;
 @property (nonatomic, strong)TeacherOperation *  teacherOperation;
 @property (nonatomic, strong)TeacherDetailOperation *  teacherDetailOperation;
-
+@property (nonatomic, strong)PayCourseOperation         *payOrderOperation;
 
 
 @property (nonatomic, strong)AddShoppingCarOperation         *addShoppingCarOperation;
@@ -139,7 +139,7 @@
 @property (nonatomic, strong)VerifyAccountOperation     *verfyAccountOperation;
 @property (nonatomic, strong)CompleteUserInfoOperation  *completeOperation;
 @property (nonatomic, strong)BindRegCodeOperation       *bindRegCodeOperation;
-@property (nonatomic, strong)PayCourseOperation         *payOrderOperation;
+
 @property (nonatomic, strong)DiscountCouponOperation    *discountCouponOperation;
 @property (nonatomic, strong)RecommendOperation         *recommendOperation;
 @property (nonatomic, strong)AssistantCenterOperation   *assistantCenterOperation;
@@ -220,7 +220,7 @@
         self.addCommentOperation = [[AddCommentOperation alloc]init];
         self.teacherOperation = [[TeacherOperation alloc]init];
         self.teacherDetailOperation = [[TeacherDetailOperation alloc]init];
-
+        self.payOrderOperation = [[PayCourseOperation alloc]init];
         
         self.SecondCategoryOperation = [[SecondCategoryOperation alloc]init];
         self.categoryCourseOperation = [[CategoryCourseOperation alloc]init];
@@ -241,7 +241,7 @@
         self.verfyAccountOperation = [[VerifyAccountOperation alloc]init];
         self.completeOperation = [[CompleteUserInfoOperation alloc]init];
         self.bindRegCodeOperation = [[BindRegCodeOperation alloc]init];
-        self.payOrderOperation = [[PayCourseOperation alloc]init];
+        
         self.payOrderByCoinOperation = [[PayOrderByCoinOperation alloc]init];
         self.discountCouponOperation = [[DiscountCouponOperation alloc]init];
         self.acquireDisCountOperation = [[AcquireDiscountCouponOperation alloc]init];
@@ -610,7 +610,14 @@
     return self.teacherDetailOperation.info;
 }
 
-
+- (void)didRequestPayOrderWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_PayOrderProtocol>)object
+{
+    [self.payOrderOperation didRequestPayOrderWithCourseInfo:infoDic withNotifiedObject:object];
+}
+- (NSDictionary *)getPayOrderInfo
+{
+    return self.payOrderOperation.payOrderDetailInfo;
+}
 
 
 

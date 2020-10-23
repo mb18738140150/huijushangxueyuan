@@ -31,11 +31,11 @@
 #import "BarrageModel.h"
 #import "CustomCell.h"
 #import "TestImageView.h"
+#import "ShareAndPaySelectView.h"
 
-@interface CustomChatViewController ()<TInputControllerDelegate,CustomTMessageControllerDelegate,CustomTUIChatControllerDelegate,UserModule_LiveChatRecord,UserModule_SendMessage,HttpUploadProtocol,UserModule_GiftList,UserModule_ShareList,BarrageViewDataSouce, BarrageViewDelegate,UserModule_Shutup,UserModule_MockVIPBuy, UserModule_MockPartnerBuy>
+@interface CustomChatViewController ()<TInputControllerDelegate,CustomTMessageControllerDelegate,CustomTUIChatControllerDelegate,UserModule_LiveChatRecord,UserModule_SendMessage,HttpUploadProtocol,UserModule_GiftList,UserModule_ShareList,BarrageViewDataSouce, BarrageViewDelegate,UserModule_Shutup,UserModule_MockVIPBuy, UserModule_MockPartnerBuy,UserModule_PayOrderProtocol>
 
 @property (nonatomic, strong) CustomTUIChatController *chat;
-
 
 @property(nonatomic,strong)LXAVPlayView *playerview;
 @property(nonatomic,strong)UIView *playFatherView;
@@ -50,6 +50,7 @@
 
 @property (nonatomic, strong)LiveGiftSelectView * giftView;
 @property (nonatomic, strong)UIButton * giftBtn;
+@property (nonatomic, strong)NSDictionary * currentSendGiftInfo;
 
 @property (nonatomic, strong)LivingImageListView * imageListView;
 @property (nonatomic, strong)LivingShareListView * shareListView;
@@ -72,6 +73,10 @@
 @property (nonatomic, assign)BOOL is_shutup;// 是否禁言
 
 @property (nonatomic, strong)NSMutableArray * chatRecordList;
+@property (nonatomic, assign)BOOL isWechat; // 是否是微信支付
+@property (nonatomic, assign)BOOL isPayGift;
+
+@property (nonatomic, strong)ShareAndPaySelectView * payView;
 
 @end
 
@@ -117,7 +122,105 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mockVIPBuyClick:) name:kNotificationOfMockVIPBuyNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addChatRecord:) name:kNotificationOfAddChatRecord object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payClick:) name:kNotificationOfShareAndPay object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccedsss:) name:kNotificationOfBuyCourseSuccess object:nil];
 }
+
+- (void)paySuccedsss:(NSNotification *)notification
+{
+    NSLog(@"paySuccedsss");
+    if (self.isPayGift) {
+        self.isPayGift = NO;
+        TUISystemMessageCellData *system = [[TUISystemMessageCellData alloc] initWithDirection:MsgDirectionOutgoing];
+        system.content = [NSString stringWithFormat:@"%@个%@", [self.currentSendGiftInfo objectForKey:@"count"], [self.currentSendGiftInfo objectForKey:@"name"]];
+        [self sendMessage:system];
+    }
+}
+
+- (void)payClick:(NSNotification *)notification
+{
+    
+    NSDictionary *infoDic = notification.object;
+    
+    if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_wechatPay) {
+        NSLog(@"微信支付");
+        self.isWechat = YES;
+        [SVProgressHUD show];
+        [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/topicGift",@"topic_id":[NSString stringWithFormat:@"%@", [self.videoInfo objectForKey:@"id"]],@"pay_type":@"wechat",@"gift_id":[self.currentSendGiftInfo objectForKey:@"id"],@"num":[self.currentSendGiftInfo objectForKey:@"count"]} withNotifiedObject:self];
+    }else if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_zhifubPay)
+    {
+        self.isWechat = NO;
+        NSLog(@"支付宝支付");
+        [SVProgressHUD show];
+        [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/topicGift",@"topic_id":[NSString stringWithFormat:@"%@", [self.videoInfo objectForKey:@"id"]],@"pay_type":@"alipay",@"gift_id":[self.currentSendGiftInfo objectForKey:@"id"],@"num":[self.currentSendGiftInfo objectForKey:@"count"]} withNotifiedObject:self];
+    }
+}
+
+- (void)didRequestPayOrderSuccessed
+{
+    [SVProgressHUD dismiss];
+    [self.payView removeFromSuperview];
+    NSDictionary * info = [[UserManager sharedManager]getPayOrderInfo];
+    if (_isWechat) {
+        [self weichatPay:[info objectForKey:@"wechat"]];
+    }else
+    {
+        [self alipay:[info objectForKey:@"alipay"]];
+    }
+}
+
+- (void)weichatPay:(NSDictionary *)info
+{
+    NSDictionary * dict = info;
+    NSMutableString *stamp  = [dict objectForKey:@"timestamp"];
+    
+    //调起微信支付
+    PayReq* req             = [[PayReq alloc] init];
+    req.openID              = [dict objectForKey:@"appid"];
+    req.partnerId           = [dict objectForKey:@"partnerid"];
+    req.prepayId            = [dict objectForKey:@"prepayid"];
+    req.nonceStr            = [dict objectForKey:@"noncestr"];
+    req.timeStamp           = stamp.intValue;
+    req.package             = [dict objectForKey:@"package"];
+    req.sign                = [dict objectForKey:@"sign"];
+    [WXApi sendReq:req completion:nil];
+    
+}
+
+- (void)alipay:(NSString *)url
+{
+    [[AlipaySDK defaultService] payOrder:url fromScheme:@"alipay" callback:^(NSDictionary *resultDic) {
+        NSLog(@"%@",resultDic);
+        NSString *str = resultDic[@"memo"];
+        [SVProgressHUD showErrorWithStatus:str];
+        
+        NSString *resultStatus = resultDic[@"resultStatus"];
+        switch (resultStatus.integerValue) {
+            case 9000:// 成功
+                NSLog(@"支付成功");
+                break;
+            case 6001:// 取消
+                NSLog(@"用户中途取消");
+                break;
+            default:
+                NSLog(@"支付失败");
+                break;
+        }
+        
+    }];
+    
+}
+
+- (void)didRequestPayOrderFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
+
 
 - (void)shutUpClick:(NSNotification *)notification
 {
@@ -306,15 +409,20 @@
     
     self.giftView = [[LiveGiftSelectView alloc]initWithFrame:self.view.bounds];
     self.giftView.payBlock = ^(NSDictionary * _Nonnull info) {
-        TUISystemMessageCellData *system = [[TUISystemMessageCellData alloc] initWithDirection:MsgDirectionOutgoing];
-        system.content = [NSString stringWithFormat:@"%@个%@", [info objectForKey:@"count"], [info objectForKey:@"name"]];
-        [weakSelf sendMessage:system];
         
+        weakSelf.currentSendGiftInfo = info;
+        weakSelf.isPayGift = YES;
+        ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
+        UIWindow * window = [UIApplication sharedApplication].delegate.window;
+        [window addSubview:payView];
+        weakSelf.payView = payView;
     };
     
     self.buyVipView = [[LivingBuyVIPView alloc]initWithFrame:self.view.bounds];
     self.buyVipView.VIPPayBlock = ^(NSDictionary * _Nonnull info) {
         NSLog(@"%@", [info objectForKey:@"price"]);
+#pragma mark - buyVIP
+        
     };
     self.buyVipView.ShutupBlock = ^(BOOL isOn) {
         

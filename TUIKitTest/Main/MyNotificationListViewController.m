@@ -154,7 +154,54 @@
     NSString * juge_type = [info objectForKey:@"jump_type"];
     NSString * juge_url = [info objectForKey:@"jump_url"];
     if ([juge_type isEqualToString:@"inner"]) {
-        NSLog(@"内部跳转");
+        NSString * innerType = [UIUtility judgeStr:[info objectForKey:@"jump_url"]];
+        /*
+         index    首页
+         center    个人中心
+         yd_payred_index    图文音视频
+         ask_expert    问答
+         zb_topics    直播
+         yx_activiy    优惠券
+         zb_series    直播专栏
+         yd_serialize    普通专栏
+         saas_bargain    砍价
+         vip_introduce    会员
+         shop_index    商城
+         mypay    我的已购
+         yx_extension_recruit    推广中心
+         yd_detail    图文音视频详情
+         
+         */
+        if ([innerType isEqualToString:@"index"]) {
+            NSLog(@"首页");
+            [self.tabBarController setSelectedIndex:0];
+        }else if ([innerType isEqualToString:@"center"])
+        {
+            NSLog(@"个人中心");
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else if ([innerType isEqualToString:@"zb_topics"])
+        {
+//            [self pushSecondVC:SecondListType_living];
+        }
+        else if ([innerType isEqualToString:@"mypay"])
+        {
+//            MyBuyCourseViewController * vc = [[MyBuyCourseViewController alloc]init];
+//            vc.hidesBottomBarWhenPushed = YES;
+//            [self.navigationController pushViewController:vc animated:YES];
+        }else if([innerType isEqualToString:@"shop_index"])
+        {
+//            StoreViewController * vc = [[StoreViewController alloc]init];
+//            vc.hidesBottomBarWhenPushed = YES;
+//            [self.navigationController pushViewController:vc animated:YES];
+        }else if ([innerType isEqualToString:@"yd_payred_index"])
+        {
+//            [self pushSecondVC:SecondListType_artical];
+        }else if ([innerType isEqualToString:@"yd_detail"])
+        {
+//            [self pushArticleDetailVC:[info objectForKey:@"need_redirect"]];
+        }
+        
     }else if ([juge_type isEqualToString:@"none"])
     {
         NSLog(@"不做跳转");

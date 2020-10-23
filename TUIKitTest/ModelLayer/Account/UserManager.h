@@ -130,6 +130,8 @@
 - (void)getTeacherDetailWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_TeacherDetailProtocol>)object;
 - (NSDictionary *)getTeacherDetailInfo;
 
+- (void)didRequestPayOrderWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_PayOrderProtocol>)object;
+- (NSDictionary *)getPayOrderInfo;
 
 
 

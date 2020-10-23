@@ -16,6 +16,7 @@
 #import "ArticleDetailViewController.h"
 #import "TeacherListViewController.h"
 #import "TeacherDetailViewController.h"
+#import "LivingCourseDetailViewController.h"
 
 #import "HomeSearchCollectionViewCell.h"
 #define kHomeSearchCollectionViewCell @"HomeSearchCollectionViewCell"
@@ -327,25 +328,37 @@
     switch ([self getHomeCellType:info]) {
         case HomeCellType_JustaposeType:
         {
-            NSDictionary * courseInfo = [info objectForKey:@"data"];
-            
+           
         }
             break;
         case HomeCellType_adver:
         {
             // 广告
             NSDictionary * courseInfo = [info objectForKey:@"data"];
-            
+            [self operationInfo:courseInfo];
         }
             break;
         case HomeCellType_BigImageType:// topic
         {
-            NSDictionary * courseInfo = [info objectForKey:@"data"];
+            
+            NSArray * dataArray = [info objectForKey:@"data"];
+            if ([dataArray isKindOfClass:[NSDictionary class]]) {
+                [self operationTopicInfo:[info objectForKey:@"data"]];
+            }else
+            {
+                [self operationTopicInfo:[dataArray objectAtIndex:indexPath.item]];
+            }
         }
             break;
         case HomeCellType_BigImageNoTeacherType: // series
         {
-            NSDictionary * courseInfo = [info objectForKey:@"data"];
+            NSArray * dataArray = [info objectForKey:@"data"];
+            if ([dataArray isKindOfClass:[NSDictionary class]]) {
+                [self operationTopicInfo:[info objectForKey:@"data"]];
+            }else
+            {
+                [self operationTopicInfo:[dataArray objectAtIndex:indexPath.item]];
+            }
             
         }
             break;
@@ -408,6 +421,9 @@
                 TeacherListViewController * vc = [[TeacherListViewController alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:vc animated:YES];
+            }else if([type isEqualToString:@"art"])
+            {
+                [weakSelf pushSecondVC:SecondListType_artical];
             }
         };
         reusableview = headview;
@@ -609,6 +625,15 @@
     [self operationInfo:infoDic];
 }
 
+
+- (void)operationTopicInfo:(NSDictionary *)info
+{
+    LivingCourseDetailViewController * vc = [[LivingCourseDetailViewController alloc]init];
+    vc.info = info;
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)operationInfo:(NSDictionary *)info
 {
     NSLog(@"info = %@", info);
@@ -658,6 +683,9 @@
         }else if ([innerType isEqualToString:@"yd_payred_index"])
         {
             [self pushSecondVC:SecondListType_artical];
+        }else if ([innerType isEqualToString:@"yd_detail"])
+        {
+            [self pushArticleDetailVC:[info objectForKey:@"need_redirect"]];
         }
         
     }else
@@ -670,6 +698,15 @@
         [self.navigationController pushViewController:WebVC animated:YES];
     }
     
+}
+
+- (void)pushArticleDetailVC:(NSDictionary *)info
+{
+    ArticleDetailViewController * vc = [[ArticleDetailViewController alloc]init];
+    
+    vc.infoDic = info;
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)pushSecondVC:(SecondListType)type

@@ -69,6 +69,7 @@
 #import "TBCityIconInfo.h"
 #import "UIImage+TBCityIconFont.h"
 #import "NSString+HTML.h"
+#import <AlipaySDK/AlipaySDK.h>
 
 //#import <KSYMediaPlayer/KSYMediaPlayer.h>
 
@@ -114,6 +115,10 @@ typedef enum : NSUInteger {
     CategoryType_daiShouHuo,
     CategoryType_allOrder,
     CategoryType_ShoppingCar,
+    CategoryType_shareFriend,
+    CategoryType_shareCircle,
+    CategoryType_wechatPay,
+    CategoryType_zhifubPay,
 } CategoryType;
 
 typedef enum : NSUInteger {
@@ -127,5 +132,11 @@ typedef enum : NSUInteger {
     CellCornerType_top,
     CellCornerType_bottom,
 } CellCornerType;
+
+typedef enum : NSUInteger {
+    PayStateType_free = 1,
+    PayStateType_buy,
+    PayStateType_Vip,
+} PayStateType;
 
 #endif /* PrefixHeader_pch */

@@ -29,7 +29,7 @@
     self.courseCover.layer.masksToBounds = YES;
     [self.contentView addSubview:self.courseCover];
     
-    self.titleLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.courseCover.frame) + 15, self.courseCover.hd_y, self.hd_width - 30, 22)];
+    self.titleLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.courseCover.frame) + 15, self.courseCover.hd_y, self.hd_width - 50 - CGRectGetMaxX(_courseCover.frame), 22)];
     self.titleLB.text = [info objectForKey:@"nickname"];
     self.titleLB.textColor = UIColorFromRGB(0x333333);
     self.titleLB.font = kMainFont;
@@ -38,7 +38,9 @@
     
     self.countLB = [[UILabel alloc]initWithFrame:CGRectMake(self.titleLB.hd_x, CGRectGetMaxY(self.titleLB.frame), self.titleLB.hd_width, 22)];
     self.countLB.textColor = UIColorFromRGB(0x666666);
-    self.countLB.text = [info objectForKey:@"desc"];
+    NSString * htmlString = [UIUtility judgeStr:[info objectForKey:@"desc"]];
+    NSAttributedString * attrStr = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType ,NSFontAttributeName:kMainFont} documentAttributes:nil error:nil];
+    self.countLB.attributedText = attrStr;
     self.countLB.font = kMainFont_12;
     [self.contentView addSubview:self.countLB];
     

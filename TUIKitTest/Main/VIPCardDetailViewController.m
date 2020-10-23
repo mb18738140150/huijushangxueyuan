@@ -11,6 +11,7 @@
 #import "VIPCardTypeTableViewCell.h"
 #define kVIPCardTypeTableViewCell @"VIPCardTypeTableViewCell"
 #import "VIPCourseListViewController.h"
+#import "ShareAndPaySelectView.h"
 
 typedef enum : NSUInteger {
     BuyType_buy,
@@ -18,7 +19,7 @@ typedef enum : NSUInteger {
     BuyType_NO,
 } BuyType;
 
-@interface VIPCardDetailViewController ()<UITableViewDelegate, UITableViewDataSource,WKUIDelegate,WKNavigationDelegate,UserModule_MyVIPCardDetailInfo>
+@interface VIPCardDetailViewController ()<UITableViewDelegate, UITableViewDataSource,WKUIDelegate,WKNavigationDelegate,UserModule_MyVIPCardDetailInfo,UserModule_PayOrderProtocol>
 
 @property (nonatomic, strong)UITableView * tableView;
 @property (nonatomic, strong)NSArray * dataSource;
@@ -36,7 +37,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong)NSMutableArray * urlDictsArray;
 @property (nonatomic, strong)NSString * detailHtml;
 @property (nonatomic, strong)UILabel * expiredLB;
-
+@property (nonatomic, assign)BOOL isWechat;
 @end
 
 @implementation VIPCardDetailViewController
@@ -77,7 +78,11 @@ typedef enum : NSUInteger {
     [self prepareUI];
     
     [self loadData];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payClick:) name:kNotificationOfShareAndPay object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccedsss:) name:kNotificationOfBuyCourseSuccess object:nil];
 }
+
 
 - (void)loadData
 {
@@ -184,6 +189,18 @@ typedef enum : NSUInteger {
 - (void)applyAction
 {
     NSLog(@"购买 %@", self.info);
+    if (self.buyType == BuyType_buy) {
+        ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
+        UIWindow * window = [UIApplication sharedApplication].delegate.window;
+        [window addSubview:payView];
+    }else if (self.buyType == BuyType_needVIP)
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请先购买VIP" preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        }]];
+        [self.navigationController presentViewController:alert animated:YES completion:nil];
+    }
+    
 }
 
 - (void)refreshData
@@ -379,6 +396,99 @@ typedef enum : NSUInteger {
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
+
+#pragma mark - buyVIP
+- (void)paySuccedsss:(NSNotification *)notification
+{
+    NSLog(@"paySuccedsss");
+}
+
+- (void)payClick:(NSNotification *)notification
+{
+    
+    NSDictionary *infoDic = notification.object;
+    
+    if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_wechatPay) {
+        NSLog(@"微信支付");
+        self.isWechat = YES;
+        [SVProgressHUD show];
+        [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/vip",@"vip_id":[NSString stringWithFormat:@"%@", [self.info objectForKey:@"id"]],@"pay_type":@"wechat"} withNotifiedObject:self];
+    }else if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_zhifubPay)
+    {
+        self.isWechat = NO;
+        NSLog(@"支付宝支付");
+        [SVProgressHUD show];
+        [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/vip",@"vip_id":[NSString stringWithFormat:@"%@", [self.info objectForKey:@"id"]],@"pay_type":@"alipay"} withNotifiedObject:self];
+    }
+    
+    
+}
+
+- (void)didRequestPayOrderSuccessed
+{
+    [SVProgressHUD dismiss];
+    NSDictionary * info = [[UserManager sharedManager]getPayOrderInfo];
+    if (_isWechat) {
+        [self weichatPay:[info objectForKey:@"wechat"]];
+    }else
+    {
+        [self alipay:[info objectForKey:@"alipay"]];
+    }
+}
+
+- (void)weichatPay:(NSDictionary *)info
+{
+    NSDictionary * dict = info;
+    NSMutableString *stamp  = [dict objectForKey:@"timestamp"];
+    
+    //调起微信支付
+    PayReq* req             = [[PayReq alloc] init];
+    req.openID              = [dict objectForKey:@"appid"];
+    req.partnerId           = [dict objectForKey:@"partnerid"];
+    req.prepayId            = [dict objectForKey:@"prepayid"];
+    req.nonceStr            = [dict objectForKey:@"noncestr"];
+    req.timeStamp           = stamp.intValue;
+    req.package             = [dict objectForKey:@"package"];
+    req.sign                = [dict objectForKey:@"sign"];
+    [WXApi sendReq:req completion:nil];
+    
+}
+
+- (void)alipay:(NSString *)url
+{
+    [[AlipaySDK defaultService] payOrder:url fromScheme:@"alipay" callback:^(NSDictionary *resultDic) {
+        NSLog(@"%@",resultDic);
+        NSString *str = resultDic[@"memo"];
+        [SVProgressHUD showErrorWithStatus:str];
+        
+        NSString *resultStatus = resultDic[@"resultStatus"];
+        switch (resultStatus.integerValue) {
+            case 9000:// 成功
+                NSLog(@"支付成功");
+                break;
+            case 6001:// 取消
+                NSLog(@"用户中途取消");
+                break;
+            default:
+                NSLog(@"支付失败");
+                break;
+        }
+        
+    }];
+    
+}
+
+- (void)didRequestPayOrderFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
+
+
 
 #pragma mark - vipcardDetail
 - (void)didRequestMyVIPCardDetailInfoSuccessed

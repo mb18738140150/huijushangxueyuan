@@ -250,7 +250,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
     NSLog(@"url = %@ \nurl.host = %@",url, url.host);
-    
+    if ([url.host isEqualToString:@"safepay"]){
+            [self alipayHandleOpenUrl:url];
+            return YES;
+    }
     return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
     return YES;
 }
@@ -290,6 +293,48 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 {
     return YES;
 }
+
+//支付宝支付请求
+ 
+//处理支付回调
+- (void)alipayHandleOpenUrl:(NSURL *)url{
+    // 支付跳转支付宝钱包进行支付，处理支付结果(在app被杀模式下，通过这个方法获取支付结果)
+    [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+        NSString *resultStatus = resultDic[@"resultStatus"];
+        NSString *errStr = resultDic[@"memo"];
+        NSLog(@"%@",errStr);
+        switch (resultStatus.integerValue) {
+            case 9000:// 成功
+                NSLog(@"application 支付成功");
+                break;
+            case 6001:// 取消
+                NSLog(@"application 用户中途取消");
+                break;
+            default:
+                NSLog(@"application 支付失败");
+                break;
+        }
+    }];
+    
+    // 授权跳转支付宝钱包进行支付，处理支付结果
+    [[AlipaySDK defaultService] processAuth_V2Result:url standbyCallback:^(NSDictionary *resultDic) {
+        NSLog(@"result = %@",resultDic);
+        // 解析 auth code
+        NSString *result = resultDic[@"result"];
+        NSString *authCode = nil;
+        if (result.length>0) {
+            NSArray *resultArr = [result componentsSeparatedByString:@"&"];
+            for (NSString *subResult in resultArr) {
+                if (subResult.length > 10 && [subResult hasPrefix:@"auth_code="]) {
+                    authCode = [subResult substringFromIndex:10];
+                    break;
+                }
+            }
+        }
+        NSLog(@"授权结果 authCode = %@", authCode?:@"");
+    }];
+}
+
 
 
 @end

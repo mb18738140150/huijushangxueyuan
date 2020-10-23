@@ -22,12 +22,11 @@
 #import "MainVipCardListViewController.h"
 #import "ArticleImageTableViewCell.h"
 #define kArticleImageTableViewCell @"ArticleImageTableViewCell"
+#import "ShareClickView.h"
+#import "ShareAndPaySelectView.h"
 
-typedef enum : NSUInteger {
-    PayStateType_free,
-    PayStateType_Vip,
-    PayStateType_buy,
-} PayStateType;
+
+
 
 typedef enum : NSUInteger {
     ArticleType_article,
@@ -36,7 +35,7 @@ typedef enum : NSUInteger {
     ArticleType_video,
 } ArticleType;
 
-@interface ArticleDetailViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_CourseDetailProtocol,UserModule_CommentZanProtocol, UserModule_AddCommentProtocol,ChangeMusicProtocol,WKUIDelegate,WKNavigationDelegate>
+@interface ArticleDetailViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_CourseDetailProtocol,UserModule_CommentZanProtocol, UserModule_AddCommentProtocol,ChangeMusicProtocol,WKUIDelegate,WKNavigationDelegate,UserModule_PayOrderProtocol>
 
 @property (nonatomic, strong)UITableView * tableView;
 @property (nonatomic, strong)NSArray * dataSource;
@@ -67,6 +66,11 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong)NSString * content;// 内容(购买后)
 @property (nonatomic, strong)NSMutableArray * images;// 内容(购买后)
 
+@property (nonatomic, strong)UIImageView * shareImageView;
+
+@property (nonatomic, strong)ShareClickView * shareView;
+@property (nonatomic, assign)BOOL isWechat;
+
 @end
 
 @implementation ArticleDetailViewController
@@ -94,7 +98,126 @@ typedef enum : NSUInteger {
     self.webViewHeight = 0;
     [self doResetQuestionRequest];
     [self prepareUI];
+    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payClick:) name:kNotificationOfShareAndPay object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccedsss:) name:kNotificationOfBuyCourseSuccess object:nil];
 }
+
+- (void)paySuccedsss:(NSNotification *)notification
+{
+    NSLog(@"paySuccedsss");
+}
+
+- (void)payClick:(NSNotification *)notification
+{
+    
+    NSDictionary *infoDic = notification.object;
+    
+    if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_wechatPay) {
+        NSLog(@"微信支付");
+        self.isWechat = YES;
+        [SVProgressHUD show];
+        [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/article",@"article_id":[NSString stringWithFormat:@"%@", [self.infoDic objectForKey:@"id"]],@"pay_type":@"wechat"} withNotifiedObject:self];
+    }else if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_zhifubPay)
+    {
+        self.isWechat = NO;
+        NSLog(@"支付宝支付");
+        [SVProgressHUD show];
+        [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/article",@"article_id":[NSString stringWithFormat:@"%@", [self.infoDic objectForKey:@"id"]],@"pay_type":@"alipay"} withNotifiedObject:self];
+    }else if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_shareFriend)
+    {
+        
+        NSDictionary * shareInfo = [self.courseDetailInfo objectForKey:@"share"];
+        UIImage *thumbImage = self.shareImageView.image;
+        NSString * urlStr = [UIUtility judgeStr:[shareInfo objectForKey:@"link"]];
+        [WXApiRequestHandler sendLinkURL:urlStr
+                                 TagName:@""
+                                   Title:[UIUtility judgeStr:[shareInfo objectForKey:@"title"]]
+                             Description:[UIUtility judgeStr:[shareInfo objectForKey:@"desc"]]
+                              ThumbImage:thumbImage
+                                 InScene:WXSceneSession];
+    }else if (([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_shareCircle))
+    {
+        NSDictionary * shareInfo = [self.courseDetailInfo objectForKey:@"share"];
+        UIImage *thumbImage = self.shareImageView.image;
+        NSString * urlStr = [UIUtility judgeStr:[shareInfo objectForKey:@"link"]];
+        [WXApiRequestHandler sendLinkURL:urlStr
+                                 TagName:@""
+                                   Title:[UIUtility judgeStr:[shareInfo objectForKey:@"title"]]
+                             Description:[UIUtility judgeStr:[shareInfo objectForKey:@"desc"]]
+                              ThumbImage:thumbImage
+                                 InScene:WXSceneTimeline];
+    }
+    
+    
+}
+
+- (void)didRequestPayOrderSuccessed
+{
+    [SVProgressHUD dismiss];
+    NSDictionary * info = [[UserManager sharedManager]getPayOrderInfo];
+    if (_isWechat) {
+        [self weichatPay:[info objectForKey:@"wechat"]];
+    }else
+    {
+        [self alipay:[info objectForKey:@"alipay"]];
+    }
+}
+
+- (void)weichatPay:(NSDictionary *)info
+{
+    NSDictionary * dict = info;
+    NSMutableString *stamp  = [dict objectForKey:@"timestamp"];
+    
+    //调起微信支付
+    PayReq* req             = [[PayReq alloc] init];
+    req.openID              = [dict objectForKey:@"appid"];
+    req.partnerId           = [dict objectForKey:@"partnerid"];
+    req.prepayId            = [dict objectForKey:@"prepayid"];
+    req.nonceStr            = [dict objectForKey:@"noncestr"];
+    req.timeStamp           = stamp.intValue;
+    req.package             = [dict objectForKey:@"package"];
+    req.sign                = [dict objectForKey:@"sign"];
+    [WXApi sendReq:req completion:nil];
+    
+}
+
+- (void)alipay:(NSString *)url
+{
+    [[AlipaySDK defaultService] payOrder:url fromScheme:@"alipay" callback:^(NSDictionary *resultDic) {
+        NSLog(@"%@",resultDic);
+        NSString *str = resultDic[@"memo"];
+        [SVProgressHUD showErrorWithStatus:str];
+        
+        NSString *resultStatus = resultDic[@"resultStatus"];
+        switch (resultStatus.integerValue) {
+            case 9000:// 成功
+                NSLog(@"支付成功");
+                break;
+            case 6001:// 取消
+                NSLog(@"用户中途取消");
+                break;
+            default:
+                NSLog(@"支付失败");
+                break;
+        }
+        
+    }];
+    
+}
+
+- (void)didRequestPayOrderFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
+
 
 // 是否支持自动转屏
 - (BOOL)shouldAutorotate {
@@ -142,9 +265,16 @@ typedef enum : NSUInteger {
     [self.tableView registerClass:[ArticleCommentTableViewCell class] forCellReuseIdentifier:kArticleCommentTableViewCell];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellID"];
     [self.tableView registerClass:[ArticleImageTableViewCell class] forCellReuseIdentifier:kArticleImageTableViewCell];
-
+    
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(doResetQuestionRequest)];
         
+    __weak typeof(self)weakSelf = self;
+    self.shareView = [[ShareClickView alloc]initWithFrame:CGRectMake(kScreenWidth - 60, 40, 60, 30)];
+    [self.view addSubview:self.shareView];
+    self.shareView.shareBlock = ^(NSDictionary * _Nonnull info) {
+        [weakSelf shareAction];
+    };
+    
     
     self.playingVideo = [[ZXVideo alloc] init];
     // 视频 player
@@ -152,7 +282,6 @@ typedef enum : NSUInteger {
    self.playerview.isLandScape = YES;
     self.playerview.isAutoReplay = NO;
     [self.playerview hiddenTopView];
-    __weak typeof(self)weakSelf = self;
     self.playerview.backBlock = ^(NSDictionary *info) {
         NSLog(@"***** \n%@", info);
         
@@ -220,8 +349,10 @@ typedef enum : NSUInteger {
     _webView.navigationDelegate = self;
     _webView.scrollView.delegate = self;
     _webView.scrollView.scrollEnabled = NO;
-    
+    [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
 }
+
+
 
 - (void)reloadDataWithSegmentIndex:(NSUInteger)index
 {
@@ -654,8 +785,21 @@ typedef enum : NSUInteger {
     }else if (self.payStateType == PayStateType_buy)
     {
         NSLog(@"buy");
+        ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
+        UIWindow * window = [UIApplication sharedApplication].delegate.window;
+        [window addSubview:payView];
+        
     }
 }
+
+#pragma mark - share
+- (void)shareAction
+{
+    ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:YES];
+    UIWindow * window = [UIApplication sharedApplication].delegate.window;
+    [window addSubview:payView];
+}
+
 
 #pragma mark - comment & zan
 
@@ -732,6 +876,9 @@ typedef enum : NSUInteger {
     self.courseDetailInfo = [[UserManager sharedManager] getCourseDetailInfo];
     [self reloadDataWithSegmentIndex:self.courseSegmrnt.index];
     NSLog(@"self.courseDetailInfo = %@", self.courseDetailInfo);
+    
+    [self getShareInfo:self.courseDetailInfo];
+    
 }
 
 - (void)didCourseDetailFailed:(NSString *)failedInfo
@@ -742,6 +889,17 @@ typedef enum : NSUInteger {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [SVProgressHUD dismiss];
     });
+}
+
+- (void)getShareInfo:(NSDictionary *)info
+{
+    NSDictionary * shareInfo = [info objectForKey:@"share"];
+    self.shareImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
+    [self.view addSubview:self.shareImageView];
+    self.shareImageView.hidden = YES;
+    
+    [self.shareImageView sd_setImageWithURL:[NSURL URLWithString:[[UIUtility judgeStr:[shareInfo objectForKey:@"thumb"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:[UIImage imageNamed:@"courseDefaultImage"] options:SDWebImageAllowInvalidSSLCertificates];
+    
 }
 
 #pragma mark - play audio & video
@@ -996,8 +1154,6 @@ typedef enum : NSUInteger {
             BOOL bo = [[NSFileManager defaultManager] createDirectoryAtPath:docPath withIntermediateDirectories:YES attributes:nil error:nil];
             NSString *localPath = [docPath stringByAppendingPathComponent:[src MD5]];
             
-            
-            
             if (![data writeToFile:localPath atomically:NO]) {
                 NSLog(@"写入本地失败：%@", src);
             }else
@@ -1030,8 +1186,6 @@ typedef enum : NSUInteger {
 }
 
 
-
-
 - (void)dealloc
 {
     if (self.playerview) {
@@ -1039,6 +1193,7 @@ typedef enum : NSUInteger {
         self.playerview = nil;
     }
     [[BTVoicePlayer share] stop];
+    
     [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
     NSLog(@"界面释放了");
 }

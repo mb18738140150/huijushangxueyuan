@@ -61,6 +61,7 @@
 
 #define kNotificationOfAddChatRecord                 @"NotificationOfAddChatRecord"
 #define kNotificationOfStoreAction                 @"NotificationOfStoreAction"
+#define kNotificationOfShareAndPay                 @"NotificationOfShareAndPay"
 
 
 #endif /* NotificaitonMacro_h */

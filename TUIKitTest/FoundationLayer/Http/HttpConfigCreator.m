@@ -292,7 +292,6 @@
 + (HttpConfigModel *)payOrderWithInfo:(NSDictionary *)orderInfo
 {
     HttpConfigModel * c = [[HttpConfigModel alloc]init];
-    
     [self setConfigModel:c withInfo:orderInfo];
     
     return c;

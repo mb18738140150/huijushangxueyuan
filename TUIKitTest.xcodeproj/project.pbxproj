@@ -54,6 +54,21 @@
 		0028EB93252A4A2E00D76BF0 /* CustomTUIChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0028EB92252A4A2E00D76BF0 /* CustomTUIChatController.m */; };
 		0028EB99252A595B00D76BF0 /* CustomTUITextMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0028EB98252A595B00D76BF0 /* CustomTUITextMessageCell.m */; };
 		0028EB9F252A62A800D76BF0 /* CustomTUIImageMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0028EB9E252A62A800D76BF0 /* CustomTUIImageMessageCell.m */; };
+		002B161B25427D96008B2607 /* comment_点赞2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 002B161525427D94008B2607 /* comment_点赞2@2x.png */; };
+		002B161C25427D96008B2607 /* comment_评论2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 002B161625427D95008B2607 /* comment_评论2@2x.png */; };
+		002B161D25427D96008B2607 /* comment_评论2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 002B161725427D95008B2607 /* comment_评论2@3x.png */; };
+		002B161E25427D96008B2607 /* comment_点赞1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 002B161825427D95008B2607 /* comment_点赞1@3x.png */; };
+		002B161F25427D96008B2607 /* comment_点赞2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 002B161925427D95008B2607 /* comment_点赞2@3x.png */; };
+		002B162025427D96008B2607 /* comment_点赞1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 002B161A25427D96008B2607 /* comment_点赞1@2x.png */; };
+		002B162525427E45008B2607 /* blackShare.png in Resources */ = {isa = PBXBuildFile; fileRef = 002B162425427E45008B2607 /* blackShare.png */; };
+		002B162B2542A5B0008B2607 /* TeacherDescViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 002B162A2542A5B0008B2607 /* TeacherDescViewController.m */; };
+		002B16312542BDA5008B2607 /* ShareClickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 002B16302542BDA5008B2607 /* ShareClickView.m */; };
+		002B16372542BE22008B2607 /* ShareAndPaySelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 002B16362542BE22008B2607 /* ShareAndPaySelectView.m */; };
+		002B163E2542D319008B2607 /* 微信.png in Resources */ = {isa = PBXBuildFile; fileRef = 002B163B2542D318008B2607 /* 微信.png */; };
+		002B163F2542D319008B2607 /* 微博.png in Resources */ = {isa = PBXBuildFile; fileRef = 002B163C2542D318008B2607 /* 微博.png */; };
+		002B16402542D319008B2607 /* 朋友圈.png in Resources */ = {isa = PBXBuildFile; fileRef = 002B163D2542D319008B2607 /* 朋友圈.png */; };
+		002B164D2542E58A008B2607 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 002B164B2542E58A008B2607 /* AlipaySDK.bundle */; };
+		002B164E2542E58A008B2607 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002B164C2542E58A008B2607 /* AlipaySDK.framework */; };
 		003458E5253D5DDF001F9C3F /* MyPresentRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 003458E4253D5DDF001F9C3F /* MyPresentRecordViewController.m */; };
 		003458EB253D606C001F9C3F /* MyPresentRecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 003458EA253D606C001F9C3F /* MyPresentRecordTableViewCell.m */; };
 		00345938253D75A6001F9C3F /* 地址勾选@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 003458F3253D75A6001F9C3F /* 地址勾选@2x.png */; };
@@ -875,6 +890,24 @@
 		0028EB98252A595B00D76BF0 /* CustomTUITextMessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomTUITextMessageCell.m; sourceTree = "<group>"; };
 		0028EB9D252A62A800D76BF0 /* CustomTUIImageMessageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomTUIImageMessageCell.h; sourceTree = "<group>"; };
 		0028EB9E252A62A800D76BF0 /* CustomTUIImageMessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomTUIImageMessageCell.m; sourceTree = "<group>"; };
+		002B161525427D94008B2607 /* comment_点赞2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "comment_点赞2@2x.png"; sourceTree = "<group>"; };
+		002B161625427D95008B2607 /* comment_评论2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "comment_评论2@2x.png"; sourceTree = "<group>"; };
+		002B161725427D95008B2607 /* comment_评论2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "comment_评论2@3x.png"; sourceTree = "<group>"; };
+		002B161825427D95008B2607 /* comment_点赞1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "comment_点赞1@3x.png"; sourceTree = "<group>"; };
+		002B161925427D95008B2607 /* comment_点赞2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "comment_点赞2@3x.png"; sourceTree = "<group>"; };
+		002B161A25427D96008B2607 /* comment_点赞1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "comment_点赞1@2x.png"; sourceTree = "<group>"; };
+		002B162425427E45008B2607 /* blackShare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackShare.png; sourceTree = "<group>"; };
+		002B16292542A5B0008B2607 /* TeacherDescViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherDescViewController.h; sourceTree = "<group>"; };
+		002B162A2542A5B0008B2607 /* TeacherDescViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherDescViewController.m; sourceTree = "<group>"; };
+		002B162F2542BDA5008B2607 /* ShareClickView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareClickView.h; sourceTree = "<group>"; };
+		002B16302542BDA5008B2607 /* ShareClickView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareClickView.m; sourceTree = "<group>"; };
+		002B16352542BE22008B2607 /* ShareAndPaySelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareAndPaySelectView.h; sourceTree = "<group>"; };
+		002B16362542BE22008B2607 /* ShareAndPaySelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareAndPaySelectView.m; sourceTree = "<group>"; };
+		002B163B2542D318008B2607 /* 微信.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "微信.png"; sourceTree = "<group>"; };
+		002B163C2542D318008B2607 /* 微博.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "微博.png"; sourceTree = "<group>"; };
+		002B163D2542D319008B2607 /* 朋友圈.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "朋友圈.png"; sourceTree = "<group>"; };
+		002B164B2542E58A008B2607 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
+		002B164C2542E58A008B2607 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
 		003458E3253D5DDF001F9C3F /* MyPresentRecordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyPresentRecordViewController.h; sourceTree = "<group>"; };
 		003458E4253D5DDF001F9C3F /* MyPresentRecordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyPresentRecordViewController.m; sourceTree = "<group>"; };
 		003458E9253D606C001F9C3F /* MyPresentRecordTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyPresentRecordTableViewCell.h; sourceTree = "<group>"; };
@@ -2134,6 +2167,7 @@
 				0079EFDA25217BA200307D71 /* CoreTelephony.framework in Frameworks */,
 				0079EFD825217B9A00307D71 /* CoreFoundation.framework in Frameworks */,
 				0079EFD625217B9300307D71 /* CFNetwork.framework in Frameworks */,
+				002B164E2542E58A008B2607 /* AlipaySDK.framework in Frameworks */,
 				0079EFD425217B8C00307D71 /* WebKit.framework in Frameworks */,
 				0079EFD225217B8400307D71 /* CoreGraphics.framework in Frameworks */,
 				0079EFD025217B7D00307D71 /* Security.framework in Frameworks */,
@@ -2259,9 +2293,25 @@
 			path = views;
 			sourceTree = "<group>";
 		};
+		002B164A2542E58A008B2607 /* alipay */ = {
+			isa = PBXGroup;
+			children = (
+				002B164B2542E58A008B2607 /* AlipaySDK.bundle */,
+				002B164C2542E58A008B2607 /* AlipaySDK.framework */,
+			);
+			path = alipay;
+			sourceTree = "<group>";
+		};
 		003458F2253D75A6001F9C3F /* mdpi */ = {
 			isa = PBXGroup;
 			children = (
+				002B162425427E45008B2607 /* blackShare.png */,
+				002B161A25427D96008B2607 /* comment_点赞1@2x.png */,
+				002B161825427D95008B2607 /* comment_点赞1@3x.png */,
+				002B161525427D94008B2607 /* comment_点赞2@2x.png */,
+				002B161925427D95008B2607 /* comment_点赞2@3x.png */,
+				002B161625427D95008B2607 /* comment_评论2@2x.png */,
+				002B161725427D95008B2607 /* comment_评论2@3x.png */,
 				00C236CE254032A800973347 /* comment_评论2.png */,
 				00C236C22540323100973347 /* comment_点赞1.png */,
 				00C236C32540323100973347 /* comment_点赞2.png */,
@@ -3144,6 +3194,8 @@
 				0079EB7525217AF800307D71 /* TeacherOperation.m */,
 				00C236EE25417A6C00973347 /* TeacherDetailOperation.h */,
 				00C236EF25417A6C00973347 /* TeacherDetailOperation.m */,
+				0079EBD325217AF800307D71 /* PayCourseOperation.h */,
+				0079EBB925217AF800307D71 /* PayCourseOperation.m */,
 				0079EB6D25217AF800307D71 /* newOperation  */,
 				0079EB9625217AF800307D71 /* ResetPwdOperation.h */,
 				0079EBD725217AF800307D71 /* ResetPwdOperation.m */,
@@ -3238,7 +3290,6 @@
 				0079EBB525217AF800307D71 /* OrderLivingCourseOperation.m */,
 				0079EBB625217AF800307D71 /* MemberLevelDetail.m */,
 				0079EBB825217AF800307D71 /* PayOrderByCoinOperation.h */,
-				0079EBB925217AF800307D71 /* PayCourseOperation.m */,
 				0079EBBA25217AF800307D71 /* DiscountCouponOperation.m */,
 				0079EBBB25217AF800307D71 /* ForgetPsdOperation.m */,
 				0079EBBC25217AF800307D71 /* SubmitOpinionOperation.m */,
@@ -3261,7 +3312,6 @@
 				0079EBD025217AF800307D71 /* OrderList_NoPayOperation.h */,
 				0079EBD125217AF800307D71 /* SubmitOpinionOperation.h */,
 				0079EBD225217AF800307D71 /* ForgetPsdOperation.h */,
-				0079EBD325217AF800307D71 /* PayCourseOperation.h */,
 				0079EBD425217AF800307D71 /* DiscountCouponOperation.h */,
 				0079EBD525217AF800307D71 /* PayOrderByCoinOperation.m */,
 			);
@@ -3310,6 +3360,9 @@
 		0079EBFA25217AF900307D71 /* source */ = {
 			isa = PBXGroup;
 			children = (
+				002B163D2542D319008B2607 /* 朋友圈.png */,
+				002B163C2542D318008B2607 /* 微博.png */,
+				002B163B2542D318008B2607 /* 微信.png */,
 				00C236D9254129D800973347 /* weixinzhifu.png */,
 				00C236DA254129D800973347 /* zhifubao.png */,
 				003459E5253DCA98001F9C3F /* goImage.png */,
@@ -3419,6 +3472,7 @@
 		0079EC1E25217AFA00307D71 /* framework */ = {
 			isa = PBXGroup;
 			children = (
+				002B164A2542E58A008B2607 /* alipay */,
 				00C2369B2540137900973347 /* AudioTool */,
 				0034599A253DBD73001F9C3F /* BTAreaPickViewController */,
 				00345992253DBD72001F9C3F /* YQLAddressPickerView */,
@@ -3766,9 +3820,9 @@
 			isa = PBXGroup;
 			children = (
 				0079ECE225217AFB00307D71 /* WXApiManager.h */,
-				0079ECE325217AFB00307D71 /* WXApiRequestHandler.m */,
-				0079ECE425217AFB00307D71 /* WXApiRequestHandler.h */,
 				0079ECE525217AFB00307D71 /* WXApiManager.m */,
+				0079ECE425217AFB00307D71 /* WXApiRequestHandler.h */,
+				0079ECE325217AFB00307D71 /* WXApiRequestHandler.m */,
 				0079ECE625217AFB00307D71 /* Helper */,
 			);
 			path = wechat;
@@ -4056,6 +4110,8 @@
 				00C236E92541799F00973347 /* TeacherListViewController.m */,
 				00C236FD2541867200973347 /* TeacherDetailViewController.h */,
 				00C236FE2541867200973347 /* TeacherDetailViewController.m */,
+				002B16292542A5B0008B2607 /* TeacherDescViewController.h */,
+				002B162A2542A5B0008B2607 /* TeacherDescViewController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -4069,6 +4125,10 @@
 				00C23695253FE99F00973347 /* AddCommentView.m */,
 				00C2368E253FE90200973347 /* MKPPlaceholderTextView.h */,
 				00C2368F253FE90300973347 /* MKPPlaceholderTextView.m */,
+				002B162F2542BDA5008B2607 /* ShareClickView.h */,
+				002B16302542BDA5008B2607 /* ShareClickView.m */,
+				002B16352542BE22008B2607 /* ShareAndPaySelectView.h */,
+				002B16362542BE22008B2607 /* ShareAndPaySelectView.m */,
 				0079EDA225217AFC00307D71 /* HomeCategoryCollectionViewCell.h */,
 				0079EDBE25217AFC00307D71 /* HomeCategoryCollectionViewCell.m */,
 				0079EDBD25217AFC00307D71 /* HomeListTypeCollectionViewCell.h */,
@@ -4725,6 +4785,7 @@
 				0079EF5025217AFE00307D71 /* kr-video-player-point@2x.png in Resources */,
 				000C1A63253EB2B50002DE10 /* ic_place_border.png in Resources */,
 				00930DF82530987800267B62 /* main_待收货@2x.png in Resources */,
+				002B163E2542D319008B2607 /* 微信.png in Resources */,
 				0079EED725217AFE00307D71 /* home_imageAndText.png in Resources */,
 				00930DFF2530987800267B62 /* main_赠送记录.png in Resources */,
 				00930E052530987800267B62 /* main_待发货@2x.png in Resources */,
@@ -4751,6 +4812,7 @@
 				00345978253D75A6001F9C3F /* back.png in Resources */,
 				00930E0D2530987800267B62 /* main_代付款@3x.png in Resources */,
 				00930DEF2530987800267B62 /* main_订单icon@3x.png in Resources */,
+				002B161B25427D96008B2607 /* comment_点赞2@2x.png in Resources */,
 				0079EF2625217AFE00307D71 /* LXAVPlayer.bundle in Resources */,
 				0079EF4425217AFE00307D71 /* kr-video-player-close@3x.png in Resources */,
 				00C236B025402A5C00973347 /* comment_评论1.png in Resources */,
@@ -4781,6 +4843,7 @@
 				0079EF4C25217AFE00307D71 /* zx-video-player-fastForward@2x.png in Resources */,
 				000C1A5A253E96A60002DE10 /* shoppingCar_unselected@2x.png in Resources */,
 				00345966253D75A6001F9C3F /* 删除.png in Resources */,
+				002B161F25427D96008B2607 /* comment_点赞2@3x.png in Resources */,
 				0034595A253D75A6001F9C3F /* 礼物@2x.png in Resources */,
 				0034596D253D75A6001F9C3F /* 折扣专区@3x.png in Resources */,
 				00930E092530987800267B62 /* main_课程@2x.png in Resources */,
@@ -4801,7 +4864,9 @@
 				003459DD253DC487001F9C3F /* ic_unselected_address@2x.png in Resources */,
 				0079EEC825217AFE00307D71 /* search@3x.png in Resources */,
 				000A75752536F2100065A62C /* README.md in Resources */,
+				002B161E25427D96008B2607 /* comment_点赞1@3x.png in Resources */,
 				0079EED925217AFE00307D71 /* home_imageAndText@3x.png in Resources */,
+				002B163F2542D319008B2607 /* 微博.png in Resources */,
 				00C236C52540323100973347 /* comment_点赞1.png in Resources */,
 				0079EEFE25217AFE00307D71 /* TZImagePickerController.bundle in Resources */,
 				00345961253D75A6001F9C3F /* fenxiang@2x.png in Resources */,
@@ -4827,6 +4892,7 @@
 				00345971253D75A6001F9C3F /* 底图.png in Resources */,
 				0034595B253D75A6001F9C3F /* courseDefaultImage.png in Resources */,
 				00C236DB254129D800973347 /* weixinzhifu.png in Resources */,
+				002B161C25427D96008B2607 /* comment_评论2@2x.png in Resources */,
 				00345957253D75A6001F9C3F /* 折扣专区@2x.png in Resources */,
 				000C1A65253EB2B50002DE10 /* ic_place_border@3x.png in Resources */,
 				00930E042530987800267B62 /* main_待发货.png in Resources */,
@@ -4880,20 +4946,24 @@
 				00345951253D75A6001F9C3F /* 关闭@2x.png in Resources */,
 				0034598C253D764D001F9C3F /* down箭头.png in Resources */,
 				00345968253D75A6001F9C3F /* 头像加载失败.png in Resources */,
+				002B162025427D96008B2607 /* comment_点赞1@2x.png in Resources */,
 				0079EEDB25217AFE00307D71 /* home_audio@3x.png in Resources */,
 				0034596E253D75A6001F9C3F /* 等级2@2x.png in Resources */,
 				003459A8253DBD73001F9C3F /* pca-code.json in Resources */,
 				0079EEC625217AFE00307D71 /* public-返回@3x.png in Resources */,
 				007C9C682524D1460040DFD4 /* 1@3x.png in Resources */,
+				002B161D25427D96008B2607 /* comment_评论2@3x.png in Resources */,
 				0034595E253D75A6001F9C3F /* 店铺全部免费@2x.png in Resources */,
 				007C9C6F2524D1460040DFD4 /* 4@2x.png in Resources */,
 				0034596F253D75A6001F9C3F /* 加.png in Resources */,
 				0079EF4025217AFE00307D71 /* zx-video-player-rewind@2x.png in Resources */,
 				00345953253D75A6001F9C3F /* 等级1@2x.png in Resources */,
 				0079EEC925217AFE00307D71 /* search.png in Resources */,
+				002B164D2542E58A008B2607 /* AlipaySDK.bundle in Resources */,
 				00345973253D75A6001F9C3F /* 地址勾选.png in Resources */,
 				0034597B253D75A6001F9C3F /* fenxiang.png in Resources */,
 				0079EF4D25217AFE00307D71 /* kr-video-player-shrinkscreen@2x.png in Resources */,
+				002B16402542D319008B2607 /* 朋友圈.png in Resources */,
 				00345965253D75A6001F9C3F /* 店铺全部免费@3x.png in Resources */,
 				0079EECB25217AFE00307D71 /* 箭头@3x.png in Resources */,
 				0034596C253D75A6001F9C3F /* 位图@3x.png in Resources */,
@@ -4920,6 +4990,7 @@
 				00930E102530987800267B62 /* main_推广中心.png in Resources */,
 				0034595F253D75A6001F9C3F /* 头像加载失败@3x.png in Resources */,
 				00930DF62530987800267B62 /* main_清理缓存.png in Resources */,
+				002B162525427E45008B2607 /* blackShare.png in Resources */,
 				0044BF332533530A00FACCE8 /* living_编组3.png in Resources */,
 				0034593A253D75A6001F9C3F /* 页面关闭@2x.png in Resources */,
 				007C9C7B2524D1460040DFD4 /* 2@2x.png in Resources */,
@@ -5076,6 +5147,7 @@
 				0079EEB925217AFE00307D71 /* UIButton+ImageTitleSpacing.m in Sources */,
 				0079EFB425217AFE00307D71 /* DownloadRquestOperation.m in Sources */,
 				0079EFA425217AFE00307D71 /* HomeTeacherListCollectionViewCell.m in Sources */,
+				002B16372542BE22008B2607 /* ShareAndPaySelectView.m in Sources */,
 				0079EFAC25217AFE00307D71 /* LoginBackgroundView.m in Sources */,
 				0079EEF125217AFE00307D71 /* MJRefreshFooter.m in Sources */,
 				0079EFB725217AFE00307D71 /* DateUtility.m in Sources */,
@@ -5293,6 +5365,7 @@
 				0079EF2425217AFE00307D71 /* LXSlider.m in Sources */,
 				0040F2352531F6A4009446F1 /* VIPCardTypeTableViewCell.m in Sources */,
 				0079EE1C25217AFD00307D71 /* PlayingVideoOperation.m in Sources */,
+				002B162B2542A5B0008B2607 /* TeacherDescViewController.m in Sources */,
 				0079EF7D25217AFE00307D71 /* FMDatabaseAdditions.m in Sources */,
 				0079EEBF25217AFE00307D71 /* MyObject.m in Sources */,
 				00930E232530A09500267B62 /* MainOpenVIPCardTableViewCell.m in Sources */,
@@ -5489,6 +5562,7 @@
 				0079EF6325217AFE00307D71 /* HooDatePicker.m in Sources */,
 				0079EF7825217AFE00307D71 /* TADotView.m in Sources */,
 				003459B0253DBDA0001F9C3F /* UIAlertController+Core.m in Sources */,
+				002B16312542BDA5008B2607 /* ShareClickView.m in Sources */,
 				0079EF9A25217AFE00307D71 /* LivingStateView.m in Sources */,
 				0079EA1B252174CC00307D71 /* main.m in Sources */,
 				0079EF8E25217AFE00307D71 /* HcdGuideView.m in Sources */,
@@ -5684,6 +5758,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YL959LPUVS;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TUIKitTest/framework/alipay",
+				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/TUIKitTest/PrefixHeader.pch";
 				INFOPLIST_FILE = TUIKitTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -5717,6 +5795,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YL959LPUVS;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TUIKitTest/framework/alipay",
+				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/TUIKitTest/PrefixHeader.pch";
 				INFOPLIST_FILE = TUIKitTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;

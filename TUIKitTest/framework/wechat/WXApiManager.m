@@ -54,9 +54,9 @@
                 strMsg = @"支付结果：成功！";
                 NSLog(@"支付成功－PaySuccess，retcode = %d", resp.errCode);
                 
-                if ([[NSUserDefaults standardUserDefaults] objectForKey: @"password"] && [[NSUserDefaults standardUserDefaults] objectForKey: @"userName"]) {
-                    [[UserManager sharedManager] loginWithUserName:[[NSUserDefaults standardUserDefaults] objectForKey: @"userName"] andPassword:[[NSUserDefaults standardUserDefaults] objectForKey: @"password"] withNotifiedObject:nil];
-                }
+//                if ([[NSUserDefaults standardUserDefaults] objectForKey: @"password"] && [[NSUserDefaults standardUserDefaults] objectForKey: @"userName"]) {
+//                    [[UserManager sharedManager] loginWithUserName:[[NSUserDefaults standardUserDefaults] objectForKey: @"userName"] andPassword:[[NSUserDefaults standardUserDefaults] objectForKey: @"password"] withNotifiedObject:nil];
+//                }
                 [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfBuyCourseSuccess object:nil];
             }
                 break;
