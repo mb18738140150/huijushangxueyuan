@@ -53,7 +53,9 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"click %@", self.dataArray[indexPath.item]);
+    if (self.teacherDetailBlock) {
+        self.teacherDetailBlock(self.dataArray[indexPath.item]);
+    }
 }
 
 @end

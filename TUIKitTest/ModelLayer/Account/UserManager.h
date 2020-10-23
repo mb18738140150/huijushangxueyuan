@@ -123,6 +123,14 @@
 - (void)didRequestCommentZantWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_CommentZanProtocol>)object;
 - (void)didRequestAddCommentWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_AddCommentProtocol>)object;
 
+// 老师
+- (void)getCourseTeacherWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_CourseTeacherProtocol>)object;
+- (NSArray *)getCourseTeaccherArray;
+
+- (void)getTeacherDetailWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_TeacherDetailProtocol>)object;
+- (NSDictionary *)getTeacherDetailInfo;
+
+
 
 
 
@@ -161,8 +169,7 @@
 - (void)getCourseNoteWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_CourseNoteProtocol>)object;
 - (NSArray *)getCourseNoteArray;
 
-- (void)getCourseTeacherWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_CourseTeacherProtocol>)object;
-- (NSArray *)getCourseTeaccherArray;
+
 
 
 

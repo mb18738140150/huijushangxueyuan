@@ -176,7 +176,7 @@ typedef enum : NSUInteger {
     if (indexPath.section == 1) {
         LivingTeacherIntroTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kLivingTeacherIntroTableViewCell forIndexPath:indexPath];
         if (self.courseDetailInfo) {
-            [cell refreshUIWithInfo:[[self.courseDetailInfo objectForKey:@"author"] objectForKey:@"data"]];
+            [cell refreshUIWithInfo:[self.courseDetailInfo objectForKey:@"author"]];
         }
         return cell;
     }

@@ -31,7 +31,7 @@
 
 - (void)didRequestSuccessed:(NSDictionary *)successInfo
 {
-    self.list = [successInfo objectForKey:@"result"];
+    self.list = [successInfo objectForKey:@"data"];
     if (isObjectNotNil(self.notifiedObject)) {
         [self.notifiedObject didCourseTeacherSuccessed];
     }

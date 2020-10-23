@@ -122,5 +122,10 @@ typedef enum : NSUInteger {
     p_a_yModeType_yue,
 } p_a_yModeType;
 
+typedef enum : NSUInteger {
+    CellCornerType_none,
+    CellCornerType_top,
+    CellCornerType_bottom,
+} CellCornerType;
 
 #endif /* PrefixHeader_pch */

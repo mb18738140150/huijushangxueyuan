@@ -767,6 +767,11 @@
 		00C236D525404C2100973347 /* ArticleImageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C236D425404C2100973347 /* ArticleImageTableViewCell.m */; };
 		00C236DB254129D800973347 /* weixinzhifu.png in Resources */ = {isa = PBXBuildFile; fileRef = 00C236D9254129D800973347 /* weixinzhifu.png */; };
 		00C236DC254129D800973347 /* zhifubao.png in Resources */ = {isa = PBXBuildFile; fileRef = 00C236DA254129D800973347 /* zhifubao.png */; };
+		00C236EA2541799F00973347 /* TeacherListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C236E92541799F00973347 /* TeacherListViewController.m */; };
+		00C236F025417A6C00973347 /* TeacherDetailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C236EF25417A6C00973347 /* TeacherDetailOperation.m */; };
+		00C236F925417F9A00973347 /* TeacherListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C236F825417F9A00973347 /* TeacherListTableViewCell.m */; };
+		00C236FF2541867200973347 /* TeacherDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C236FE2541867200973347 /* TeacherDetailViewController.m */; };
+		00C237052541A39600973347 /* TeacherArticleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C237042541A39600973347 /* TeacherArticleTableViewCell.m */; };
 		E707C6F09A9954E08D15A08E /* libPods-TUIKitTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87E230EF41E42955250DE5ED /* libPods-TUIKitTest.a */; };
 /* End PBXBuildFile section */
 
@@ -2076,6 +2081,16 @@
 		00C236D425404C2100973347 /* ArticleImageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArticleImageTableViewCell.m; sourceTree = "<group>"; };
 		00C236D9254129D800973347 /* weixinzhifu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weixinzhifu.png; sourceTree = "<group>"; };
 		00C236DA254129D800973347 /* zhifubao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zhifubao.png; sourceTree = "<group>"; };
+		00C236E82541799F00973347 /* TeacherListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherListViewController.h; sourceTree = "<group>"; };
+		00C236E92541799F00973347 /* TeacherListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherListViewController.m; sourceTree = "<group>"; };
+		00C236EE25417A6C00973347 /* TeacherDetailOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherDetailOperation.h; sourceTree = "<group>"; };
+		00C236EF25417A6C00973347 /* TeacherDetailOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherDetailOperation.m; sourceTree = "<group>"; };
+		00C236F725417F9A00973347 /* TeacherListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherListTableViewCell.h; sourceTree = "<group>"; };
+		00C236F825417F9A00973347 /* TeacherListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherListTableViewCell.m; sourceTree = "<group>"; };
+		00C236FD2541867200973347 /* TeacherDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherDetailViewController.h; sourceTree = "<group>"; };
+		00C236FE2541867200973347 /* TeacherDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherDetailViewController.m; sourceTree = "<group>"; };
+		00C237032541A39600973347 /* TeacherArticleTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherArticleTableViewCell.h; sourceTree = "<group>"; };
+		00C237042541A39600973347 /* TeacherArticleTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherArticleTableViewCell.m; sourceTree = "<group>"; };
 		0D4DCAF540C930F06CB0E770 /* Pods-TUIKitTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUIKitTest.release.xcconfig"; path = "Target Support Files/Pods-TUIKitTest/Pods-TUIKitTest.release.xcconfig"; sourceTree = "<group>"; };
 		742B5AA9599EE5A643FCEDB3 /* Pods-TUIKitTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TUIKitTest.debug.xcconfig"; path = "Target Support Files/Pods-TUIKitTest/Pods-TUIKitTest.debug.xcconfig"; sourceTree = "<group>"; };
 		87E230EF41E42955250DE5ED /* libPods-TUIKitTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TUIKitTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3125,6 +3140,10 @@
 				006761C9253FDD8D00B6FBB9 /* CommentZanOperation.m */,
 				006761D1253FDD9E00B6FBB9 /* AddCommentOperation.h */,
 				006761D2253FDD9E00B6FBB9 /* AddCommentOperation.m */,
+				0079EB8225217AF800307D71 /* TeacherOperation.h */,
+				0079EB7525217AF800307D71 /* TeacherOperation.m */,
+				00C236EE25417A6C00973347 /* TeacherDetailOperation.h */,
+				00C236EF25417A6C00973347 /* TeacherDetailOperation.m */,
 				0079EB6D25217AF800307D71 /* newOperation  */,
 				0079EB9625217AF800307D71 /* ResetPwdOperation.h */,
 				0079EBD725217AF800307D71 /* ResetPwdOperation.m */,
@@ -3150,7 +3169,6 @@
 				0079EB7225217AF800307D71 /* MyCourseOperation.h */,
 				0079EB7325217AF800307D71 /* NearlyStudyOperation.h */,
 				0079EB7425217AF800307D71 /* CourseDetailOperation.h */,
-				0079EB7525217AF800307D71 /* TeacherOperation.m */,
 				0079EB7625217AF800307D71 /* AddCourseStudyRecordOperation.h */,
 				0079EB7725217AF800307D71 /* SecondCategoryOperation.h */,
 				0079EB7825217AF800307D71 /* UserInfoOperation.h */,
@@ -3163,7 +3181,6 @@
 				0079EB7F25217AF800307D71 /* NewsCategoryOperation.h */,
 				0079EB8025217AF800307D71 /* MyOrderLivingCourseOperation.m */,
 				0079EB8125217AF800307D71 /* CategoryTeacherListOperation.m */,
-				0079EB8225217AF800307D71 /* TeacherOperation.h */,
 				0079EB8325217AF800307D71 /* CourseDetailOperation.m */,
 				0079EB8425217AF800307D71 /* NearlyStudyOperation.m */,
 				0079EB8525217AF800307D71 /* MyCourseOperation.m */,
@@ -4035,6 +4052,10 @@
 				0079EDA025217AFC00307D71 /* SecongListViewController.m */,
 				00843E7E253F0B1E00022C6E /* ArticleDetailViewController.h */,
 				00843E7F253F0B1E00022C6E /* ArticleDetailViewController.m */,
+				00C236E82541799F00973347 /* TeacherListViewController.h */,
+				00C236E92541799F00973347 /* TeacherListViewController.m */,
+				00C236FD2541867200973347 /* TeacherDetailViewController.h */,
+				00C236FE2541867200973347 /* TeacherDetailViewController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -4093,6 +4114,10 @@
 				006761C3253FCE7600B6FBB9 /* ArticleCommentTableViewCell.m */,
 				00C236D325404C2100973347 /* ArticleImageTableViewCell.h */,
 				00C236D425404C2100973347 /* ArticleImageTableViewCell.m */,
+				00C236F725417F9A00973347 /* TeacherListTableViewCell.h */,
+				00C236F825417F9A00973347 /* TeacherListTableViewCell.m */,
+				00C237032541A39600973347 /* TeacherArticleTableViewCell.h */,
+				00C237042541A39600973347 /* TeacherArticleTableViewCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -5002,12 +5027,14 @@
 			files = (
 				0079EEA625217AFE00307D71 /* BindJPushOperation.m in Sources */,
 				0079EE9525217AFD00307D71 /* UserModel1.m in Sources */,
+				00C236FF2541867200973347 /* TeacherDetailViewController.m in Sources */,
 				0079EEEA25217AFE00307D71 /* MJRefreshBackNormalFooter.m in Sources */,
 				00391B222539D57500B47668 /* VIPCourseListViewController.m in Sources */,
 				0079EF8525217AFE00307D71 /* CGXPickerViewManager.m in Sources */,
 				0079EF8925217AFE00307D71 /* CGXPickerUIBaseView.m in Sources */,
 				0079EE5A25217AFD00307D71 /* TestMyCollectionQuestionListOperation.m in Sources */,
 				0079EF7625217AFE00307D71 /* UIView+SDExtension.m in Sources */,
+				00C237052541A39600973347 /* TeacherArticleTableViewCell.m in Sources */,
 				000C1A2F253E8D950002DE10 /* PayModeSelectView.m in Sources */,
 				0079EF0625217AFE00307D71 /* ViewController+MASAdditions.m in Sources */,
 				0079EF9F25217AFE00307D71 /* HomeBigImageTypeCollectionViewCell.m in Sources */,
@@ -5126,6 +5153,7 @@
 				0040F219253164C0009446F1 /* MyVIPCardOperation.m in Sources */,
 				0079EE8A25217AFD00307D71 /* BannerOperation.m in Sources */,
 				0079EE7625217AFD00307D71 /* TYDownLoadDataManager.m in Sources */,
+				00C236EA2541799F00973347 /* TeacherListViewController.m in Sources */,
 				006D4277252DFD3B0009072A /* GiftCollectionViewCell.m in Sources */,
 				0079EE5925217AFD00307D71 /* TestUncollectionQuestionOperation.m in Sources */,
 				0079EE1B25217AFD00307D71 /* PlayingVideoModel.m in Sources */,
@@ -5146,6 +5174,7 @@
 				0079EF3D25217AFE00307D71 /* ZXVideoPlayerBrightnessView.m in Sources */,
 				006D4271252DB3680009072A /* SendMessageOperation.m in Sources */,
 				008269512524B557007D7955 /* TCUtil.m in Sources */,
+				00C236F025417A6C00973347 /* TeacherDetailOperation.m in Sources */,
 				000C1A02253E87880002DE10 /* ShoppingCarBottomView.m in Sources */,
 				0079EEFC25217AFE00307D71 /* UIView+Layout.m in Sources */,
 				0079EF1825217AFE00307D71 /* UILabel+LXLabel.m in Sources */,
@@ -5246,6 +5275,7 @@
 				0079EF8A25217AFE00307D71 /* CGXAddressModel.m in Sources */,
 				0079EF9225217AFE00307D71 /* WelPageControl.m in Sources */,
 				0079EFBF25217AFE00307D71 /* HttpUploaderManager.m in Sources */,
+				00C236F925417F9A00973347 /* TeacherListTableViewCell.m in Sources */,
 				0079EE2A25217AFD00307D71 /* CourseCategoryDetailModel.m in Sources */,
 				0079EEDD25217AFE00307D71 /* TFHpple.m in Sources */,
 				0079EEDF25217AFE00307D71 /* XPathQuery.m in Sources */,

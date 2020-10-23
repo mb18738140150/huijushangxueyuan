@@ -175,9 +175,19 @@
 
 @end
 
+@protocol UserModule_CourseTeacherProtocol <NSObject>
 
+- (void)didCourseTeacherSuccessed;
+- (void)didCourseTeacherFailed:(NSString *)failedInfo;
 
+@end
 
+@protocol UserModule_TeacherDetailProtocol <NSObject>
+
+- (void)didTeacherDetailSuccessed;
+- (void)didTeacherDetailFailed:(NSString *)failedInfo;
+
+@end
 
 
 
@@ -244,12 +254,7 @@
 
 @end
 
-@protocol UserModule_CourseTeacherProtocol <NSObject>
 
-- (void)didCourseTeacherSuccessed;
-- (void)didCourseTeacherFailed:(NSString *)failedInfo;
-
-@end
 
 @protocol UserModule_CourseDetailProtocol <NSObject>
 

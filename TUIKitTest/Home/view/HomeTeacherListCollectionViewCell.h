@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HomeTeacherListCollectionViewCell : UICollectionViewCell
 
+@property (nonatomic, copy)void (^teacherDetailBlock)(NSDictionary * info);
 - (void)refreshWithinfo:(NSDictionary *)info;
 
 @end

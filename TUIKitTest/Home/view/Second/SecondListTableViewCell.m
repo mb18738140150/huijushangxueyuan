@@ -57,7 +57,6 @@
     
     // 课程名称
     self.courseChapterNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.courseImageView.frame) + 12, topSpace, self.hd_width - 185, 35)];
-    self.courseChapterNameLabel.text = [info objectForKey:kCourseName];
     self.courseChapterNameLabel.font = [UIFont boldSystemFontOfSize:14];
     self.courseChapterNameLabel.numberOfLines = 0;
     self.courseChapterNameLabel.textColor = UIColorFromRGB(0x333333);

@@ -14,7 +14,8 @@
 #import "MyBuyCourseViewController.h"
 #import "StoreViewController.h"
 #import "ArticleDetailViewController.h"
-
+#import "TeacherListViewController.h"
+#import "TeacherDetailViewController.h"
 
 #import "HomeSearchCollectionViewCell.h"
 #define kHomeSearchCollectionViewCell @"HomeSearchCollectionViewCell"
@@ -280,6 +281,12 @@
         {
             HomeTeacherListCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeTeacherListCollectionViewCell forIndexPath:indexPath];
             [cell refreshWithinfo:info];
+            cell.teacherDetailBlock = ^(NSDictionary * _Nonnull info) {
+                TeacherDetailViewController * vc = [[TeacherDetailViewController alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                vc.info = info;
+                [weakSelf.navigationController pushViewController:vc animated:YES];
+            };
             return cell;
         }
             break;
@@ -396,6 +403,11 @@
             NSString * type = [info objectForKey:@"type"];
             if ([type isEqualToString:@"topic"] || [type isEqualToString:@"series"]) {
                 [weakSelf pushSecondVC:SecondListType_living];
+            }else if([type isEqualToString:@"teacher"])
+            {
+                TeacherListViewController * vc = [[TeacherListViewController alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:vc animated:YES];
             }
         };
         reusableview = headview;

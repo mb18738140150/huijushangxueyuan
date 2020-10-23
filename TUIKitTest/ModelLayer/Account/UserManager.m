@@ -48,7 +48,7 @@
 #import "MyCourseOperation.h"
 #import "LivingCourseOperation.h"
 #import "CourseNoteOperation.h"
-#import "TeacherOperation.h"
+
 #import "NearlyStudyOperation.h"
 #import "MyOrderLivingCourseOperation.h"
 #import "MyCollectionCourseOperation.h"
@@ -85,6 +85,9 @@
 #import "OrderListOperation.h"
 #import "CommentZanOperation.h"
 #import "AddCommentOperation.h"
+#import "TeacherOperation.h"
+#import "TeacherDetailOperation.h"
+
 
 @interface UserManager()
 @property (nonatomic,strong) TabbarOperation       *tabbarOperation;
@@ -103,6 +106,8 @@
 @property (nonatomic, strong)DeleteAddressOperation         *deleteAddressOperation;
 @property (nonatomic, strong)CommentZanOperation         *commentZanOperation;
 @property (nonatomic, strong)AddCommentOperation         *addCommentOperation;
+@property (nonatomic, strong)TeacherOperation *  teacherOperation;
+@property (nonatomic, strong)TeacherDetailOperation *  teacherDetailOperation;
 
 
 
@@ -161,7 +166,6 @@
 @property (nonatomic, strong)UserInfoOperation            *userInfoOperation;
 @property (nonatomic, strong)LivingCourseOperation *  livingCourseOperation;
 @property (nonatomic, strong)CourseNoteOperation *  courseNoteOperation;
-@property (nonatomic, strong)TeacherOperation *  teacherOperation;
 @property (nonatomic, strong)NearlyStudyOperation *  nearlyStudyOperation;
 @property (nonatomic, strong)MyOrderLivingCourseOperation *  myOrderLivingCourseOperation;
 @property (nonatomic, strong)MyCollectionCourseOperation *  myCollectionCourseOperation;
@@ -214,6 +218,8 @@
         self.orderListOperation = [[OrderListOperation alloc]init];
         self.commentZanOperation = [[CommentZanOperation alloc]init];
         self.addCommentOperation = [[AddCommentOperation alloc]init];
+        self.teacherOperation = [[TeacherOperation alloc]init];
+        self.teacherDetailOperation = [[TeacherDetailOperation alloc]init];
 
         
         self.SecondCategoryOperation = [[SecondCategoryOperation alloc]init];
@@ -261,7 +267,6 @@
         self.myCourseOperation = [[MyCourseOperation alloc]init];
         self.livingCourseOperation = [[LivingCourseOperation alloc]init];
         self.courseNoteOperation = [[CourseNoteOperation alloc]init];
-        self.teacherOperation = [[TeacherOperation alloc]init];
         
         self.nearlyStudyOperation = [[NearlyStudyOperation alloc]init];
         self.myOrderLivingCourseOperation = [[MyOrderLivingCourseOperation alloc]init];
@@ -586,8 +591,24 @@
     [self.addCommentOperation didRequestAddCommentWithCourseInfo:infoDic withNotifiedObject:object];
 }
 
+// 老师
+- (void)getCourseTeacherWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_CourseTeacherProtocol>)object
+{
+    [self.teacherOperation getCourseTeacherWith:info withNotifiedObject:object];
+}
+- (NSArray *)getCourseTeaccherArray
+{
+    return self.teacherOperation.list;
+}
 
-
+- (void)getTeacherDetailWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_TeacherDetailProtocol>)object
+{
+    [self.teacherDetailOperation getTeacherDetailWith:info withNotifiedObject:object];
+}
+- (NSDictionary *)getTeacherDetailInfo
+{
+    return self.teacherDetailOperation.info;
+}
 
 
 
@@ -626,14 +647,6 @@
     return self.courseNoteOperation.courseNoteList;
 }
 
-- (void)getCourseTeacherWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_CourseTeacherProtocol>)object
-{
-    [self.teacherOperation getCourseTeacherWith:info withNotifiedObject:object];
-}
-- (NSArray *)getCourseTeaccherArray
-{
-    return self.teacherOperation.list;
-}
 
 - (void)getMyNearlyStudyCourseWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_NearlyStudy>)object
 {
