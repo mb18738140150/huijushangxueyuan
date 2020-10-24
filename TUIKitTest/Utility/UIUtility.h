@@ -41,4 +41,7 @@
 // 获取加密token
 + (NSString *)getAES_Str:(NSDictionary *)dic;
 + (NSString *)getGetRequest_Str:(NSDictionary *)dic;
+
++ (NSString *)getCurrentTimestamp;
+
 @end

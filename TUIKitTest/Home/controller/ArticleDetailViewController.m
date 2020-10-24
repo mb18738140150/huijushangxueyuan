@@ -446,6 +446,9 @@ typedef enum : NSUInteger {
     NSString * htmlStr = @"";
     if (self.isShowAllContent) {
         htmlStr = [UIUtility judgeStr:self.content];
+        if (htmlStr.length <= 0) {
+            htmlStr = [UIUtility judgeStr:self.desc];
+        }
     }else
     {
         htmlStr =  [UIUtility judgeStr:self.desc];

@@ -299,7 +299,7 @@
         ArticleDetailViewController * vc = [[ArticleDetailViewController alloc]init];
         vc.infoDic = self.articleSource[indexPath.row];
         [self.navigationController pushViewController:vc animated:YES];
-    }else
+    }else if (indexPath.section == 2)
     {
         LivingCourseDetailViewController * vc = [[LivingCourseDetailViewController alloc]init];
         vc.info = self.topicSource[indexPath.row];

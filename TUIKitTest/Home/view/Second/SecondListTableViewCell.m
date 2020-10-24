@@ -36,9 +36,9 @@
     [self.courseImageView addSubview:self.payCountLabel];
     
     // 会员专属 228 69 41
-    UILabel * hzuanshuLB = [[UILabel alloc] initWithFrame:CGRectMake(0, 7, 60, 15)];
+    UILabel * hzuanshuLB = [[UILabel alloc] initWithFrame:CGRectMake(0, 7, 55, 15)];
     hzuanshuLB.backgroundColor = UIRGBColor(228, 69, 41);
-    hzuanshuLB.font = kMainFont;
+    hzuanshuLB.font = kMainFont_12;
     hzuanshuLB.textColor = UIColorFromRGB(0xffffff);
     hzuanshuLB.textAlignment = NSTextAlignmentCenter;
     hzuanshuLB.text = @"会员专属";
@@ -47,7 +47,7 @@
     layer.frame = hzuanshuLB.bounds;
     layer.path = huiyuanPath.CGPath;
     [hzuanshuLB.layer setMask:layer];
-    [self.courseImageView addSubview:self.courseChapterNameLabel];
+    [self.courseImageView addSubview:hzuanshuLB];
     
     
     // 直播状态
@@ -101,39 +101,46 @@
             self.livingStateView.livingState = HomeLivingStateType_video;
 
         }
-    }else if ([info objectForKey:@"topic_status"])
+    }else if ([info objectForKey:@"topic_style"])
     {
-        // topic_status 1.直播中 2.未开始 3.已结束
-        int livingStatus = [[info objectForKey:@"topic_status"] intValue];
-        switch (livingStatus) {
-            case 1:
-            {
-                self.livingStateView.frame = CGRectMake(5, self.courseImageView.hd_height - 25, 100, 20);
-                self.livingStateView.livingState = HomeLivingStateType_living;
-                self.priceLabel.text = @"进入";
-                self.priceLabel.textColor = UIRGBColor(110, 203, 139);
+        int topic_style = [[info objectForKey:@"topic_style"] intValue];
+        // topic_style 为1 或者2 时候才显示直播状态
+        if (topic_style == 1 || topic_style == 2) {
+            // topic_status 1.直播中 2.未开始 3.已结束
+            int livingStatus = [[info objectForKey:@"topic_status"] intValue];
+            switch (livingStatus) {
+                case 1:
+                {
+                    self.livingStateView.frame = CGRectMake(5, self.courseImageView.hd_height - 25, 100, 20);
+                    self.livingStateView.livingState = HomeLivingStateType_living;
+                    self.priceLabel.text = @"进入";
+                    self.priceLabel.textColor = UIRGBColor(110, 203, 139);
+                }
+                    break;
+                case 2:
+                {
+                    self.livingStateView.livingState = HomeLivingStateType_noStart;
+                }
+                    break;
+                case 3:
+                {
+                    self.livingStateView.livingState = HomeLivingStateType_end;
+                }
+                    break;
+                    
+                default:
+                    break;
             }
-                break;
-            case 2:
-            {
-                self.livingStateView.livingState = HomeLivingStateType_noStart;
-            }
-                break;
-            case 3:
-            {
-                self.livingStateView.livingState = HomeLivingStateType_end;
-            }
-                break;
-                
-            default:
-                break;
         }
+        
     }
     
     BOOL vip_exclusive = [[info objectForKey:@"vip_exclusive"] boolValue];
     if (vip_exclusive) {
         hzuanshuLB.hidden = NO;
         self.livingStateView.hidden = YES;
+        self.priceLabel.textColor = UIColorFromRGB(0xCCA95D);
+        self.priceLabel.attributedText = NewStr;
     }else
     {
         hzuanshuLB.hidden = YES;

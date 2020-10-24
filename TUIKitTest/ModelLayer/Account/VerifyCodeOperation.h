@@ -14,6 +14,6 @@
 @property (nonatomic, strong
            )NSString * verifyCode;
 
-- (void)didRequestVerifyCodeWithWithPhoneNumber:(NSString *)phoneNumber withNotifiedObject:(id<UserModule_VerifyCodeProtocol>)object;
+- (void)didRequestVerifyCodeWithWithPhoneNumber:(NSDictionary *)phoneNumber withNotifiedObject:(id<UserModule_VerifyCodeProtocol>)object;
 
 @end

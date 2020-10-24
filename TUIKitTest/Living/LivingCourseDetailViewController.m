@@ -19,6 +19,7 @@
 #import "ShareAndPaySelectView.h"
 #import "MainVipCardListViewController.h"
 #import "ShareClickView.h"
+#import "LivingSecretViewController.h"
 
 typedef enum : NSUInteger {
     topic_type_free = 1,
@@ -48,6 +49,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong)ShareClickView * shareView;
 @property (nonatomic, assign)BOOL isWechat;
 @property (nonatomic, strong)UIImageView * shareImageView;
+@property (nonatomic, strong)NSString * psd; //直播间验证密码
 
 @end
 
@@ -59,7 +61,7 @@ typedef enum : NSUInteger {
     [self navigationViewSetup];
     [self prepareUI];
     
-    
+    self.psd = @"";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payClick:) name:kNotificationOfShareAndPay object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccedsss:) name:kNotificationOfBuyCourseSuccess object:nil];
@@ -196,6 +198,9 @@ typedef enum : NSUInteger {
 - (void)loadData
 {
     [[UserManager sharedManager] getCourseDetailWith:@{@"topic_id":[NSString stringWithFormat:@"%@", [self.info objectForKey:@"id"]],kUrlName:@"api/topic/info",@"include":@"author",@"requestType":@"get"} withNotifiedObject:self];//
+    
+    [[UserManager sharedManager] didRequestMyVIPCardWithInfo:@{kUrlName:@"api/home/vip"} withNotifiedObject:nil];
+    
     [SVProgressHUD show];
 }
 
@@ -232,10 +237,59 @@ typedef enum : NSUInteger {
     
 }
 
+#pragma mark - 需要判断加密直播
 - (void)resetPayBtn
 {
-    _topic_style = [[self.courseDetailInfo objectForKey:@"topic_style"] intValue];
     _topic_type = [[self.courseDetailInfo objectForKey:@"topic_type"] intValue];
+    if(_topic_type == topic_type_secret)
+    {
+        [_playBackBtn setTitle:@"进入观看" forState:UIControlStateNormal];
+        self.payStateType = PayStateType_Secret;
+        return;
+    }
+    
+    if ([self.courseDetailInfo objectForKey:@"purchase"]) {
+        
+        NSDictionary * purchase = [self.courseDetailInfo objectForKey:@"purchase"];
+        NSString * type = [purchase objectForKey:@"type"];
+        if ([type isEqualToString:@"free"]) {
+            [_playBackBtn setTitle:@"进入观看" forState:UIControlStateNormal];
+            self.payStateType = PayStateType_free;
+        }else if ([type isEqualToString:@"purchased"])
+        {
+            [_playBackBtn setTitle:@"已购买" forState:UIControlStateNormal];
+            self.payStateType = PayStateType_free;
+        }else if ([type isEqualToString:@"vip-free"])
+        {
+            [_playBackBtn setTitle:@"会员免费观看" forState:UIControlStateNormal];
+            self.payStateType = PayStateType_free;
+        }else if ([type isEqualToString:@"plain"])
+        {
+            NSDictionary * info = [purchase objectForKey:@"info"];
+            [_playBackBtn setTitle:[NSString stringWithFormat:@"%@%@", [SoftManager shareSoftManager].coinName, [info objectForKey:@"money"]] forState:UIControlStateNormal];
+            self.payStateType = PayStateType_buy;
+        }
+        else if ([type isEqualToString:@"vip-discount"])
+        {
+            NSDictionary * info = [purchase objectForKey:@"info"];
+            float price = [[info objectForKey:@"money"] floatValue] * [[info objectForKey:@"discount"] floatValue];
+            [_playBackBtn setTitle:[NSString stringWithFormat:@"%@%.2f", [SoftManager shareSoftManager].coinName, price] forState:UIControlStateNormal];
+            self.payStateType = PayStateType_buy;
+        }
+        else if ([type isEqualToString:@"need_vip"])
+        {
+            [_playBackBtn setTitle:@"开通会员免费观看" forState:UIControlStateNormal];
+            self.payStateType = PayStateType_Vip;
+        }else
+        {
+            [_playBackBtn setTitle:@"进入观看" forState:UIControlStateNormal];
+            self.payStateType = PayStateType_free;
+        }
+        
+        return;
+    }
+    _topic_style = [[self.courseDetailInfo objectForKey:@"topic_style"] intValue];
+    
     _payStateType = _topic_type;
     
     if (_topic_type != 1) {
@@ -249,6 +303,7 @@ typedef enum : NSUInteger {
 
 - (void)playAction
 {
+    __weak typeof(self)weakSelf = self;
     switch (_payStateType) {
         case PayStateType_free:
         {
@@ -265,9 +320,24 @@ typedef enum : NSUInteger {
             break;
         case PayStateType_Vip:
         {
-            
             MainVipCardListViewController * vc = [[MainVipCardListViewController alloc]init];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        case PayStateType_Secret:
+        {
+            // 判断输入密码时间间隔是否在4h以内
+            if ([self verifyLivingPsdExpire]) {
+                [weakSelf getChatRoomInfo];
+                return;
+            }
             
+            LivingSecretViewController * vc = [[LivingSecretViewController alloc]init];
+            vc.info = self.courseDetailInfo;
+            vc.verifyPsdSuccessBlock = ^(NSDictionary * _Nonnull info) {
+                weakSelf.psd = [info objectForKey:@"psd"];
+                [weakSelf getChatRoomInfo];
+            };
             [self.navigationController pushViewController:vc animated:YES];
         }
             break;
@@ -277,6 +347,21 @@ typedef enum : NSUInteger {
     }
     
 }
+
+- (BOOL)verifyLivingPsdExpire
+{
+    return NO;
+    long  oldStr = [[[NSUserDefaults standardUserDefaults] objectForKey:kVerifyLivingPsdTime] longLongValue];
+    long  newStr = [[UIUtility getCurrentTimestamp] longLongValue];
+    
+    NSTimeInterval balance = newStr - oldStr ;
+    if (balance <  4 * 60 * 60) {
+        return YES;
+    }
+    
+    return NO;
+}
+
 
 #pragma mark - share
 - (void)shareAction
@@ -296,7 +381,11 @@ typedef enum : NSUInteger {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 1) {
-        return 1;
+        if ([[[self.courseDetailInfo objectForKey:@"author"] allKeys] count] > 0)
+        {
+            return 1;
+        }
+        return 0;
     }else if (section == 2)
     {
         return 1;
@@ -367,6 +456,12 @@ typedef enum : NSUInteger {
     if (section == 2) {
         return 0;
     }
+    if (section == 1) {
+        if ([[[self.courseDetailInfo objectForKey:@"author"] allKeys] count] == 0)
+        {
+            return 0;
+        }
+    }
     return 10;
 }
 
@@ -413,7 +508,6 @@ typedef enum : NSUInteger {
     [self.tableView.mj_header endRefreshing];
     self.courseDetailInfo = [[UserManager sharedManager] getCourseDetailInfo];
     [self resetPayBtn];
-//    [self reloadDataWithSegmentIndex:0];
     
     [self getShareInfo:self.courseDetailInfo];
     [self.tableView reloadData];
@@ -445,6 +539,9 @@ typedef enum : NSUInteger {
 {
     __block NSDictionary * roomDetailInfo;
     __block NSDictionary * roomIdInfo;
+    
+    
+    [SVProgressHUD show];
     
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
     dispatch_group_t group = dispatch_group_create();
@@ -511,7 +608,13 @@ typedef enum : NSUInteger {
         session.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html",@"application/json",nil];
         NSString * sessionId = [[NSUserDefaults standardUserDefaults] objectForKey:@"session_id"];
         
-        NSDictionary * paramete = @{@"topic_id":[NSString stringWithFormat:@"%@", [self.info objectForKey:@"id"]]};
+        NSMutableDictionary * paramete = [[NSMutableDictionary alloc]initWithDictionary:@{@"topic_id":[NSString stringWithFormat:@"%@", [self.info objectForKey:@"id"]],@"pass":@""}];
+        
+        // 加密类型的直播课需要添加 pass 参数
+        if (self.payStateType == PayStateType_Secret) {
+            [paramete setObject:self.psd forKey:@"pass"];
+        }
+        
         NSString * aesStr = [UIUtility getAES_Str:paramete];
         NSString * propertyStr = [UIUtility getGetRequest_Str:paramete];
         NSString * urlString = [NSString stringWithFormat:@"%@%@",kRootUrl,@"api/topiclive/home"];
@@ -573,6 +676,8 @@ typedef enum : NSUInteger {
                     // 加入群组
                     [[V2TIMManager sharedInstance] joinGroup:[roomIdInfo objectForKey:@"room_id"] msg:@"" succ:^{
                         
+                        [SVProgressHUD dismiss];
+                        
                         TUIConversationCellData *data = [[TUIConversationCellData alloc] init];
                         data.groupID = [roomIdInfo objectForKey:@"room_id"];  // 如果是群会话，传入对应的群 ID
     //                    data.userID = [roomIdInfo objectForKey:@"room_id"];
@@ -590,14 +695,17 @@ typedef enum : NSUInteger {
                         [self presentViewController:chatRoomVC animated:YES completion:nil];
                         
                     } fail:^(int code, NSString *desc) {
+                        [SVProgressHUD dismiss];
                         NSLog(@"joinchatroom setSelfInfo fail %d  %@", code, desc);
                     }];
                     
                     
                 } fail:^(int code, NSString *desc) {
+                    [SVProgressHUD dismiss];
                     NSLog(@"V2TIMManager setSelfInfo fail %d  %@", code, desc);
                 }];
             } fail:^(int code, NSString *msg) {
+                [SVProgressHUD dismiss];
                 NSLog(@"imlogin fail %d  %@", code, msg);
             }];
             
@@ -608,52 +716,6 @@ typedef enum : NSUInteger {
         
     });
 }
-
-
-
-- (void)reloadDataWithSegmentIndex:(NSUInteger)index
-{
-    
-    NSDictionary * purchase = [self.courseDetailInfo objectForKey:@"purchase"];
-    NSString * type = [purchase objectForKey:@"type"];
-    if ([type isEqualToString:@"free"]) {
-        [_playBackBtn setTitle:@"进入观看" forState:UIControlStateNormal];
-        self.payStateType = PayStateType_free;
-    }else if ([type isEqualToString:@"purchased"])
-    {
-        [_playBackBtn setTitle:@"已购买" forState:UIControlStateNormal];
-        self.payStateType = PayStateType_free;
-    }else if ([type isEqualToString:@"vip-free"])
-    {
-        [_playBackBtn setTitle:@"会员免费观看" forState:UIControlStateNormal];
-        self.payStateType = PayStateType_free;
-    }else if ([type isEqualToString:@"plain"])
-    {
-        NSDictionary * info = [purchase objectForKey:@"info"];
-        [_playBackBtn setTitle:[NSString stringWithFormat:@"%@%@", [SoftManager shareSoftManager].coinName, [info objectForKey:@"money"]] forState:UIControlStateNormal];
-        self.payStateType = PayStateType_buy;
-    }
-    else if ([type isEqualToString:@"vip-discount"])
-    {
-        NSDictionary * info = [purchase objectForKey:@"info"];
-        float price = [[info objectForKey:@"money"] floatValue] * [[info objectForKey:@"discount"] floatValue];
-        [_playBackBtn setTitle:[NSString stringWithFormat:@"%@%.2f", [SoftManager shareSoftManager].coinName, price] forState:UIControlStateNormal];
-        self.payStateType = PayStateType_buy;
-    }
-    else if ([type isEqualToString:@"need_vip"])
-    {
-        [_playBackBtn setTitle:@"开通会员免费观看" forState:UIControlStateNormal];
-        self.payStateType = PayStateType_Vip;
-    }else
-    {
-        [_playBackBtn setTitle:@"进入观看" forState:UIControlStateNormal];
-        self.payStateType = PayStateType_free;
-    }
-    
-    
-}
-
-
 
 - (void)dealloc
 {

@@ -521,7 +521,7 @@
     [self startPostWithConfig:s andProcessDelegate:delegate];
 }
 
-- (void)reqeustVerifyCodeWithPhoneNumber:(NSString *)phoneNumber andProcessDelegate:(id<HttpRequestProtocol>)delegate
+- (void)reqeustVerifyCodeWithPhoneNumber:(NSDictionary *)phoneNumber andProcessDelegate:(id<HttpRequestProtocol>)delegate
 {
     HttpConfigModel * s = [HttpConfigCreator getVerifyCode:phoneNumber];
     [self startPostWithConfig:s andProcessDelegate:delegate];

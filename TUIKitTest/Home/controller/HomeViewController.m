@@ -243,7 +243,15 @@
                 cell.isOneCourse = NO;
                 [cell refreshUIWith:[dataArray objectAtIndex:indexPath.item]];
             }
-            
+            cell.applyBlock = ^(NSDictionary * _Nonnull info) {
+                NSArray * dataArray = [info objectForKey:@"data"];
+                if ([dataArray isKindOfClass:[NSDictionary class]]) {
+                    [weakSelf operationTopicInfo:[info objectForKey:@"data"]];
+                }else
+                {
+                    [weakSelf operationTopicInfo:[dataArray objectAtIndex:indexPath.item]];
+                }
+            };
             return cell;
         }
             break;
@@ -259,6 +267,16 @@
                 cell.isOneCourse = NO;
                 [cell refreshUIWith:[dataArray objectAtIndex:indexPath.item]];
             }
+            
+            cell.applyBlock = ^(NSDictionary * _Nonnull info) {
+                NSArray * dataArray = [info objectForKey:@"data"];
+                if ([dataArray isKindOfClass:[NSDictionary class]]) {
+                    [weakSelf operationTopicInfo:[info objectForKey:@"data"]];
+                }else
+                {
+                    [weakSelf operationTopicInfo:[dataArray objectAtIndex:indexPath.item]];
+                }
+            };
             
             return cell;
         }
@@ -455,7 +473,8 @@
         case HomeCellType_category:
         {
             NSArray * navbars = [info objectForKey:@"data"];
-            int count = navbars.count / 4 + 1;
+            int count = (navbars.count % 4) == 0 ? (navbars.count / 4) : (navbars.count / 4 + 1);
+            
             return CGSizeMake(collectionView.hd_width, (count) * 90 + 20);
         }
             break;
@@ -466,16 +485,16 @@
             return CGSizeMake(collectionView.hd_width / 2 - 5, (collectionView.hd_width / 2 - 5 - 22.5) / 2 + 86.5);
             break;
         case HomeCellType_adver:
-            return CGSizeMake(collectionView.hd_width, (collectionView.hd_width - 35) / 4 + 35);
+            return CGSizeMake(collectionView.hd_width, (collectionView.hd_width - 35) / 2 + 35);
             break;
         case HomeCellType_PublicNumber:
             return CGSizeMake(collectionView.hd_width, 84);
             break;
         case HomeCellType_BigImageType: // type 为onCourse 高度加20
             if ([type isEqualToString:@"oneCourse"]) {
-                return CGSizeMake(collectionView.hd_width, (collectionView.hd_width - 35) / 2 + 126 + 20);
+                return CGSizeMake(collectionView.hd_width, (collectionView.hd_width - 35) / 2 + 86 + 20);
             }
-            return CGSizeMake(collectionView.hd_width, (collectionView.hd_width - 35) / 2 + 126);
+            return CGSizeMake(collectionView.hd_width, (collectionView.hd_width - 35) / 2 + 86);
             break;
         case HomeCellType_BigImageNoTeacherType: // type 为onCourse 高度加20
             if ([type isEqualToString:@"oneCourse"]) {

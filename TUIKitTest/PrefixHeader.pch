@@ -137,6 +137,7 @@ typedef enum : NSUInteger {
     PayStateType_free = 1,
     PayStateType_buy,
     PayStateType_Vip,
+    PayStateType_Secret,
 } PayStateType;
 
 #endif /* PrefixHeader_pch */

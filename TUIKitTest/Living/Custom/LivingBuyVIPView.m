@@ -26,6 +26,10 @@
 @property (nonatomic, strong)UISwitch * switch1;
 @property (nonatomic, assign)BOOL isVIP;
 
+@property (nonatomic, strong)NSArray * vipArray;
+@property (nonatomic, strong)NSDictionary * vipInfo;
+@property (nonatomic, strong)NSDictionary * partnerInfo;
+
 @end
 
 @implementation LivingBuyVIPView
@@ -48,6 +52,18 @@
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissAction)];
     [backView addGestureRecognizer:tap];
     
+    
+    NSDictionary * vipListInfo = [[UserManager sharedManager] getVIPCardInfo];
+    self.vipArray = [vipListInfo objectForKey:@"list"];
+    for (NSDictionary * info in self.vipArray) {
+        if ([[info objectForKey:@"id"] intValue] == kVIPCardID.intValue) {
+            self.vipInfo = info;
+        }else if ([[info objectForKey:@"id"] intValue] == kPartnerCardID.intValue)
+        {
+            self.partnerInfo = info;
+        }
+    }
+    
     UIView * contentView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight - 300, kScreenWidth, 300)];
     contentView.backgroundColor = [UIColor whiteColor];
     [self addSubview:contentView];
@@ -61,7 +77,7 @@
     [contentView addSubview:self.titleLB];
     
     self.priceLB = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.titleLB.frame) + 10, kScreenWidth, 20)];
-    self.priceLB.text = @"￥ 399.00";
+    self.priceLB.text = [NSString stringWithFormat:@"%@ %@", [SoftManager shareSoftManager].coinName,[_vipInfo objectForKey:@"money"]];
     self.priceLB.textColor = UIColorFromRGB(0x000000);
     self.priceLB.font = [UIFont boldSystemFontOfSize:17];
     self.priceLB.textAlignment = NSTextAlignmentCenter;
@@ -89,7 +105,7 @@
     
     
     UILabel * vipPriceLB = [[UILabel alloc]initWithFrame:CGRectMake(20, vipView.hd_height - 20, 150, 15)];
-    vipPriceLB.text = @"￥ 399.00";
+    vipPriceLB.text = [NSString stringWithFormat:@"%@ %@", [SoftManager shareSoftManager].coinName,[_vipInfo objectForKey:@"money"]];
     vipPriceLB.textColor = UIRGBColor(245, 161, 150);
     vipPriceLB.font = kMainFont;
     [vipView addSubview:vipPriceLB];
@@ -105,14 +121,19 @@
     [listView addSubview:heView];
     
     UILabel * heTitleLB = [[UILabel alloc]initWithFrame:CGRectMake(20, 5, 150, 15)];
-    heTitleLB.text = @"合伙人";
+    heTitleLB.text = @"事业合伙人";
     heTitleLB.textColor = UIColorFromRGB(0x333333);
     heTitleLB.font = kMainFont;
     [heView addSubview:heTitleLB];
     
+    UILabel * needLB = [[UILabel alloc]initWithFrame:CGRectMake(20, CGRectGetMaxY(heTitleLB.frame) + 8, heTitleLB.hd_width, 12)];
+    needLB.text = @"需先开通：VIP学员";
+    needLB.textColor = UIColorFromRGB(0x666666);
+    needLB.font = kMainFont_10;
+    [heView addSubview:needLB];
     
     UILabel * hePriceLB = [[UILabel alloc]initWithFrame:CGRectMake(20, heView.hd_height - 20, 150, 15)];
-    hePriceLB.text = @"￥ 4999.00";
+    hePriceLB.text = [NSString stringWithFormat:@"%@ %@", [SoftManager shareSoftManager].coinName,[_partnerInfo objectForKey:@"money"]];
     hePriceLB.textColor = UIRGBColor(245, 161, 150);
     hePriceLB.font = kMainFont;
     [heView addSubview:hePriceLB];
@@ -316,10 +337,10 @@
 {
     if (self.VIPPayBlock) {
         if (self.isVIP) {
-            self.VIPPayBlock(@{@"price":@(399.00)});
+            self.VIPPayBlock(_vipInfo);
         }else
         {
-            self.VIPPayBlock(@{@"price":@(4999.00)});
+            self.VIPPayBlock(_partnerInfo);
         }
     }
 }
@@ -361,14 +382,14 @@
     self.isVIP = isVIP;
     [view addSubview:self];
     if (isVIP) {
-        self.VIPSelectImageView.image = [UIImage imageNamed:@"huiyuan-2"];
-        self.heHuoRenSelectImageView.image = [UIImage imageNamed:@"search"];
-        self.priceLB.text = @"￥ 399.00";
+        self.VIPSelectImageView.image = [UIImage imageNamed:@"shoppingCar_selected"];
+        self.heHuoRenSelectImageView.image = [UIImage imageNamed:@"shoppingCar_unselected"];
+        self.priceLB.text = [NSString stringWithFormat:@"%@ %@", [SoftManager shareSoftManager].coinName,[_vipInfo objectForKey:@"money"]];
     }else
     {
-        self.VIPSelectImageView.image = [UIImage imageNamed:@"search"];
-        self.heHuoRenSelectImageView.image = [UIImage imageNamed:@"huiyuan-2"];
-        self.priceLB.text = @"￥ 4999.00";
+        self.VIPSelectImageView.image = [UIImage imageNamed:@"shoppingCar_unselected"];
+        self.heHuoRenSelectImageView.image = [UIImage imageNamed:@"shoppingCar_selected"];
+        self.priceLB.text = [NSString stringWithFormat:@"%@ %@", [SoftManager shareSoftManager].coinName,[_partnerInfo objectForKey:@"money"]];
     }
     
     self.contentView.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 300);

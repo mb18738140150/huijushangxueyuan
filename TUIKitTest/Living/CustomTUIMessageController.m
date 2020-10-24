@@ -352,7 +352,7 @@
                 }else
                 {
                     // 礼物消息
-                    for (int i = 0; i < 5; i++) {
+                    for (int i = 0; i < kGiftNumber; i++) {
                         [uiMsgs addObject:data];
                     }
                 }
@@ -419,6 +419,7 @@
         
         TUIImageMessageCellData * imageData = [[TUIImageMessageCellData alloc]initWithDirection:MsgDirectionIncoming];
         TUITextMessageCellData * textData = [[TUITextMessageCellData alloc]initWithDirection:MsgDirectionIncoming];
+        TUISystemMessageCellData * systemData = [[TUISystemMessageCellData alloc]initWithDirection:MsgDirectionOutgoing];
         if ([[infoDic objectForKey:@"type"] isEqualToString:@"image"]) {
             imageData.path = [infoDic objectForKey:@"content"];
             imageData.name = [[infoDic objectForKey:@"owner"] objectForKey:@"nickname"];
@@ -429,13 +430,20 @@
             imageData.items = [[NSMutableArray alloc]initWithArray:@[item]];
             
             data = imageData;
-        }else
+            data.showName = YES;
+        }else if([[infoDic objectForKey:@"type"] isEqualToString:@"reward"])
         {
-//            textData.content = [[infoDic objectForKey:@"content"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            systemData.content = [infoDic objectForKey:@"content_ext"];
+            data = systemData;
+        }
+        else
+        {
             textData.content = [infoDic objectForKey:@"content"] ;
             textData.name = [[infoDic objectForKey:@"owner"] objectForKey:@"nickname"];
             
             data = textData;
+            data.showName = YES;
+            data.showName = NO;
         }
         
         
@@ -445,21 +453,19 @@
 //        }
         if(data) {
             if (dateMsg) {
-//                _msgForDate = msg;
                 [uiMsgs addObject:dateMsg];
             }
-//            data.innerMessage = msg;
+
             data.msgID = [infoDic objectForKey:@"id"];
             data.direction =  MsgDirectionIncoming;
             data.identifier = [[infoDic objectForKey:@"owner"] objectForKey:@"uid"];
             data.name = [[infoDic objectForKey:@"owner"] objectForKey:@"nickname"];
             data.avatarUrl = [NSURL URLWithString:[[infoDic objectForKey:@"owner"] objectForKey:@"avatar"]];
             data.status = Msg_Status_Succ;
-            data.showName = YES;
+            
             [uiMsgs addObject:data];
         }
     }
-    
     
     return uiMsgs;
 }
@@ -667,7 +673,7 @@
                                   withRowAnimation:UITableViewRowAnimationFade];
         }else
         {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < kGiftNumber; i++) {
                 [_uiMsgs addObject:messageData];
                 [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_uiMsgs.count - 1 inSection:0]]
                                       withRowAnimation:UITableViewRowAnimationFade];
@@ -719,7 +725,7 @@
                                   withRowAnimation:UITableViewRowAnimationFade];
         }else
         {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < kGiftNumber; i++) {
                 [_uiMsgs addObject:messageData];
                 [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_uiMsgs.count - 1 inSection:0]]
                                       withRowAnimation:UITableViewRowAnimationFade];
@@ -823,7 +829,7 @@
     }else if([[infoDic objectForKey:@"msgtype"] isEqualToString:@"reward"])
     {
         TUISystemMessageCellData *system = [[TUISystemMessageCellData alloc] initWithDirection:MsgDirectionOutgoing];
-        system.content = [NSString stringWithFormat:@"%@送了 %@", [infoDic objectForKey:@"from_client_name"],[infoDic objectForKey:@"content"]];
+        system.content = [infoDic objectForKey:@"content_ext"];
         system.reuseId = TSystemMessageCell_ReuseId;
         
         data = system;

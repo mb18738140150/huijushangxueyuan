@@ -234,6 +234,7 @@
 		006D4277252DFD3B0009072A /* GiftCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 006D4276252DFD3B0009072A /* GiftCollectionViewCell.m */; };
 		006D427D252E02ED0009072A /* LiveGiftSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 006D427C252E02ED0009072A /* LiveGiftSelectView.m */; };
 		006D4283252E067C0009072A /* PackageCountView.m in Sources */ = {isa = PBXBuildFile; fileRef = 006D4282252E067B0009072A /* PackageCountView.m */; };
+		00723404254461DF005D4238 /* LivingSecretViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00723403254461DF005D4238 /* LivingSecretViewController.m */; };
 		0079EA0A252174AD00307D71 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0079EA09252174AD00307D71 /* AppDelegate.m */; };
 		0079EA0D252174AD00307D71 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0079EA0C252174AD00307D71 /* SceneDelegate.m */; };
 		0079EA10252174AD00307D71 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0079EA0F252174AD00307D71 /* ViewController.m */; };
@@ -1140,6 +1141,8 @@
 		006D427C252E02ED0009072A /* LiveGiftSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveGiftSelectView.m; sourceTree = "<group>"; };
 		006D4281252E067B0009072A /* PackageCountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageCountView.h; sourceTree = "<group>"; };
 		006D4282252E067B0009072A /* PackageCountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageCountView.m; sourceTree = "<group>"; };
+		00723402254461DF005D4238 /* LivingSecretViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivingSecretViewController.h; sourceTree = "<group>"; };
+		00723403254461DF005D4238 /* LivingSecretViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivingSecretViewController.m; sourceTree = "<group>"; };
 		0079EA05252174AD00307D71 /* TUIKitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TUIKitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0079EA08252174AD00307D71 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0079EA09252174AD00307D71 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -3196,6 +3199,8 @@
 				00C236EF25417A6C00973347 /* TeacherDetailOperation.m */,
 				0079EBD325217AF800307D71 /* PayCourseOperation.h */,
 				0079EBB925217AF800307D71 /* PayCourseOperation.m */,
+				0079EBAD25217AF800307D71 /* VerifyCodeOperation.h */,
+				0079EBBF25217AF800307D71 /* VerifyCodeOperation.m */,
 				0079EB6D25217AF800307D71 /* newOperation  */,
 				0079EB9625217AF800307D71 /* ResetPwdOperation.h */,
 				0079EBD725217AF800307D71 /* ResetPwdOperation.m */,
@@ -3278,7 +3283,6 @@
 				0079EBA925217AF800307D71 /* BindJPushOperation.h */,
 				0079EBAA25217AF800307D71 /* MyCoinOperation.m */,
 				0079EBAC25217AF800307D71 /* BindRegCodeOperation.h */,
-				0079EBAD25217AF800307D71 /* VerifyCodeOperation.h */,
 				0079EBAE25217AF800307D71 /* SubmitGiftCodeOperation.h */,
 				0079EBAF25217AF800307D71 /* VerifyInAppPuchaseOperation.m */,
 				0079EBB025217AF800307D71 /* CommonProblemOperation.m */,
@@ -3295,7 +3299,6 @@
 				0079EBBC25217AF800307D71 /* SubmitOpinionOperation.m */,
 				0079EBBD25217AF800307D71 /* OrderList_NoPayOperation.m */,
 				0079EBBE25217AF800307D71 /* BindRegCodeOperation.m */,
-				0079EBBF25217AF800307D71 /* VerifyCodeOperation.m */,
 				0079EBC125217AF800307D71 /* MyCoinOperation.h */,
 				0079EBC225217AF800307D71 /* BindJPushOperation.m */,
 				0079EBC325217AF800307D71 /* RecommendOperation.m */,
@@ -4298,6 +4301,8 @@
 				0028EB92252A4A2E00D76BF0 /* CustomTUIChatController.m */,
 				0079EDFA25217AFD00307D71 /* LivingCourseDetailViewController.h */,
 				0079EDFC25217AFD00307D71 /* LivingCourseDetailViewController.m */,
+				00723402254461DF005D4238 /* LivingSecretViewController.h */,
+				00723403254461DF005D4238 /* LivingSecretViewController.m */,
 			);
 			path = Living;
 			sourceTree = "<group>";
@@ -5523,6 +5528,7 @@
 				0079EF0425217AFE00307D71 /* TZGifPhotoPreviewController.m in Sources */,
 				0079EE2E25217AFD00307D71 /* LearningCourseOperation.m in Sources */,
 				003459BF253DBDC5001F9C3F /* AddressEditViewController.m in Sources */,
+				00723404254461DF005D4238 /* LivingSecretViewController.m in Sources */,
 				0079EF9325217AFE00307D71 /* HomeViewController.m in Sources */,
 				0079EFCB25217B1B00307D71 /* TabbarViewController.m in Sources */,
 				000C19FE253E87880002DE10 /* ConfirmOrderViewController.m in Sources */,

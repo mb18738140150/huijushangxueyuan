@@ -189,7 +189,12 @@
 
 @end
 
+@protocol UserModule_VerifyCodeProtocol <NSObject>
 
+- (void)didVerifyCodeSuccessed;
+- (void)didVerifyCodeFailed:(NSString *)failInfo;
+
+@end
 
 
 
@@ -315,12 +320,7 @@
 
 @end
 
-@protocol UserModule_VerifyCodeProtocol <NSObject>
 
-- (void)didVerifyCodeSuccessed;
-- (void)didVerifyCodeFailed:(NSString *)failInfo;
-
-@end
 
 @protocol UserModule_ResetPwdProtocol <NSObject>
 

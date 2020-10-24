@@ -36,6 +36,7 @@
 - (void)requestTestUncollectQuestionWithId:(NSDictionary *)infoDic andProcessDelegate:(id<HttpRequestProtocol>)delegate;
 - (void)requestTestSimulateQuestionWithTestId:(NSDictionary *)infoDic andProcessDelegate:(id<HttpRequestProtocol>)delegate;
 
+- (void)reqeustVerifyCodeWithPhoneNumber:(NSDictionary *)phoneNumber andProcessDelegate:(id<HttpRequestProtocol>)delegate;
 
 
 
@@ -160,7 +161,6 @@
 
 - (void)reqeustVerifyAccountWithAccountNumber:(NSString *)AccountNumber andProcessDelegate:(id<HttpRequestProtocol>)delegate;
 
-- (void)reqeustVerifyCodeWithPhoneNumber:(NSString *)phoneNumber andProcessDelegate:(id<HttpRequestProtocol>)delegate;
 
 - (void)reqeustRegistWithdic:(NSDictionary *)infoDic andProcessDelegate:(id<HttpRequestProtocol>)delegate;
 

@@ -305,6 +305,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         NSLog(@"%@",errStr);
         switch (resultStatus.integerValue) {
             case 9000:// 成功
+                [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfBuyCourseSuccess object:nil];
                 NSLog(@"application 支付成功");
                 break;
             case 6001:// 取消

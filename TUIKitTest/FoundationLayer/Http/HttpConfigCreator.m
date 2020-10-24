@@ -81,13 +81,10 @@
     return loginHttp;
 }
 
-+ (HttpConfigModel *)getVerifyCode:(NSString *)phoneNumber
++ (HttpConfigModel *)getVerifyCode:(NSDictionary *)phoneNumber
 {
     HttpConfigModel *c = [[HttpConfigModel alloc] init];
-    NSDictionary *dic = @{kUrlName:@"Account/SendSmsCaptcha",
-                          @"tel":phoneNumber
-                          };
-    [self setVerifyCodeConfigModel:c withInfo:dic];
+    [self setVerifyCodeConfigModel:c withInfo:phoneNumber];
     return c;
 }
 
@@ -989,6 +986,11 @@
     for (NSString * key in sortKeyArrar) {
         NSString * str;
         
+        if ([[dic objectForKey:key] isKindOfClass:[NSString class]]) {
+            if ([[dic objectForKey:key] length] == 0) {
+                continue;
+            }
+        }
         str = [key stringByAppendingFormat:@"=%@",[dic objectForKey:key]];
         
         [propetyArr addObject:str];

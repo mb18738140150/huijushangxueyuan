@@ -749,6 +749,10 @@
     return self.addCourseStudyRecordOperation.info;
 }
 
+- (void)getVerifyCodeWithPhoneNumber:(NSDictionary *)phoneNumber withNotifiedObject:(id<UserModule_VerifyCodeProtocol>)object
+{
+    [self.verifyCodeOperation didRequestVerifyCodeWithWithPhoneNumber:phoneNumber withNotifiedObject:object];
+}
 
 
 
@@ -793,10 +797,7 @@
 }
 
 
-- (void)getVerifyCodeWithPhoneNumber:(NSString *)phoneNumber withNotifiedObject:(id<UserModule_VerifyCodeProtocol>)object
-{
-    [self.verifyCodeOperation didRequestVerifyCodeWithWithPhoneNumber:phoneNumber withNotifiedObject:object];
-}
+
 
 - (void)getVerifyAccountWithAccountNumber:(NSString *)accountNumber withNotifiedObject:(id<UserModule_VerifyAccountProtocol>)object
 {

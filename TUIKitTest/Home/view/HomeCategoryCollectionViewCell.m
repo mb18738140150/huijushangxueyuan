@@ -56,7 +56,9 @@
         [self.categoryViews addObject:cateView];
     }
     
-    self.topView.hd_height = (infoArray.count / 4 + 1) * (kCellHeightOfCategoryView + kspace) + kspace;
+    int count = (infoArray.count % 4) == 0 ? (infoArray.count / 4) : (infoArray.count / 4 + 1);
+    
+    self.topView.hd_height = count * (kCellHeightOfCategoryView + kspace) + kspace;
     
 }
 

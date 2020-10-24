@@ -133,6 +133,8 @@
 - (void)didRequestPayOrderWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_PayOrderProtocol>)object;
 - (NSDictionary *)getPayOrderInfo;
 
+- (void)getVerifyCodeWithPhoneNumber:(NSDictionary *)phoneNumber withNotifiedObject:(id<UserModule_VerifyCodeProtocol>)object;
+
 
 
 
@@ -237,7 +239,6 @@
 - (void)forgetPsdWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_ForgetPasswordProtocol>)object;
 
 // 获取验证码
-- (void)getVerifyCodeWithPhoneNumber:(NSString *)phoneNumber withNotifiedObject:(id<UserModule_VerifyCodeProtocol>)object;
 
 - (void)getVerifyAccountWithAccountNumber:(NSString *)accountNumber withNotifiedObject:(id<UserModule_VerifyAccountProtocol>)object;
 

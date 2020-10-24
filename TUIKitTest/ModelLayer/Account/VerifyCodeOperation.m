@@ -19,7 +19,7 @@
 
 @implementation VerifyCodeOperation
 
-- (void)didRequestVerifyCodeWithWithPhoneNumber:(NSString *)phoneNumber withNotifiedObject:(id<UserModule_VerifyCodeProtocol>)object
+- (void)didRequestVerifyCodeWithWithPhoneNumber:(NSDictionary *)phoneNumber withNotifiedObject:(id<UserModule_VerifyCodeProtocol>)object
 {
     self.notifiedObject = object;
     [[HttpRequestManager sharedManager] reqeustVerifyCodeWithPhoneNumber:phoneNumber andProcessDelegate:self];

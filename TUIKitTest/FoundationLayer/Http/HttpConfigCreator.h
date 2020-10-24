@@ -19,7 +19,7 @@
 + (HttpConfigModel *)getCourseDetailHttpConfigWith:(NSDictionary *)info;
 + (HttpConfigModel *)getLoginHttpConfigWithUserName:(NSString *)userName andPassword:(NSString *)password;
 + (HttpConfigModel *)getPublishConfigWithInfo:(NSDictionary *)questionInfo;
-+ (HttpConfigModel *)getVerifyCode:(NSString *)phoneNumber;
++ (HttpConfigModel *)getVerifyCode:(NSDictionary *)phoneNumber;
 
 + (HttpConfigModel *)registWith:(NSDictionary *)infoDic;
 + (HttpConfigModel *)getQuestionDetailConfigWithQuestionId:(NSDictionary *)infoDic;

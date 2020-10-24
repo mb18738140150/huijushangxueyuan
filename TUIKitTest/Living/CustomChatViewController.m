@@ -33,7 +33,7 @@
 #import "TestImageView.h"
 #import "ShareAndPaySelectView.h"
 
-@interface CustomChatViewController ()<TInputControllerDelegate,CustomTMessageControllerDelegate,CustomTUIChatControllerDelegate,UserModule_LiveChatRecord,UserModule_SendMessage,HttpUploadProtocol,UserModule_GiftList,UserModule_ShareList,BarrageViewDataSouce, BarrageViewDelegate,UserModule_Shutup,UserModule_MockVIPBuy, UserModule_MockPartnerBuy,UserModule_PayOrderProtocol>
+@interface CustomChatViewController ()<TInputControllerDelegate,CustomTMessageControllerDelegate,CustomTUIChatControllerDelegate,UserModule_LiveChatRecord,UserModule_SendMessage,HttpUploadProtocol,UserModule_GiftList,UserModule_ShareList,BarrageViewDataSouce, BarrageViewDelegate,UserModule_Shutup,UserModule_MockVIPBuy, UserModule_MockPartnerBuy,UserModule_PayOrderProtocol,UserModule_MyVIPCardInfo>
 
 @property (nonatomic, strong) CustomTUIChatController *chat;
 
@@ -77,6 +77,9 @@
 @property (nonatomic, assign)BOOL isPayGift;
 
 @property (nonatomic, strong)ShareAndPaySelectView * payView;
+@property (nonatomic, strong)NSDictionary * currentBuyVIPInfo;
+@property (nonatomic, strong)NSDictionary * VIPPayOrderInfo;// vip购买成功dingdanxi孽息
+@property (nonatomic, strong)NSDictionary * VIPPaySeccessDanMuInfo;// vip购买成功弹幕
 
 @end
 
@@ -132,9 +135,25 @@
     NSLog(@"paySuccedsss");
     if (self.isPayGift) {
         self.isPayGift = NO;
+        
+        NSDictionary *contentInfo = @{@"to_avatar":[self.teacherInfo objectForKey:@"avatar"],@"from_avatar":[[[UserManager sharedManager] getUserInfos] objectForKey:kUserHeaderImageUrl],@"money":[NSString stringWithFormat:@"%.2f", [[self.currentSendGiftInfo objectForKey:@"price"] floatValue] * [[self.currentSendGiftInfo objectForKey:@"count"] intValue]]};
+        NSString * jsonStr = [contentInfo JSONString];
+        [[UserManager sharedManager] didRequestSendMessageWithWithDic:@{kUrlName:@"api/topiclivechat/create",
+                                                                        @"topic_id":[self.videoInfo objectForKey:@"id"],@"type":@"reward",
+                                                                        @"content":jsonStr,
+                                                                        @"ask":@"0",
+                                                                        @"content_ext":[NSString stringWithFormat:@"%@ 打赏了 %@ %@ * %@",[[[UserManager sharedManager] getUserInfos] objectForKey:kUserName],[self.teacherInfo objectForKey:@"nickname"], [self.currentSendGiftInfo objectForKey:@"name"], [self.currentSendGiftInfo objectForKey:@"count"]]} WithNotifedObject:self];
+        
         TUISystemMessageCellData *system = [[TUISystemMessageCellData alloc] initWithDirection:MsgDirectionOutgoing];
-        system.content = [NSString stringWithFormat:@"%@个%@", [self.currentSendGiftInfo objectForKey:@"count"], [self.currentSendGiftInfo objectForKey:@"name"]];
-        [self sendMessage:system];
+        system.content = [NSString stringWithFormat:@"%@ 打赏了 %@ %@ * %@",[[[UserManager sharedManager] getUserInfos] objectForKey:kUserName],[self.teacherInfo objectForKey:@"nickname"], [self.currentSendGiftInfo objectForKey:@"name"], [self.currentSendGiftInfo objectForKey:@"count"]];
+        self.currentSendData = system;
+    }else
+    {
+        [[UserManager sharedManager] didRequestMyVIPCardWithInfo:@{@"topic_id":[self.videoInfo objectForKey:@"id"],
+                                                                   kUrlName:@"api/topiclivechat/vipBySuccess",
+                                                                   @"order_id":[self.VIPPayOrderInfo objectForKey:@"id"],
+                                                                   @"card_id":[self.currentBuyVIPInfo objectForKey:@"id"]
+        } withNotifiedObject:self];
     }
 }
 
@@ -147,13 +166,26 @@
         NSLog(@"微信支付");
         self.isWechat = YES;
         [SVProgressHUD show];
-        [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/topicGift",@"topic_id":[NSString stringWithFormat:@"%@", [self.videoInfo objectForKey:@"id"]],@"pay_type":@"wechat",@"gift_id":[self.currentSendGiftInfo objectForKey:@"id"],@"num":[self.currentSendGiftInfo objectForKey:@"count"]} withNotifiedObject:self];
+        if (self.isPayGift) {
+            
+            [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/topicGift",@"topic_id":[NSString stringWithFormat:@"%@", [self.videoInfo objectForKey:@"id"]],@"pay_type":@"wechat",@"gift_id":[self.currentSendGiftInfo objectForKey:@"id"],@"num":[self.currentSendGiftInfo objectForKey:@"count"]} withNotifiedObject:self];
+        }else
+        {
+            [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/vip",@"vip_id":[NSString stringWithFormat:@"%@", [self.currentBuyVIPInfo objectForKey:@"id"]],@"pay_type":@"wechat"} withNotifiedObject:self];
+        }
+        
     }else if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_zhifubPay)
     {
         self.isWechat = NO;
         NSLog(@"支付宝支付");
         [SVProgressHUD show];
-        [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/topicGift",@"topic_id":[NSString stringWithFormat:@"%@", [self.videoInfo objectForKey:@"id"]],@"pay_type":@"alipay",@"gift_id":[self.currentSendGiftInfo objectForKey:@"id"],@"num":[self.currentSendGiftInfo objectForKey:@"count"]} withNotifiedObject:self];
+        
+        if (self.isPayGift) {
+            [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/topicGift",@"topic_id":[NSString stringWithFormat:@"%@", [self.videoInfo objectForKey:@"id"]],@"pay_type":@"alipay",@"gift_id":[self.currentSendGiftInfo objectForKey:@"id"],@"num":[self.currentSendGiftInfo objectForKey:@"count"]} withNotifiedObject:self];
+        }else
+        {
+            [[UserManager sharedManager] didRequestPayOrderWithCourseInfo:@{kUrlName:@"api/pay/vip",@"vip_id":[NSString stringWithFormat:@"%@", [self.currentBuyVIPInfo objectForKey:@"id"]],@"pay_type":@"alipay"} withNotifiedObject:self];
+        }
     }
 }
 
@@ -162,6 +194,10 @@
     [SVProgressHUD dismiss];
     [self.payView removeFromSuperview];
     NSDictionary * info = [[UserManager sharedManager]getPayOrderInfo];
+    if (!self.isPayGift) {
+        // VIP购买的话需要保存订单的信息
+        self.VIPPayOrderInfo = [info objectForKey:@"order"];
+    }
     if (_isWechat) {
         [self weichatPay:[info objectForKey:@"wechat"]];
     }else
@@ -190,14 +226,17 @@
 
 - (void)alipay:(NSString *)url
 {
+    __weak typeof(self)weakSelf = self;
     [[AlipaySDK defaultService] payOrder:url fromScheme:@"alipay" callback:^(NSDictionary *resultDic) {
         NSLog(@"%@",resultDic);
         NSString *str = resultDic[@"memo"];
         [SVProgressHUD showErrorWithStatus:str];
         
         NSString *resultStatus = resultDic[@"resultStatus"];
+        [weakSelf.payView removeFromSuperview];
         switch (resultStatus.integerValue) {
             case 9000:// 成功
+                [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfBuyCourseSuccess object:nil];
                 NSLog(@"支付成功");
                 break;
             case 6001:// 取消
@@ -221,35 +260,19 @@
     });
 }
 
-
-- (void)shutUpClick:(NSNotification *)notification
+- (void)didRequestMyVIPCardInfoSuccessed
 {
-    NSDictionary * stateInfo = notification.object;
-    BOOL isOn = [[stateInfo objectForKey:@"state"] boolValue];
-    if (isOn) {
-        self.chat.inputController.view.hidden = YES;
-    }else
-    {
-        self.chat.inputController.view.hidden = NO;
-    }
-    
+    NSDictionary * partnerInfo = [[UserManager sharedManager] getVIPCardInfo];
+    [self mockBuySuccess:partnerInfo];
 }
 
-- (void)shutUpWithState:(BOOL)isOn
+- (void)didRequestMyVIPCardInfoFailed:(NSString *)failedInfo
 {
-    if (isOn) {
-        self.chat.inputController.view.hidden = YES;
-        TUISystemMessageCellData *system = [[TUISystemMessageCellData alloc] initWithDirection:MsgDirectionOutgoing];
-        system.content = @"on";
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self sendLocalMessage:system];
-        });
-        
-    }else
-    {
-        self.chat.inputController.view.hidden = NO;
-    }
+    [SVProgressHUD dismiss];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
 }
 
 
@@ -410,6 +433,21 @@
     self.giftView = [[LiveGiftSelectView alloc]initWithFrame:self.view.bounds];
     self.giftView.payBlock = ^(NSDictionary * _Nonnull info) {
         
+        
+//        NSDictionary *contentInfo = @{@"to_avatar":[weakSelf.teacherInfo objectForKey:@"avatar"],@"from_avatar":[[[UserManager sharedManager] getUserInfos] objectForKey:kUserHeaderImageUrl],@"money":[NSString stringWithFormat:@"%.2f", [[info objectForKey:@"price"] floatValue] * [[info objectForKey:@"count"] intValue]]};
+//        NSString * jsonStr = [contentInfo JSONString];
+//        [[UserManager sharedManager] didRequestSendMessageWithWithDic:@{kUrlName:@"api/topiclivechat/create",
+//                                                                        @"topic_id":[weakSelf.videoInfo objectForKey:@"id"],
+//                                                                        @"type":@"reward",
+//                                                                        @"content":jsonStr,
+//                                                                        @"ask":@"0",
+//                                                                        @"content_ext":[NSString stringWithFormat:@"%@ 打赏了 %@ %@ * %@",[[[UserManager sharedManager] getUserInfos] objectForKey:kUserName],[weakSelf.teacherInfo objectForKey:@"nickname"], [info objectForKey:@"name"], [info objectForKey:@"count"]]} WithNotifedObject:weakSelf];
+//
+//        TUISystemMessageCellData *system = [[TUISystemMessageCellData alloc] initWithDirection:MsgDirectionOutgoing];
+//        system.content = [NSString stringWithFormat:@"%@ 打赏了 %@ %@ * %@",[[[UserManager sharedManager] getUserInfos] objectForKey:kUserName],[weakSelf.teacherInfo objectForKey:@"nickname"], [info objectForKey:@"name"], [info objectForKey:@"count"]];
+//        weakSelf.currentSendData = system;
+        
+        
         weakSelf.currentSendGiftInfo = info;
         weakSelf.isPayGift = YES;
         ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
@@ -418,11 +456,18 @@
         weakSelf.payView = payView;
     };
     
+#pragma mark - buyVIP ********
     self.buyVipView = [[LivingBuyVIPView alloc]initWithFrame:self.view.bounds];
     self.buyVipView.VIPPayBlock = ^(NSDictionary * _Nonnull info) {
-        NSLog(@"%@", [info objectForKey:@"price"]);
-#pragma mark - buyVIP
+        NSLog(@"%@", info);
+        weakSelf.currentBuyVIPInfo = info;
+        weakSelf.isPayGift = NO;
+        ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
+        UIWindow * window = [UIApplication sharedApplication].delegate.window;
+        [window addSubview:payView];
+        weakSelf.payView = payView;
         
+        [weakSelf.buyVipView removeFromSuperview];
     };
     self.buyVipView.ShutupBlock = ^(BOOL isOn) {
         
@@ -611,6 +656,8 @@
     NSString * target = @"discuss";
     NSString * msgtype = @"";
     NSString * content = @"";
+    NSString * chat_type = @"";
+    NSString * content_ext = @"";
     if ([msg isKindOfClass:[TUITextMessageCellData class]]) {
         msgtype = @"text";
         TUITextMessageCellData * textData = (TUITextMessageCellData *)msg;
@@ -622,16 +669,19 @@
     }else if ([msg isKindOfClass:[TUISystemMessageCellData class]])
     {
         TUISystemMessageCellData * systemData = (TUISystemMessageCellData *)msg;
+        content = systemData.content;
         if ([systemData.content isEqualToString:@"on"] || [systemData.content isEqualToString:@"off"]) {
             msgtype = @"shutup";
             target = @"main";
-        }else
+        }else if([systemData.content containsString:@"打赏"])
         {
             msgtype = @"reward";
+            chat_type = @"chat_discuss";
+            content_ext = systemData.content;
+            NSDictionary * contentInfo = @{@"to_avatar":[self.teacherInfo objectForKey:@"avatar"],@"from_avatar":[info objectForKey:kUserHeaderImageUrl],@"money":[NSString stringWithFormat:@"%.2f", [[self.currentSendGiftInfo objectForKey:@"price"] floatValue] * [[self.currentSendGiftInfo objectForKey:@"count"] intValue]]};
+            content = [contentInfo JSONString];
         }
-        content = systemData.content;
     }
-    
     
     NSString * headimg = [info objectForKey:kUserHeaderImageUrl];
     NSString * from_client_name = [info objectForKey:kUserName];
@@ -648,7 +698,9 @@
                                @"msgtype":msgtype,
                                @"headimg":headimg,
                                @"from_client_name":from_client_name,
-                               @"content":content
+                               @"content":content,
+                               @"content_ext":content_ext,
+                               @"chat_type":chat_type
     };
     
     NSString * jsonStr = [jsonDic JSONString];
@@ -743,7 +795,7 @@
         // @{kUrlName:@"api/topiclivechat/record",@"topic_id":[self.videoInfo objectForKey:@"id"],@"page":@(self.page)}
         TUITextMessageCellData * textData = msgCellData;
         NSString * utf8Str = [textData.content stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        [[UserManager sharedManager] didRequestSendMessageWithWithDic:@{kUrlName:@"api/topiclivechat/create",@"topic_id":[self.videoInfo objectForKey:@"id"],@"type":@"text",@"content":textData.content,@"ask":@"0"} WithNotifedObject:self];
+        [[UserManager sharedManager] didRequestSendMessageWithWithDic:@{kUrlName:@"api/topiclivechat/create",@"topic_id":[self.videoInfo objectForKey:@"id"],@"type":@"text",@"content":textData.content,@"ask":@"0",@"content_ext":@""} WithNotifedObject:self];
         
     }else if ([msgCellData isKindOfClass:[TUIImageMessageCellData class]])
     {
@@ -865,7 +917,7 @@
 - (void)didUploadSuccess:(NSDictionary *)successInfo
 {
     self.sendImageUrl = [successInfo objectForKey:@"url"];
-    [[UserManager sharedManager] didRequestSendMessageWithWithDic:@{kUrlName:@"api/topiclivechat/create",@"topic_id":[self.videoInfo objectForKey:@"id"],@"type":@"image",@"content":[successInfo objectForKey:@"url"],@"ask":@"0"} WithNotifedObject:self];
+    [[UserManager sharedManager] didRequestSendMessageWithWithDic:@{kUrlName:@"api/topiclivechat/create",@"topic_id":[self.videoInfo objectForKey:@"id"],@"type":@"image",@"content":[successInfo objectForKey:@"url"],@"ask":@"0",@"content_ext":@""} WithNotifedObject:self];
 }
 
 - (void)didUploadFailed:(NSString *)uploadFailed
@@ -887,6 +939,37 @@
     
     [[UserManager sharedManager] didRequestShutupWithInfo:@{kUrlName:@"api/topiclivechat/shutUp",@"topic_id":[self.videoInfo objectForKey:@"id"],@"type":type} withNotifiedObject:self];
 }
+
+- (void)shutUpClick:(NSNotification *)notification
+{
+    NSDictionary * stateInfo = notification.object;
+    BOOL isOn = [[stateInfo objectForKey:@"state"] boolValue];
+    if (isOn) {
+        self.chat.inputController.view.hidden = YES;
+    }else
+    {
+        self.chat.inputController.view.hidden = NO;
+    }
+    
+}
+
+- (void)shutUpWithState:(BOOL)isOn
+{
+    if (isOn) {
+        self.chat.inputController.view.hidden = YES;
+        TUISystemMessageCellData *system = [[TUISystemMessageCellData alloc] initWithDirection:MsgDirectionOutgoing];
+        system.content = @"on";
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self sendLocalMessage:system];
+        });
+        
+    }else
+    {
+        self.chat.inputController.view.hidden = NO;
+    }
+}
+
 
 - (void)didRequestShutupSuccessed
 {

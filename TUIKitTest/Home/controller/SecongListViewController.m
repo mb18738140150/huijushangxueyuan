@@ -139,7 +139,7 @@
     
     [SVProgressHUD show];
     if (self.keyword.length > 0) {
-        [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:self.courseListUrl,@"cid":[cateInfo objectForKey:@"id"],@"keyword":[self.keyword stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],@"page":@(pageNo),@"requestType":@"get"} withNotifiedObject:self];
+        [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:self.courseListUrl,@"cid":[cateInfo objectForKey:@"id"],@"keyword":self.keyword,@"page":@(pageNo),@"requestType":@"get"} withNotifiedObject:self];
     }else
     {
         [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:self.courseListUrl,@"cid":[cateInfo objectForKey:@"id"],@"page":@(pageNo),@"requestType":@"get"} withNotifiedObject:self];
@@ -179,7 +179,6 @@
     
     LivingCourseDetailViewController * vc = [[LivingCourseDetailViewController alloc]init];
     vc.info = info;
-    vc.index = indexPath.row;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

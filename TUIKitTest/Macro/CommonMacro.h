@@ -17,12 +17,16 @@
 #define kVIPCardID @"869"
 #define kPartnerCardID @"2250"
 
+#define kGiftNumber 1
+
 #define kCurrentCatogoryInfo    @"currentCatogoryInfo"
 #define kCurrentTestSecondCatogoryInfo    @"currentTestSecondCatogoryInfo"
 
 #define kSubjectId    @"subjectId"
 #define kPaperTypeId    @"paperTypeId"
 #define kUserId    @"userId"
+
+#define kVerifyLivingPsdTime @"VerifyLivingPsdTime"
 
 #define kTop    @"Top"
 #define kOneId  @"OneId"

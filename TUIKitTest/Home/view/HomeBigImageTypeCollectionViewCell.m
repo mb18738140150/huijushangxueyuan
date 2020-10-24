@@ -104,17 +104,19 @@
     [teacherBackView addSubview:self.teacherNameLB];
     
     // price
-    self.priceLB = [[UILabel alloc]initWithFrame:CGRectMake(self.titleLB.hd_x, CGRectGetMaxY(teacherBackView.frame) + seperateWidth, 150, 20)];
-    self.priceLB.font = kMainFont_12;
+    self.priceLB = [[UILabel alloc]initWithFrame:CGRectMake(_backView.hd_width - 165, teacherBackView.hd_y, 150, 20)];
+    self.priceLB.font = kMainFont_16;
     self.priceLB.textColor = UIColorFromRGB(0xCCA95D);
-    NSString * oldStr = [self getOldStrWithSource1:[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"show_paymoney"]] andSource2:[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"off_paymoney"]]];
+    self.priceLB.textAlignment = NSTextAlignmentRight;
     [self.backView addSubview:self.priceLB];
+    self.priceLB.text = [NSString stringWithFormat:@"%@%@",[SoftManager shareSoftManager].coinName, [infoDic objectForKey:@"show_paymoney"]];
     
-    NSDictionary * attribute = @{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:UIColorFromRGB(0x999999),NSStrikethroughStyleAttributeName:@(NSUnderlinePatternSolid | NSUnderlineStyleSingle)};
-    NSMutableAttributedString * NewStr = [[NSMutableAttributedString alloc]initWithString:oldStr];
-    
-    [NewStr addAttributes:attribute range:NSMakeRange([[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"show_paymoney"]] length]+ 1, oldStr.length - [[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"show_paymoney"]] length] - 1)];
-    self.priceLB.attributedText = NewStr;
+//    NSString * oldStr = [self getOldStrWithSource1:[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"show_paymoney"]] andSource2:[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"off_paymoney"]]];
+//    NSDictionary * attribute = @{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:UIColorFromRGB(0x999999),NSStrikethroughStyleAttributeName:@(NSUnderlinePatternSolid | NSUnderlineStyleSingle)};
+//    NSMutableAttributedString * NewStr = [[NSMutableAttributedString alloc]initWithString:oldStr];
+//
+//    [NewStr addAttributes:attribute range:NSMakeRange([[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"show_paymoney"]] length]+ 1, oldStr.length - [[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"show_paymoney"]] length] - 1)];
+//    self.priceLB.attributedText = NewStr;
     
     // joinBtn
     self.applyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -127,9 +129,16 @@
     self.applyBtn.layer.borderColor = UIColorFromRGB(0x2A75ED).CGColor;
     self.applyBtn.layer.borderWidth = 1;
     self.applyBtn.titleLabel.font = kMainFont_12;
-    [self.backView addSubview:self.applyBtn];
-    
+//    [self.backView addSubview:self.applyBtn];
     [self.applyBtn addTarget:self action:@selector(applyAction) forControlEvents:UIControlEventTouchUpInside];
+
+    int topic_type = [[infoDic objectForKey:@"topic_type"] intValue];
+    if (topic_type == 3) {
+        teacherBackView.hidden = YES;
+        self.priceLB.text = @"加密";
+        self.priceLB.hd_x = teacherBackView.hd_x;
+        self.priceLB.textAlignment = NSTextAlignmentLeft;
+    }
     
 }
 
