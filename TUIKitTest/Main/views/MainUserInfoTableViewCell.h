@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong)UIImageView *iconImageView;
 @property (nonatomic, strong)UILabel * titleLB;
+@property (nonatomic, strong)UILabel * countLB;
+@property (nonatomic, copy)void (^joinCourseBlock)(NSDictionary * info);
 
 - (void)resetUIWithInfo:(NSDictionary *)info;
 

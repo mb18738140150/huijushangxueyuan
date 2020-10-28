@@ -17,10 +17,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @property (nonatomic, strong)UILabel *courseChapterNameLabel;// 课程所属分类名
-
 @property (nonatomic,strong) UILabel            *priceLabel;
 
 @property (nonatomic, strong)UILabel *payCountLabel;
+
+@property (nonatomic, strong)UIButton * applyBtn;
+
 @property (nonatomic, assign)BOOL isOneCourse;
 @property (nonatomic, copy)void(^mainCountDownFinishBlock)();
 
@@ -29,6 +31,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong)NSDictionary * info;
 - (void)resetCellContent:(NSDictionary *)info;
+
+
+- (void)resetPromotionCellContent:(NSDictionary *)info;
+
 
 @end
 

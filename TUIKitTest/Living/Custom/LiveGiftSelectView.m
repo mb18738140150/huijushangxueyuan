@@ -109,7 +109,7 @@
     UIButton * closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     closeBtn.frame = CGRectMake(giftView.hd_width - 40, 0, 40, 40);
     closeBtn.backgroundColor = [UIColor whiteColor];
-    [closeBtn setImage:[UIImage imageNamed:@"living_guanbi"] forState:UIControlStateNormal];
+    [closeBtn setImage:[UIImage imageNamed:@"关闭"] forState:UIControlStateNormal];
     [giftView addSubview:closeBtn];
     [closeBtn addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
 }

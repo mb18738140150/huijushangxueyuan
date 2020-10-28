@@ -11,8 +11,7 @@
 
 @interface VerifyCodeOperation : NSObject
 
-@property (nonatomic, strong
-           )NSString * verifyCode;
+@property (nonatomic, strong)NSString * verifyCode;
 
 - (void)didRequestVerifyCodeWithWithPhoneNumber:(NSDictionary *)phoneNumber withNotifiedObject:(id<UserModule_VerifyCodeProtocol>)object;
 

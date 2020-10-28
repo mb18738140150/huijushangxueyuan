@@ -128,11 +128,21 @@
                 [weakSelf.navigationController pushViewController:vc animated:YES];
             };
         }
+        
+        
         return cell;
     }
     
     HomeVIPCardCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeVIPCardCollectionViewCell forIndexPath:indexPath];
     [cell refreshUIWith:self.dataSource[indexPath.item]];
+    cell.applyBlock = ^(NSDictionary * _Nonnull info) {
+        VIPCardDetailViewController * vc = [[VIPCardDetailViewController alloc]init];
+        vc.info = weakSelf.dataSource[indexPath.item];
+        if ([weakSelf.vipCardInfo objectForKey:@"my"] != nil && [[weakSelf.vipCardInfo objectForKey:@"my"] allKeys].count > 0) {
+            vc.myInfo = [weakSelf.vipCardInfo objectForKey:@"my"];
+        }
+        [weakSelf.navigationController pushViewController:vc animated:YES];
+    };
     return cell;
 }
 
@@ -145,7 +155,14 @@
         if (indexPath.row == 0) {
             return CGSizeMake(collectionView.hd_width, 140);
         }
-        return CGSizeMake(collectionView.hd_width, (kScreenWidth / 3 - 30) / 3 + 50 + 30 + 40);
+        if ([[self.vipCardInfo objectForKey:@"my"] isKindOfClass:[NSDictionary class]])
+        {
+            if ([[[self.vipCardInfo objectForKey:@"my"] allKeys] count] > 0) {
+                return CGSizeMake(collectionView.hd_width, (kScreenWidth / 3 - 30) / 3 + 50 + 30 + 40);
+            }
+            return CGSizeZero;
+        }
+        return CGSizeZero;
     }
     
 }

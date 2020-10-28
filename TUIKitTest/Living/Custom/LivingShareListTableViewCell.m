@@ -54,7 +54,27 @@
 
 - (void)setSort:(int)sort
 {
-    [self.numberBtn setTitle:[NSString stringWithFormat:@"%d", sort] forState:UIControlStateNormal];
+    switch (sort) {
+        case 0:
+        {
+            [self.numberBtn setBackgroundImage:[UIImage imageNamed:@"等级1"] forState:UIControlStateNormal];
+        }
+            break;
+        case 1:
+        {
+            [self.numberBtn setBackgroundImage:[UIImage imageNamed:@"等级2"] forState:UIControlStateNormal];
+        }
+            break;
+        case 2:
+        {
+            [self.numberBtn setImage:[UIImage imageNamed:@"等级3"] forState:UIControlStateNormal];
+        }
+            break;
+            
+        default:
+            [self.numberBtn setTitle:[NSString stringWithFormat:@"%d", sort + 1] forState:UIControlStateNormal];
+            break;
+    }
 }
 
 - (void)awakeFromNib {

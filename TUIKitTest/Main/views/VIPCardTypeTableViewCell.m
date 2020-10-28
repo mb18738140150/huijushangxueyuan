@@ -16,6 +16,7 @@
     [self.contentView removeAllSubviews];
     self.infoDic = infoDic;
     self.backgroundColor = [UIColor whiteColor];
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
     // (self.hd_width - 35) / 3 + 67.5
     
     self.backView = [[UIView alloc]initWithFrame:CGRectMake(17.5, 20, self.hd_width - 35, (self.hd_width - 35) / 3 + 67.5)];

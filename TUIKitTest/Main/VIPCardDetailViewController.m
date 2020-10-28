@@ -38,6 +38,10 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong)NSString * detailHtml;
 @property (nonatomic, strong)UILabel * expiredLB;
 @property (nonatomic, assign)BOOL isWechat;
+
+@property (nonatomic, strong)ShareAndPaySelectView * payView;
+
+
 @end
 
 @implementation VIPCardDetailViewController
@@ -193,6 +197,7 @@ typedef enum : NSUInteger {
         ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
         UIWindow * window = [UIApplication sharedApplication].delegate.window;
         [window addSubview:payView];
+        self.payView = payView;
     }else if (self.buyType == BuyType_needVIP)
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请先购买VIP" preferredStyle:UIAlertControllerStyleAlert];
@@ -316,6 +321,21 @@ typedef enum : NSUInteger {
     if (indexPath.section == 0) {
         VIPCardTypeTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kVIPCardTypeTableViewCell forIndexPath:indexPath];
         [cell refreshUIWith:self.vipCardDetailInfo];
+        
+        if (self.myInfo) {
+            // 当前为vip
+            if ([[self.myInfo objectForKey:@"id"] intValue] == kVIPCardID.intValue && [[self.info objectForKey:@"id"] intValue] != kPartnerCardID.intValue) {
+                
+                [cell.applyBtn setTitle:@"续费" forState:UIControlStateNormal];
+            }else if ([[self.myInfo objectForKey:@"id"] intValue] == kPartnerCardID.intValue)
+            {
+                cell.applyBtn.hidden = YES;
+            }
+        }
+        __weak typeof(self)weakSelf = self;
+        cell.applyBlock = ^(NSDictionary * _Nonnull info) {
+            [weakSelf applyAction];
+        };
         return cell;
     }else if (indexPath.section == 1)
     {
@@ -400,14 +420,14 @@ typedef enum : NSUInteger {
 #pragma mark - buyVIP
 - (void)paySuccedsss:(NSNotification *)notification
 {
-    NSLog(@"paySuccedsss");
+    [self loadData];
 }
 
 - (void)payClick:(NSNotification *)notification
 {
     
     NSDictionary *infoDic = notification.object;
-    
+    [self.payView removeFromSuperview];
     if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_wechatPay) {
         NSLog(@"微信支付");
         self.isWechat = YES;
@@ -464,6 +484,7 @@ typedef enum : NSUInteger {
         NSString *resultStatus = resultDic[@"resultStatus"];
         switch (resultStatus.integerValue) {
             case 9000:// 成功
+                [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfBuyCourseSuccess object:nil];
                 NSLog(@"支付成功");
                 break;
             case 6001:// 取消
@@ -497,9 +518,7 @@ typedef enum : NSUInteger {
     [self.tableView.mj_header endRefreshing];
     
     self.vipCardDetailInfo = [[UserManager sharedManager] getVIPCardDetailInfo];
-    if (self.myInfo == nil) {
-        self.myInfo = [self.vipCardDetailInfo objectForKey:@"my"];
-    }
+    self.myInfo = [self.vipCardDetailInfo objectForKey:@"my"];
     [self refreshData];
 }
 

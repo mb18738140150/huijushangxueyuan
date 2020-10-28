@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)refreshUIWithInfo:(NSDictionary *)info;
 
+- (void)showSubscribLB;
+
 @end
 
 NS_ASSUME_NONNULL_END

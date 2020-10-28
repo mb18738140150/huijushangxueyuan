@@ -22,9 +22,12 @@
 #import "MainVipCardListViewController.h"
 #import "ArticleImageTableViewCell.h"
 #define kArticleImageTableViewCell @"ArticleImageTableViewCell"
+#import "ArticleCategoryTableViewCell.h"
+#define kArticleCategoryTableViewCell @"ArticleCategoryTableViewCell"
+#import "SecongListViewController.h"
+
 #import "ShareClickView.h"
 #import "ShareAndPaySelectView.h"
-
 
 
 
@@ -71,6 +74,9 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong)ShareClickView * shareView;
 @property (nonatomic, assign)BOOL isWechat;
 
+@property (nonatomic, strong)ShareAndPaySelectView * payView;
+
+
 @end
 
 @implementation ArticleDetailViewController
@@ -108,13 +114,14 @@ typedef enum : NSUInteger {
 - (void)paySuccedsss:(NSNotification *)notification
 {
     NSLog(@"paySuccedsss");
+    [self doResetQuestionRequest];
 }
 
 - (void)payClick:(NSNotification *)notification
 {
     
     NSDictionary *infoDic = notification.object;
-    
+    [self.payView removeFromSuperview];
     if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_wechatPay) {
         NSLog(@"微信支付");
         self.isWechat = YES;
@@ -194,6 +201,7 @@ typedef enum : NSUInteger {
         NSString *resultStatus = resultDic[@"resultStatus"];
         switch (resultStatus.integerValue) {
             case 9000:// 成功
+                [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfBuyCourseSuccess object:nil];
                 NSLog(@"支付成功");
                 break;
             case 6001:// 取消
@@ -263,6 +271,7 @@ typedef enum : NSUInteger {
     [self.tableView registerClass:[ArticleAudioTableViewCell class] forCellReuseIdentifier:kArticleAudioTableViewCell];
     [self.tableView registerClass:[SecondListTableViewCell class] forCellReuseIdentifier:kSecondListTableViewCell];
     [self.tableView registerClass:[ArticleCommentTableViewCell class] forCellReuseIdentifier:kArticleCommentTableViewCell];
+    [self.tableView registerClass:[ArticleCategoryTableViewCell class] forCellReuseIdentifier:kArticleCategoryTableViewCell];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellID"];
     [self.tableView registerClass:[ArticleImageTableViewCell class] forCellReuseIdentifier:kArticleImageTableViewCell];
     
@@ -456,7 +465,6 @@ typedef enum : NSUInteger {
     
     [self testLoadHtmlImage:[headerString stringByAppendingString:[htmlStr stringByDecodingHTMLEntities]]];
     
-    
     [self.tableView reloadData];
 }
 
@@ -468,13 +476,20 @@ typedef enum : NSUInteger {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 1) {
+    if (section == 2) {
         return self.dataSource.count;
+    }
+    else if (section == 1)
+    {
+        if ([[[self.courseDetailInfo objectForKey:@"categories"] objectForKey:@"data"] count] > 0) {
+            return 1;
+        }
+        return 0;
     }
     
     if (self.isShowAllContent) {
@@ -615,8 +630,20 @@ typedef enum : NSUInteger {
         
         
     }
-    
     if (indexPath.section == 1) {
+        ArticleCategoryTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kArticleCategoryTableViewCell forIndexPath:indexPath];
+        [cell refreshUIWith:self.courseDetailInfo];
+        cell.categoryClickBLock = ^(NSDictionary * _Nonnull info) {
+            NSLog(@"category = %@", info);
+            SecongListViewController * vc = [[SecongListViewController alloc]init];
+            vc.secondType = SecondListType_artical;
+            vc.pid = [[info objectForKey:@"id"] intValue];
+            [weakSelf.navigationController pushViewController:vc animated:YES];
+        };
+        return cell;
+    }
+    
+    if (indexPath.section == 2) {
         if (self.courseSegmrnt.index == 0) {
             SecondListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kSecondListTableViewCell forIndexPath:indexPath];
             [cell resetCellContent:self.dataSource[indexPath.row]];
@@ -689,7 +716,7 @@ typedef enum : NSUInteger {
             }
         }
         
-    }else if (indexPath.section == 1)
+    }else if (indexPath.section == 2)
     {
         if (self.courseSegmrnt.index == 0) {
             return 90;
@@ -709,6 +736,9 @@ typedef enum : NSUInteger {
             
             return contentHeight + 70;
         }
+    }else if (indexPath.section == 1)
+    {
+        return 20;
     }
     
     return 0;
@@ -742,7 +772,7 @@ typedef enum : NSUInteger {
     [view addSubview:commentBtn];
     [view addSubview:seperateView];
     
-    if (self.courseSegmrnt.index == 0) {
+    if (self.courseSegmrnt.index == 0 || self.payStateType != PayStateType_free) {
         commentBtn.hidden = YES;
     }else
     {
@@ -754,9 +784,9 @@ typedef enum : NSUInteger {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 1) {
+    if (section == 2) {
         
-        if (self.courseSegmrnt.index == 0) {
+        if (self.courseSegmrnt.index == 0 || self.payStateType != PayStateType_free) {
             return 45;
         }else
         {
@@ -769,7 +799,7 @@ typedef enum : NSUInteger {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1) {
+    if (indexPath.section == 2) {
         if (self.courseSegmrnt.index == 0) {
             NSDictionary * info = self.dataSource[indexPath.row];
             ArticleDetailViewController * vc = [[ArticleDetailViewController alloc]init];
@@ -791,7 +821,7 @@ typedef enum : NSUInteger {
         ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
         UIWindow * window = [UIApplication sharedApplication].delegate.window;
         [window addSubview:payView];
-        
+        self.payView = payView;
     }
 }
 
@@ -801,6 +831,7 @@ typedef enum : NSUInteger {
     ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:YES];
     UIWindow * window = [UIApplication sharedApplication].delegate.window;
     [window addSubview:payView];
+    self.payView = payView;
 }
 
 

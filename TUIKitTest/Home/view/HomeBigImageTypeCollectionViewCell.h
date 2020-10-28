@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HomeBigImageTypeCollectionViewCell : UICollectionViewCell
 
+
 @property (nonatomic, strong)UIView * backView;
 @property (nonatomic, strong)UIImageView * iconImageVIew;
 @property (nonatomic, strong)LivingStateView * livingStateView;
@@ -26,6 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong)UIButton * applyBtn;
 @property (nonatomic, copy)void(^applyBlock)(NSDictionary * info);
 @property (nonatomic, strong)NSDictionary * infoDic;
+
+@property (nonatomic, copy)void (^livingCourseStartBlock)(NSDictionary *info);
+
 - (void)refreshUIWith:(NSDictionary *)infoDic;
 
 @end

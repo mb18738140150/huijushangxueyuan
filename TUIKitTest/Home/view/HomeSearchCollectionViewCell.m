@@ -43,6 +43,17 @@
     self.textTF.returnKeyType = UIReturnKeySearch;
     [self.backView addSubview:self.textTF];
     
+    UIButton * btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(0, 0, self.hd_width, self.hd_height);
+    [btn addTarget:self action:@selector(searchAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:btn];
+}
+
+- (void)searchAction
+{
+    if (self.searchBlock) {
+        self.searchBlock(@"");
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

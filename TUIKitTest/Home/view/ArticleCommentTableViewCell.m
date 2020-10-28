@@ -29,7 +29,8 @@
     [self.contentView addSubview:self.nameLB];
     
     self.timeLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_iconImageView.frame) + 5, _iconImageView.hd_centerY, 200, 15)];
-    self.timeLB.text = [NSString stringWithFormat:@"%@", [infoDic objectForKey:@"time"]];
+    NSString * timeStr = [NSString stringWithFormat:@"%@", [infoDic objectForKey:@"time"]];
+    self.timeLB.text = [[timeStr componentsSeparatedByString:@" "] firstObject];
     self.timeLB.font = kMainFont_12;
     self.timeLB.textColor = UIColorFromRGB(0x999999);
     [self.contentView addSubview:self.timeLB];

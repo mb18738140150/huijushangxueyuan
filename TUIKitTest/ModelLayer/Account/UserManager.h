@@ -13,6 +13,9 @@
 
 @property (nonatomic, strong)NSDictionary * currentSelectAddressInfo;// 当前选中门店
 
+@property (nonatomic, assign)BOOL isTeacher;
+@property (nonatomic, assign)int  news_num;
+
 
 + (instancetype)sharedManager;
 
@@ -133,9 +136,27 @@
 - (void)didRequestPayOrderWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_PayOrderProtocol>)object;
 - (NSDictionary *)getPayOrderInfo;
 
+
+// 获取个人信息
+- (void)getUserInfoWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_GetUserInfo>)object;
+- (NSDictionary *)getUserInfo;
+
+// 我的收益
+- (void)getIncomeInfoWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_IncomeInfo>)object;
+- (NSDictionary *)getMyIncomeInfo;
+
+// 推广中心
+- (void)getPromotionWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_Promotion>)object;
+- (NSDictionary *)getMyPromotionInfo;
+
+// 申请推广
+- (void)getApplyPromotionWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_AddCourseStudyRecord>)object;
+- (NSDictionary *)getApplyPromotionInfo;
+
+// 获取验证码
+- (void)getVerifyAccountWithAccountNumber:(NSString *)accountNumber withNotifiedObject:(id<UserModule_VerifyAccountProtocol>)object;
 - (void)getVerifyCodeWithPhoneNumber:(NSDictionary *)phoneNumber withNotifiedObject:(id<UserModule_VerifyCodeProtocol>)object;
-
-
+- (NSString *)getVerifyCode;
 
 
 - (NSArray *)getHomeAnswerArray;
@@ -238,9 +259,7 @@
 // 忘记密码
 - (void)forgetPsdWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_ForgetPasswordProtocol>)object;
 
-// 获取验证码
 
-- (void)getVerifyAccountWithAccountNumber:(NSString *)accountNumber withNotifiedObject:(id<UserModule_VerifyAccountProtocol>)object;
 
 
 - (void)bindRegCodeWithRegCode:(NSString *)regCode withNotifiedObject:(id<UserModule_bindRegCodeProtocol>)object;
@@ -316,12 +335,6 @@
  */
 - (NSString *)getUserNickName;
 
-/**
- 获取验证码
- 
- @return 验证码
- */
-- (NSString *)getVerifyCode;
 
 /**
  获取绑定手机号

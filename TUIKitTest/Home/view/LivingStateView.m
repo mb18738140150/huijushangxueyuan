@@ -45,12 +45,12 @@
     switch (livingState) {
         case HomeLivingStateType_living:
         {
-            self.backView.frame = CGRectMake(0, 0, 78, 20);
+            self.backView.frame = CGRectMake(0, 0, 68, 20);
             self.backView.layer.cornerRadius = 2;
             self.backView.layer.masksToBounds = YES;
             self.stateBtn.frame = self.backView.bounds;
             
-            self.stateBtn.frame = CGRectMake(0, 0, 78, 20);
+            self.stateBtn.frame = CGRectMake(0, 0, 68, 20);
             self.stateBtn.backgroundColor = UIColorFromRGB(0x2A75ED);
             [self.stateBtn setImage:[UIImage imageNamed:@"homeLivingTipImage"] forState:UIControlStateNormal];
             [self.stateBtn setTitle:@"直播中" forState:UIControlStateNormal];
@@ -66,16 +66,31 @@
             self.stateBtn.frame = self.backView.bounds;
             
             self.stateBtn.backgroundColor = UIColorFromRGB(0x000000);
-            [self.stateBtn setImage:[UIImage imageNamed:@"homeLivingTipImage"] forState:UIControlStateNormal];
+            [self.stateBtn setImage:[UIImage imageNamed:@"yuandian"] forState:UIControlStateNormal];
             [self.stateBtn setTitle:@"已结束" forState:UIControlStateNormal];
             [self.stateBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
             self.stateBtn.titleLabel.font = kMainFont_12;
-            
+            self.stateBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, -5);
+            [self.backView addSubview:self.stateBtn];
+            return;
         }
             break;
         case HomeLivingStateType_noStart:
         {
-            self.stateBtn.backgroundColor = [UIColor clearColor];
+            self.backView.frame = CGRectMake(0, 0, 53, 20);
+            self.backView.layer.cornerRadius = 2;
+            self.backView.layer.masksToBounds = YES;
+            self.stateBtn.frame = self.backView.bounds;
+            
+            self.stateBtn.backgroundColor = UIColorFromRGB(0x000000);
+            [self.stateBtn setImage:[UIImage imageNamed:@"yuandian"] forState:UIControlStateNormal];
+            [self.stateBtn setTitle:@"未开始" forState:UIControlStateNormal];
+            [self.stateBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
+            self.stateBtn.titleLabel.font = kMainFont_12;
+            self.stateBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+            self.stateBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 5);
+            [self.backView addSubview:self.stateBtn];
+            return;
         }
             break;
         case HomeLivingStateType_video:
@@ -84,7 +99,7 @@
             self.stateBtn.frame = self.backView.bounds;
             
             self.stateBtn.backgroundColor = [UIColor clearColor];
-            UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.backView.bounds byRoundingCorners:UIRectCornerTopRight cornerRadii:CGSizeMake(10, 10)];
+            UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.backView.bounds byRoundingCorners:UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
             CAShapeLayer * shapLayer = [[CAShapeLayer alloc]init];
             shapLayer.frame = self.backView.bounds;
             shapLayer.path = bezierpath.CGPath;
@@ -102,7 +117,7 @@
             self.stateBtn.frame = self.backView.bounds;
             
             self.stateBtn.backgroundColor = [UIColor clearColor];
-            UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.backView.bounds byRoundingCorners:UIRectCornerTopRight cornerRadii:CGSizeMake(10, 10)];
+            UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.backView.bounds byRoundingCorners:UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
             CAShapeLayer * shapLayer = [[CAShapeLayer alloc]init];
             shapLayer.frame = self.backView.bounds;
             shapLayer.path = bezierpath.CGPath;
@@ -112,6 +127,7 @@
             [self.stateBtn setTitle:@"音频" forState:UIControlStateNormal];
             [self.stateBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
             self.stateBtn.titleLabel.font = kMainFont_12;
+            
         }
             break;
             case HomeLivingStateType_image:
@@ -120,7 +136,7 @@
                 self.stateBtn.frame = self.backView.bounds;
                 
                 self.stateBtn.backgroundColor = [UIColor clearColor];
-                UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.backView.bounds byRoundingCorners:UIRectCornerTopRight cornerRadii:CGSizeMake(10, 10)];
+                UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.backView.bounds byRoundingCorners:UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
                 CAShapeLayer * shapLayer = [[CAShapeLayer alloc]init];
                 shapLayer.frame = self.backView.bounds;
                 shapLayer.path = bezierpath.CGPath;
@@ -138,7 +154,7 @@
                 self.stateBtn.frame = self.backView.bounds;
                 
                 self.stateBtn.backgroundColor = [UIColor clearColor];
-                UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.backView.bounds byRoundingCorners:UIRectCornerTopRight cornerRadii:CGSizeMake(10, 10)];
+                UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.backView.bounds byRoundingCorners:UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
                 CAShapeLayer * shapLayer = [[CAShapeLayer alloc]init];
                 shapLayer.frame = self.backView.bounds;
                 shapLayer.path = bezierpath.CGPath;
@@ -170,6 +186,12 @@
                 self.backView.layer.cornerRadius = 2;
                 self.backView.layer.masksToBounds = YES;
                 
+                UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.backView.bounds byRoundingCorners:UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
+                CAShapeLayer * shapLayer = [[CAShapeLayer alloc]init];
+                shapLayer.frame = self.backView.bounds;
+                shapLayer.path = bezierpath.CGPath;
+                [self.backView.layer setMask: shapLayer];
+                
                 [self.stateBtn setImage:[UIImage imageNamed:@"home_imageAndText"] forState:UIControlStateNormal];
                 [self.stateBtn setTitle:@"图文" forState:UIControlStateNormal];
                 [self.stateBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
@@ -182,7 +204,11 @@
                 self.stateBtn.frame = self.backView.bounds;
                 self.backView.layer.cornerRadius = 2;
                 self.backView.layer.masksToBounds = YES;
-                
+                UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.backView.bounds byRoundingCorners:UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
+                CAShapeLayer * shapLayer = [[CAShapeLayer alloc]init];
+                shapLayer.frame = self.backView.bounds;
+                shapLayer.path = bezierpath.CGPath;
+                [self.backView.layer setMask: shapLayer];
                 [self.stateBtn setImage:[UIImage imageNamed:@"home_imageAndText"] forState:UIControlStateNormal];
                 [self.stateBtn setTitle:@"图片" forState:UIControlStateNormal];
                 [self.stateBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
@@ -195,7 +221,11 @@
                 self.stateBtn.frame = self.backView.bounds;
                 self.backView.layer.cornerRadius = 2;
                 self.backView.layer.masksToBounds = YES;
-                
+                UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.backView.bounds byRoundingCorners:UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
+                CAShapeLayer * shapLayer = [[CAShapeLayer alloc]init];
+                shapLayer.frame = self.backView.bounds;
+                shapLayer.path = bezierpath.CGPath;
+                [self.backView.layer setMask: shapLayer];
                 [self.stateBtn setImage:[UIImage imageNamed:@"home_audio"] forState:UIControlStateNormal];
                 [self.stateBtn setTitle:@"音频" forState:UIControlStateNormal];
                 [self.stateBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
@@ -208,7 +238,11 @@
                 self.stateBtn.frame = self.backView.bounds;
                 self.backView.layer.cornerRadius = 2;
                 self.backView.layer.masksToBounds = YES;
-                
+                UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.backView.bounds byRoundingCorners:UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
+                CAShapeLayer * shapLayer = [[CAShapeLayer alloc]init];
+                shapLayer.frame = self.backView.bounds;
+                shapLayer.path = bezierpath.CGPath;
+                [self.backView.layer setMask: shapLayer];
                 [self.stateBtn setImage:[UIImage imageNamed:@"home_video"] forState:UIControlStateNormal];
                 [self.stateBtn setTitle:@"视频" forState:UIControlStateNormal];
                 

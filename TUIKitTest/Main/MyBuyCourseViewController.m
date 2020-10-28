@@ -14,6 +14,7 @@
 #import "ZWMSegmentView.h"
 #define kDataArray @"dataArray"
 #import "LivingCourseDetailViewController.h"
+#import "ArticleDetailViewController.h"
 
 @interface MyBuyCourseViewController()<UITableViewDelegate, UITableViewDataSource,UserModule_SecondCategoryProtocol,UserModule_CategoryCourseProtocol>
 @property (nonatomic, assign)int page;
@@ -185,10 +186,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary * info = [self.itemArray objectAtIndex:indexPath.row];
-//    LivingCourseDetailViewController * vc = [[LivingCourseDetailViewController alloc]init];
-//    vc.info = info;
-//    vc.index = indexPath.row;
-//    [self.navigationController pushViewController:vc animated:YES];
+    NSMutableDictionary * mInfo = [[NSMutableDictionary alloc]initWithDictionary:info];
+    [mInfo setObject:[info objectForKey:@"product_id"] forKey:@"id"];
+    if (self.courseSegment.index == 0) {
+        ArticleDetailViewController * vc = [[ArticleDetailViewController alloc]init];
+        vc.infoDic = mInfo;
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    }
+    LivingCourseDetailViewController * vc = [[LivingCourseDetailViewController alloc]init];
+    vc.info = mInfo;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - request
@@ -207,7 +215,7 @@
         [mArray addObject:info];
     }
     
-    if (mArray.count >= [[pageNoInfo objectForKey:@"recordCount"] intValue]) {
+    if ([[[UserManager sharedManager] getCategoryCourseArray] count] == 0) {
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
     }else
     {

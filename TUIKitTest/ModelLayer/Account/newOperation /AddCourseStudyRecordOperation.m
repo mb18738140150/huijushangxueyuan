@@ -25,7 +25,7 @@
 
 - (void)didRequestSuccessed:(NSDictionary *)successInfo
 {
-    self.info = [successInfo objectForKey:@"result"];
+    self.info = [successInfo objectForKey:@"data"];
     if (isObjectNotNil(self.notifiedObject)) {
         [self.notifiedObject didRequestAddCourseStudyRecordSuccessed];
     }

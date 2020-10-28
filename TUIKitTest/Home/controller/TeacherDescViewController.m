@@ -31,7 +31,7 @@
 #pragma mark - ui
 - (void)navigationViewSetup
 {
-    self.navigationItem.title = @"老师介绍";
+    self.navigationItem.title = self.titleStr;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -59,6 +59,7 @@
     _webView.navigationDelegate = self;
     _webView.scrollView.delegate = self;
     [self.view addSubview:_webView];
+    [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
     
     [self testLoadHtmlImage:[self.info objectForKey:@"desc"]];
 }
@@ -186,6 +187,11 @@
 
 - (void)testLoadHtmlImage:(NSString *)html
 {
+    
+    if (html == nil) {
+        return;
+    }
+    
     [self.urlDictsArray removeAllObjects];
     self.detailHtml = html;
     

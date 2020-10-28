@@ -196,7 +196,19 @@
 
 @end
 
+@protocol UserModule_IncomeInfo <NSObject>
 
+- (void)didIncomeInfoSuccessed;
+- (void)didIncomeInfoFailed:(NSString *)failInfo;
+
+@end
+
+@protocol UserModule_Promotion <NSObject>
+
+- (void)didPromotionSuccessed;
+- (void)didPromotionFailed:(NSString *)failInfo;
+
+@end
 
 
 

@@ -88,6 +88,8 @@
 #import "TeacherOperation.h"
 #import "TeacherDetailOperation.h"
 #import "PayCourseOperation.h"
+#import "MyIncomeOperation.h"
+#import "MyPromotionOperation.h"
 
 @interface UserManager()
 @property (nonatomic,strong) TabbarOperation       *tabbarOperation;
@@ -109,7 +111,9 @@
 @property (nonatomic, strong)TeacherOperation *  teacherOperation;
 @property (nonatomic, strong)TeacherDetailOperation *  teacherDetailOperation;
 @property (nonatomic, strong)PayCourseOperation         *payOrderOperation;
-
+@property (nonatomic, strong)MyIncomeOperation         *myIncomeOperation;
+@property (nonatomic, strong)MyPromotionOperation         *myPromotionOperation;
+@property (nonatomic, strong)AddCourseStudyRecordOperation            *applyPromotionOperation;
 
 @property (nonatomic, strong)AddShoppingCarOperation         *addShoppingCarOperation;
 @property (nonatomic, strong)DeleteShoppingCarOperation         *deleteShoppingCarOperation;
@@ -221,6 +225,10 @@
         self.teacherOperation = [[TeacherOperation alloc]init];
         self.teacherDetailOperation = [[TeacherDetailOperation alloc]init];
         self.payOrderOperation = [[PayCourseOperation alloc]init];
+        self.myIncomeOperation = [[MyIncomeOperation alloc]init];
+        self.myPromotionOperation = [[MyPromotionOperation alloc]init];
+        self.applyPromotionOperation = [[AddCourseStudyRecordOperation alloc]init];
+
         
         self.SecondCategoryOperation = [[SecondCategoryOperation alloc]init];
         self.categoryCourseOperation = [[CategoryCourseOperation alloc]init];
@@ -410,6 +418,15 @@
 - (NSDictionary *)getLivingCourseInfo
 {
     return self.livingCourseOperation.livinghCourseCountInfo;
+}
+
+- (void)getUserInfoWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_GetUserInfo>)object
+{
+    [self.userInfoOperation didRequestGetUserInfoWithInfo:info withNotifiedObject:object];
+}
+- (NSDictionary *)getUserInfo
+{
+    return self.userInfoOperation.infoDic;
 }
 
 // 获取历史聊天记录
@@ -619,18 +636,58 @@
     return self.payOrderOperation.payOrderDetailInfo;
 }
 
-
-
-
-
-- (void)getUserInfoWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_GetUserInfo>)object
+// 我的收益
+- (void)getIncomeInfoWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_IncomeInfo>)object
 {
-    [self.userInfoOperation didRequestGetUserInfoWithInfo:info withNotifiedObject:object];
+    [self.myIncomeOperation getIncomeInfoWith:info withNotifiedObject:object];
 }
-- (NSDictionary *)getUserInfo
+
+- (NSDictionary *)getMyIncomeInfo
 {
-    return self.userInfoOperation.infoDic;
+    return self.myIncomeOperation.info;
 }
+
+// 推广中心
+- (void)getPromotionWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_Promotion>)object
+{
+    [self.myPromotionOperation getPromotionWith:info withNotifiedObject:object];
+}
+- (NSDictionary *)getMyPromotionInfo
+{
+    return self.myPromotionOperation.info;
+}
+
+// 申请推广
+- (void)getApplyPromotionWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_AddCourseStudyRecord>)object
+{
+    [self.applyPromotionOperation getAddCourseStudyRecordListWith:info withNotifiedObject:object];
+}
+- (NSDictionary *)getApplyPromotionInfo
+{
+    return self.applyPromotionOperation.info;
+}
+
+// 获取验证码
+- (void)getVerifyAccountWithAccountNumber:(NSString *)accountNumber withNotifiedObject:(id<UserModule_VerifyAccountProtocol>)object
+{
+    [self.verfyAccountOperation didRequestVerifyAccountWithWithAccountNumber:accountNumber withNotifiedObject:object];
+}
+
+- (void)getVerifyCodeWithPhoneNumber:(NSDictionary *)phoneNumber withNotifiedObject:(id<UserModule_VerifyCodeProtocol>)object
+{
+    [self.verifyCodeOperation didRequestVerifyCodeWithWithPhoneNumber:phoneNumber withNotifiedObject:object];
+}
+
+
+- (NSString *)getVerifyCode
+{
+    return self.verifyCodeOperation.verifyCode;
+}
+
+
+
+
+
 - (void)getMyCourseWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_MyCourse>)object
 {
     [self.myCourseOperation didRequestGetMyCourseWithInfo:info withNotifiedObject:object];
@@ -749,10 +806,6 @@
     return self.addCourseStudyRecordOperation.info;
 }
 
-- (void)getVerifyCodeWithPhoneNumber:(NSDictionary *)phoneNumber withNotifiedObject:(id<UserModule_VerifyCodeProtocol>)object
-{
-    [self.verifyCodeOperation didRequestVerifyCodeWithWithPhoneNumber:phoneNumber withNotifiedObject:object];
-}
 
 
 
@@ -799,10 +852,7 @@
 
 
 
-- (void)getVerifyAccountWithAccountNumber:(NSString *)accountNumber withNotifiedObject:(id<UserModule_VerifyAccountProtocol>)object
-{
-    [self.verfyAccountOperation didRequestVerifyAccountWithWithAccountNumber:accountNumber withNotifiedObject:object];
-}
+
 
 - (void)didRequestAppVersionInfoWithNotifiedObject:(id<UserModule_AppInfoProtocol>)object
 {
@@ -955,10 +1005,7 @@
     return self.userModuleModels.currentUserModel.userNickName;
 }
 
-- (NSString *)getVerifyCode
-{
-    return self.verifyCodeOperation.verifyCode;
-}
+
 
 - (NSString *)getVerifyPhoneNumber
 {

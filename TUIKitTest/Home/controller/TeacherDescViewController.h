@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TeacherDescViewController : ViewController
 
+@property (nonatomic, strong)NSString * titleStr;
 @property (nonatomic, strong)NSDictionary * info;
 
 @end

@@ -37,7 +37,6 @@
     [backView addSubview:self.courseImageView];
     
     
-    
     // 课程名称
     self.courseChapterNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.courseImageView.frame) + 12, topSpace, backView.hd_width - 185, 35)];
     self.courseChapterNameLabel.text = [info objectForKey:kCourseName];

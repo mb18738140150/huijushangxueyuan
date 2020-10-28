@@ -211,7 +211,7 @@
         [mArray addObject:info];
     }
     
-    if (mArray.count >= [[pageNoInfo objectForKey:@"recordCount"] intValue]) {
+    if ([[[UserManager sharedManager] getCategoryCourseArray] count] == 0) {
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
     }else
     {

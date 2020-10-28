@@ -27,6 +27,17 @@
     NSDictionary * courseInfo = [successInfo objectForKey:@"data"];
     self.infoDic = courseInfo;
     
+    [UserManager sharedManager].isTeacher = NO;
+    
+    if (![[self.infoDic objectForKey:@"teacher"] isKindOfClass:[NSNull class]]) {
+        NSDictionary * teacherInfo = [[self.infoDic objectForKey:@"teacher"] objectForKey:@"data"];
+        if (![teacherInfo isKindOfClass:[NSNull class]]) {
+            if ([[UserManager sharedManager] getUserId] == [[teacherInfo objectForKey:@"user_id"] intValue]) {
+                [UserManager sharedManager].isTeacher = YES;
+            }
+        }
+    }
+    
     if (isObjectNotNil(self.notifiedObject)) {
         [self.notifiedObject didGetUserInfoSuccessed];
     }

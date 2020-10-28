@@ -27,6 +27,7 @@
 #define kUserId    @"userId"
 
 #define kVerifyLivingPsdTime @"VerifyLivingPsdTime"
+#define kVerifyLivingPsd @"VerifyLivingPsd"
 
 #define kTop    @"Top"
 #define kOneId  @"OneId"
@@ -34,6 +35,8 @@
 #define kUid    @"accountId"
 #define kParent @"parent"
 #define kUrlName    @"urlName"
+#define kRequestType @"requestType"
+
 #define kCid        @"Cid"
 #define kState      @"State"
 #define kTwoId      @"TwoId"

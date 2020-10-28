@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SecongListViewController : ViewController
 
+@property (nonatomic, assign)int pid;
 @property (nonatomic, assign)SecondListType secondType;
 
 @end

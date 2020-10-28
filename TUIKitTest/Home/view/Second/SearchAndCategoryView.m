@@ -81,6 +81,16 @@
     
 }
 
+- (void)hideCategoryView
+{
+    self.backView.frame = CGRectMake(17.5, 10, self.hd_width - 35 , 40);
+    self.searchImageBtn.frame = CGRectMake(self.backView.hd_height / 2, self.backView.hd_height / 2 - 10, 20, 20);
+    self.textTF.frame = CGRectMake(CGRectGetMaxX(self.searchImageBtn.frame) + 5, 0, self.backView.hd_width - self.hd_height - 40, self.backView.hd_height);
+    [self.textTF becomeFirstResponder];
+    self.backView.layer.cornerRadius = self.backView.hd_height / 2;
+    self.backView.layer.masksToBounds = YES;
+}
+
 - (void)hideSearchView
 {
     self.backView.hidden = YES;

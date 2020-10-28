@@ -213,7 +213,15 @@
     }];
 
     for (NSString * key in sortKeyArrar) {
-        NSString * str = [key stringByAppendingFormat:@"=%@", [dic objectForKey:key]];
+        NSString * str;
+        
+        if ([[dic objectForKey:key] isKindOfClass:[NSString class]]) {
+            if ([[dic objectForKey:key] length] == 0) {
+                continue;
+            }
+        }
+        str = [key stringByAppendingFormat:@"=%@",[dic objectForKey:key]];
+        
         [propetyArr addObject:str];
     }
     

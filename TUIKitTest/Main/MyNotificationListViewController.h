@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MyNotificationListViewController : ViewController
 
+@property (nonatomic, copy)void(^refreshNewsNumBlock)(NSDictionary *info);
+
 @end
 
 NS_ASSUME_NONNULL_END

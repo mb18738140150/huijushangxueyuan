@@ -73,13 +73,13 @@
     [self.view addSubview:_tf];
     
     UILabel * tipeLB = [[UILabel alloc]initWithFrame:CGRectMake(15, CGRectGetMaxY(_tf.frame) + 10, kScreenWidth - 30, 15)];
-    tipeLB.text = @"密码提示：无回放";
+    tipeLB.text = [NSString stringWithFormat:@"密码提示：%@", [self.info objectForKey:@"pass_tips"]];
     tipeLB.textColor = UIColorFromRGB(0x666666);
     tipeLB.font = kMainFont_12;
     [self.view addSubview:tipeLB];
     
     self.cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.cancelBtn.frame = CGRectMake(15, CGRectGetMaxY(tipeLB.frame) + 10, kScreenWidth / 2 - 15, 40);
+    self.cancelBtn.frame = CGRectMake(15, CGRectGetMaxY(tipeLB.frame) + 10, kScreenWidth / 2 - 25, 40);
     self.cancelBtn.backgroundColor = UIColorFromRGB(0x515151);
     self.cancelBtn.layer.cornerRadius = 5;
     self.cancelBtn.layer.masksToBounds = YES;
@@ -90,7 +90,7 @@
     [self.cancelBtn addTarget:self action:@selector(dismissAction) forControlEvents:UIControlEventTouchUpInside];
     
     self.payBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.payBtn.frame = CGRectMake(kScreenWidth / 2 + 5, _cancelBtn.hd_y, kScreenWidth / 2 - 15, 40);
+    self.payBtn.frame = CGRectMake(kScreenWidth / 2 + 10, _cancelBtn.hd_y, kScreenWidth / 2 - 25, 40);
     self.payBtn.backgroundColor = kCommonMainBlueColor;
     self.payBtn.layer.cornerRadius = 5;
     self.payBtn.layer.masksToBounds = YES;
@@ -130,9 +130,11 @@
 - (void)didVerifyCodeSuccessed
 {
     [[NSUserDefaults standardUserDefaults] setObject:[UIUtility getCurrentTimestamp] forKey:kVerifyLivingPsdTime];
+    [[NSUserDefaults standardUserDefaults] setObject:self.tf.text forKey:kVerifyLivingPsd];
     if (self.verifyPsdSuccessBlock) {
         self.verifyPsdSuccessBlock(@{@"psd":self.tf.text});
     }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

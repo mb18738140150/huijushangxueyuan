@@ -202,7 +202,7 @@
         [mArray addObject:info];
     }
     
-    if (mArray.count >= [[pageNoInfo objectForKey:@"recordCount"] intValue]) {
+    if ([[[UserManager sharedManager] getNewsListList] count] == 0) {
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
     }else
     {
@@ -242,7 +242,7 @@
         [mArray addObject:info];
     }
     
-    if (mArray.count >= [[pageNoInfo objectForKey:@"recordCount"] intValue]) {
+    if ([[[UserManager sharedManager] getCategoryCourseArray] count] == 0) {
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
     }else
     {
@@ -282,8 +282,23 @@
            [self.pageIndexArray addObject:info];
        }
     [self.topView refreshWith:self.categoryArray];
+    
     self.courseSegment = self.topView.zixunSegment;
-    [self requestDataWith:0];
+    
+    int index = 1000;
+    for (int i = 0; i < self.categoryArray.count ; i++) {
+        NSDictionary * cateInfo = [self.categoryArray objectAtIndex:i];
+        if ([[cateInfo objectForKey:@"id"] intValue] == self.pid) {
+            [self requestDataWith:i];
+            index = i;
+            [self.courseSegment setSelectedAtIndex:i];
+            break;
+        }
+    }
+    if (index == 1000) {
+        [self requestDataWith:0];
+    }
+    
     __weak typeof(self)weakSelf = self;
     [self.courseSegment selectedAtIndex:^(NSUInteger index, UIButton * _Nonnull button) {
         NSLog(@"%ld *** %@", index,button.titleLabel.text);
@@ -299,12 +314,6 @@
                [weakSelf requestDataWith:index];
            }else
            {
-               if (mArray.count >= [[pageNoInfo objectForKey:@"recordCount"] intValue]) {
-                   [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
-               }else
-               {
-                   [weakSelf.tableView.mj_footer endRefreshing];
-               }
                [weakSelf.tableView reloadData];
            }
         

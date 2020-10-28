@@ -183,6 +183,7 @@
         NSLog(@"detail");
         TeacherDescViewController * vc = [[TeacherDescViewController alloc]init];
         vc.info = weakSelf.teacherInfo;
+        vc.titleStr = @"老师介绍";
         [weakSelf.navigationController pushViewController:vc animated:YES];
     };
     
@@ -254,7 +255,7 @@
     [moreBtn setTitleColor:UIColorFromRGB(0x3D3731) forState:UIControlStateNormal];
     moreBtn.titleLabel.font = [UIFont systemFontOfSize:12];
 
-    [headView addSubview:moreBtn];
+//    [headView addSubview:moreBtn];
     
     if (section == 1) {
         titleView.text = @"图文";

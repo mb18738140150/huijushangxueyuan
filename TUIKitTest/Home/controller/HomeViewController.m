@@ -17,6 +17,9 @@
 #import "TeacherListViewController.h"
 #import "TeacherDetailViewController.h"
 #import "LivingCourseDetailViewController.h"
+#import "SearchCourseViewController.h"
+#import "AssoiciationListViewController.h"
+#import "JoinAssociationViewController.h"
 
 #import "HomeSearchCollectionViewCell.h"
 #define kHomeSearchCollectionViewCell @"HomeSearchCollectionViewCell"
@@ -164,6 +167,11 @@
         {
             HomeSearchCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeSearchCollectionViewCell forIndexPath:indexPath];
             [cell refreshUIWithData:info];
+            cell.searchBlock = ^(NSString * _Nonnull key) {
+                SearchCourseViewController * vc = [[SearchCourseViewController alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                [weakSelf.navigationController pushViewController:vc animated:YES];
+            };
             return cell;
         }
             break;
@@ -313,6 +321,7 @@
         {
             HomeVIPCardCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeVIPCardCollectionViewCell forIndexPath:indexPath];
             [cell refreshUIWith:[info objectForKey:@"data"]];
+            cell.applyBtn.hidden = YES;
             return cell;
         }
             break;
@@ -328,6 +337,14 @@
             NSArray * dataArray = [info objectForKey:@"data"];
             HomeCommunityCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeCommunityCollectionViewCell forIndexPath:indexPath];
             [cell resetCellContent:dataArray[indexPath.item]];
+            
+            cell.cancelOrderLivingCourseBlock = ^(NSDictionary * _Nonnull info) {
+                JoinAssociationViewController * vc = [[JoinAssociationViewController alloc]init];
+                vc.infoDic = dataArray[indexPath.item];
+                vc.hidesBottomBarWhenPushed = YES;
+                [weakSelf.navigationController pushViewController:vc animated:YES];
+            };
+            
             return cell;
         }
             break;
@@ -433,7 +450,7 @@
         headview.moreBlock = ^(NSDictionary * _Nonnull info) {
             NSString * type = [info objectForKey:@"type"];
             if ([type isEqualToString:@"topic"] || [type isEqualToString:@"series"]) {
-                [weakSelf pushSecondVC:SecondListType_living];
+                [weakSelf pushSecondVC:SecondListType_living andInfo:@"0"];
             }else if([type isEqualToString:@"teacher"])
             {
                 TeacherListViewController * vc = [[TeacherListViewController alloc]init];
@@ -441,7 +458,13 @@
                 [self.navigationController pushViewController:vc animated:YES];
             }else if([type isEqualToString:@"art"])
             {
-                [weakSelf pushSecondVC:SecondListType_artical];
+                [weakSelf pushSecondVC:SecondListType_artical andInfo:@"0"];
+            }else if([type isEqualToString:@"community"])
+            {
+                AssoiciationListViewController * vc = [[AssoiciationListViewController alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                vc.array = [info objectForKey:@"data"];
+                [weakSelf.navigationController pushViewController:vc animated:YES];
             }
         };
         reusableview = headview;
@@ -622,6 +645,7 @@
 
 - (void)didLeadtypeSuccessed
 {
+    [SVProgressHUD dismiss];
     self.dataArray = [[UserManager sharedManager] getLeadTypeArray];
     [self.collectionView reloadData];
     [self.collectionView.mj_header endRefreshing];
@@ -677,6 +701,7 @@
          mypay    我的已购
          yx_extension_recruit    推广中心
          yd_detail    图文音视频详情
+         vip_center    会员中心
          
          */
         if ([innerType isEqualToString:@"index"]) {
@@ -684,10 +709,16 @@
         }else if ([innerType isEqualToString:@"center"])
         {
             NSLog(@"个人中心");
+            [self.tabBarController setSelectedIndex:1];
         }
         else if ([innerType isEqualToString:@"zb_topics"])
         {
-            [self pushSecondVC:SecondListType_living];
+            
+            NSString * pid = @"";
+            if (![[info objectForKey:@"need_redirect"] isKindOfClass:[NSNull class]]) {
+                pid = [[info objectForKey:@"need_redirect"] objectForKey:@"tags"];
+            }
+            [self pushSecondVC:SecondListType_living andInfo:pid];
         }
         else if ([innerType isEqualToString:@"mypay"])
         {
@@ -701,7 +732,11 @@
             [self.navigationController pushViewController:vc animated:YES];
         }else if ([innerType isEqualToString:@"yd_payred_index"])
         {
-            [self pushSecondVC:SecondListType_artical];
+            NSString * pid = @"";
+            if (![[info objectForKey:@"need_redirect"] isKindOfClass:[NSNull class]]) {
+                pid = [[info objectForKey:@"need_redirect"] objectForKey:@"pid"];
+            }
+            [self pushSecondVC:SecondListType_artical andInfo:pid];
         }else if ([innerType isEqualToString:@"yd_detail"])
         {
             [self pushArticleDetailVC:[info objectForKey:@"need_redirect"]];
@@ -728,11 +763,12 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)pushSecondVC:(SecondListType)type
+- (void)pushSecondVC:(SecondListType)type andInfo:(NSString *)pid
 {
     SecongListViewController * vc = [[SecongListViewController alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     vc.secondType = type;
+    vc.pid = pid.intValue;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

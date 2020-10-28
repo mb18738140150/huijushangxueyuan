@@ -18,7 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong)ZWMSegmentView * zixunSegment;
 @property (nonatomic, strong)NSArray * dataArray;
 - (void)refreshWith:(NSArray *)dataArray;
+
+
 - (void)hideSearchView;
+- (void)hideCategoryView;
 - (void)hideSeparateView;
 
 - (instancetype)initWithFrame:(CGRect)frame withImageName:(NSString *)imageName;

@@ -41,6 +41,9 @@
     cateView.categoryName = @"我的消息";
     cateView.categoryCoverUrl = @"main_我的消息";
     [cateView setupNaviContents];
+    if ([UserManager sharedManager].news_num > 0) {
+        [cateView resetNumber:[NSString stringWithFormat:@"%d", [UserManager sharedManager].news_num]];
+    }
     [self.backView addSubview:cateView];
     self.myNotificationView = cateView;
     

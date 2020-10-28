@@ -53,6 +53,9 @@
 
 - (void)backAction:(UIButton *)button
 {
+    if (self.refreshNewsNumBlock) {
+        self.refreshNewsNumBlock(@{});
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -102,13 +105,13 @@
     for (NSDictionary * info in list) {
         [self.dataSource addObject:info];
     }
-    NSDictionary * info = @{@"content":@"sufbierubfeiufiunslknclsknlkslkskldnflkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
-                            @"time":@"2020-09-30 11:07:44",
-                            @"jump_type":@"outer",
-                            @"jump_url":@"http://www.baidu.com",
-                            @"send_name":@"测试"
-    };
-    [self.dataSource addObject:info];
+//    NSDictionary * info = @{@"content":@"sufbierubfeiufiunslknclsknlkslkskldnflkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+//                            @"time":@"2020-09-30 11:07:44",
+//                            @"jump_type":@"outer",
+//                            @"jump_url":@"http://www.baidu.com",
+//                            @"send_name":@"测试"
+//    };
+//    [self.dataSource addObject:info];
     [self.tableView reloadData];
 }
 

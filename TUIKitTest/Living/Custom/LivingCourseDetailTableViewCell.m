@@ -13,6 +13,7 @@
 @property (nonatomic, strong)UILabel * titleLB;
 @property (nonatomic, strong)UILabel * countLB;
 @property (nonatomic, strong)UILabel * startTimeLB;
+@property (nonatomic, strong)UILabel * subscribLB;
 
 @end
 
@@ -57,9 +58,32 @@
     _startTimeLB.text = [NSString stringWithFormat:@"开始时间：%@", [info objectForKey:@"begin_time"]];
     [self.contentView addSubview:_startTimeLB];
     
+    UILabel * subscribLB = [[UILabel alloc]initWithFrame:CGRectMake(self.hd_width - 75, CGRectGetMaxY(separateView.frame) + 10, 60, 25)];
+    subscribLB.text =  @"立即预约";
+    subscribLB.textColor = UIColorFromRGB(0x666666);
+    subscribLB.font = kMainFont_12;
+    subscribLB.textAlignment = NSTextAlignmentCenter;
+    subscribLB.layer.cornerRadius = subscribLB.hd_height / 2;
+    subscribLB.layer.masksToBounds = YES;
+    subscribLB.layer.borderColor = UIColorFromRGB(0xdddddd).CGColor;
+    subscribLB.layer.borderWidth = 1;
+    [self.contentView addSubview:subscribLB];
+    subscribLB.hidden = YES;
+    self.subscribLB = subscribLB;
+    
+    if ([[info objectForKey:@"topic_status"] intValue] == 2) {
+        NSDictionary * subscribInfo = [[UserManager sharedManager] getVIPBuyInfo];
+        if (![[subscribInfo objectForKey:@"reserve"] boolValue]) {
+            subscribLB.hidden = NO;
+        }
+    }
+    
 }
 
-
+- (void)showSubscribLB
+{
+    self.subscribLB.hidden = NO;
+}
 
 - (void)awakeFromNib {
     [super awakeFromNib];

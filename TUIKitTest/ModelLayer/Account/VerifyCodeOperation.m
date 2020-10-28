@@ -28,7 +28,7 @@
 #pragma mark - http request
 - (void)didRequestSuccessed:(NSDictionary *)successInfo
 {
-//    self.verifyCode = [successInfo objectForKey:@"data"];
+    self.verifyCode = [NSString stringWithFormat:@"%@", [[successInfo objectForKey:@"data"] objectForKey:@"sms_code_sn"]];
     if (isObjectNotNil(self.notifiedObject)) {
         [self.notifiedObject didVerifyCodeSuccessed];
     }

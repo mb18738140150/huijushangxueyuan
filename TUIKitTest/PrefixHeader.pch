@@ -64,6 +64,7 @@
 #import "UIView+LX_Frame.h"
 #import "UILabel+LXLabel.h"
 #import "UIColor+Expanded.h"
+#import "ShareAndPaySelectView.h"
 
 #import "TBCityIconFont.h"
 #import "TBCityIconInfo.h"
@@ -97,6 +98,28 @@
 #define scrnW [UIScreen mainScreen].bounds.size.width
 #define scrnH [UIScreen mainScreen].bounds.size.height
 
+#define TableHeader 43
+#define PlaceHolder @" "
+#define offSet_X 67
+#define offSet_X_right 20
+#define ShowImage_H ((screenWidth - 15 - 2 * offSet_X_right) / 3)
+#define EmotionItemPattern  @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]" //@"\\[em:(\\d+):\\]"
+#define Emoilbiew @"\\[0-9]\\"
+
+#define screenWidth  [UIScreen mainScreen].bounds.size.width
+#define screenHeight  [UIScreen mainScreen].bounds.size.height
+// 屏幕高度
+#define SCREEN_HEIGHT         [[UIScreen mainScreen] bounds].size.height
+// 屏幕宽度
+#define SCREEN_WIDTH          [[UIScreen mainScreen] bounds].size.width
+
+#define LUCKYLINECOLOR [UIColor colorWithRed:0.851 green:0.510 blue:0.329 alpha:1]
+#define limitline 4
+#define kSelf_SelectedColor [UIColor colorWithWhite:0 alpha:0.4] //点击背景  颜色
+#define kUserName_SelectedColor [UIColor colorWithWhite:0 alpha:0.25]//点击姓名颜色
+#define DELAYEXECUTE(delayTime,func) (dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{func;}))
+#define AttributedImageNameKey      @"ImageName"
+
 #define NAVH (MAX(Device_Width, Device_Height)  >= 812 ? 88 : 64)
 #define TABBARH (MAX(Device_Width, Device_Height)  >= 812 ? 83 : 49)
 
@@ -106,6 +129,13 @@
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 //#endif
+
+typedef NS_ENUM(NSInteger, GestureType) {
+    
+    TapGesType = 1,
+    LongGesType,
+    
+};
 
 typedef enum : NSUInteger {
     CategoryType_myNotification = 10000,
@@ -139,5 +169,11 @@ typedef enum : NSUInteger {
     PayStateType_Vip,
     PayStateType_Secret,
 } PayStateType;
+
+typedef enum : NSUInteger {
+    PromotionType_apply,
+    PromotionType_check,
+    PromotionType_complate,
+} PromotionType;
 
 #endif /* PrefixHeader_pch */

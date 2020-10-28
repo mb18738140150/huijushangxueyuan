@@ -7,6 +7,24 @@
 //
 
 #import "HomeBigImageTypeCollectionViewCell.h"
+#import "CountDown.h"
+
+@interface HomeBigImageTypeCollectionViewCell()
+
+
+@property (nonatomic, assign)NSInteger      day;
+@property (nonatomic, assign)NSInteger      hour;
+@property (nonatomic, assign)NSInteger      minute;
+@property (nonatomic, assign)NSInteger      sec;
+@property (nonatomic, strong)UILabel        *timeLB;
+
+@property (nonatomic, strong)NSTimer        *timer;
+@property (strong, nonatomic)  CountDown *countDown;
+
+@property (nonatomic, assign)BOOL isStartTimeDown;
+
+
+@end
 
 @implementation HomeBigImageTypeCollectionViewCell
 
@@ -15,6 +33,11 @@
 {
     [self.contentView removeAllSubviews];
     self.infoDic = infoDic;
+    
+    if (self.timer) {
+        [self timerInvalidate];
+    }
+    
     
     // (self.hd_width - 35) / 2 + 126
     CGFloat topSpace = 0;
@@ -36,6 +59,15 @@
     shapLayer.path = bezierpath.CGPath;
     [self.iconImageVIew.layer setMask: shapLayer];
     
+    
+    self.timeLB = [[UILabel alloc]initWithFrame:CGRectMake(_iconImageVIew.hd_width - 220, _iconImageVIew.hd_height - 25, 210, 20)];
+    self.timeLB.textColor = UIColorFromRGB(0xffffff);
+    self.timeLB.font = kMainFont;
+    self.timeLB.textAlignment = NSTextAlignmentRight;
+    [self.iconImageVIew addSubview:self.timeLB];
+    self.timeLB.attributedText = [self getTimeWith:[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"begin_timestamp"]]];
+//    self.timeLB.hidden = YES;
+    
     // 直播状态
     self.livingStateView = [[LivingStateView alloc]initWithFrame:CGRectMake(5, self.iconImageVIew.hd_height - 25, 100, 20)];
     if ([infoDic objectForKey:@"topic_status"])
@@ -53,6 +85,8 @@
             case 2:
             {
                 self.livingStateView.livingState = HomeLivingStateType_noStart;
+                [self startTimeCountDown];
+                self.timeLB.hidden = NO;
             }
                 break;
             case 3:
@@ -134,8 +168,11 @@
 
     int topic_type = [[infoDic objectForKey:@"topic_type"] intValue];
     if (topic_type == 3) {
-        teacherBackView.hidden = YES;
         self.priceLB.text = @"加密";
+    }
+    
+    if ([[teacherInfo allKeys] count] == 0) {
+        teacherBackView.hidden = YES;
         self.priceLB.hd_x = teacherBackView.hd_x;
         self.priceLB.textAlignment = NSTextAlignmentLeft;
     }
@@ -167,5 +204,151 @@
         return [NSString stringWithFormat:@"￥%@￥%@", str1,str2];
     }
 }
+
+
+- (void)startTimeCountDown
+{
+    if (self.timer) {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+    self.timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(timeCountDown) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    
+}
+
+- (void)timeCountDown
+{
+    __weak typeof(self)weakSelf = self;
+    
+    weakSelf.sec--;
+    if (weakSelf.sec < 0) {
+        weakSelf.minute--;
+        
+        if (weakSelf.minute<0) {
+            weakSelf.hour--;
+            if (weakSelf.hour <0) {
+                weakSelf.day--;
+                if (weakSelf.day < 0) {
+                    weakSelf.day = 0;
+                    weakSelf.hour = 0;
+                    weakSelf.minute = 0;
+                    weakSelf.sec = 0;
+                    [weakSelf.timer invalidate];
+                    weakSelf.timer = nil;
+                    if (weakSelf.livingCourseStartBlock) {
+                        weakSelf.livingCourseStartBlock(@{});
+                    }
+                    
+                }else
+                {
+                    weakSelf.hour = 23;
+                    weakSelf.minute = 59;
+                    weakSelf.sec = 59;
+                }
+            }else
+            {
+                weakSelf.minute = 59;
+                weakSelf.sec = 59;
+            }
+        }else
+        {
+            weakSelf.sec = 59;
+        }
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        weakSelf.timeLB.attributedText = [weakSelf getTimeStrWithday:weakSelf.day andHour:weakSelf.hour andMinute:weakSelf.minute andSecond:weakSelf.sec];
+    });
+}
+
+- (void)timerInvalidate
+{
+    [self.timer invalidate];
+    self.timer = nil;
+}
+
+- (NSMutableAttributedString *)getTimeWith:(NSString *)timeStr
+{
+    NSDate *nowDate = [NSDate date];
+    NSDateFormatter *dateFomatter = [[NSDateFormatter alloc] init];
+    dateFomatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    
+    NSDate * myDate=[NSDate dateWithTimeIntervalSince1970:[timeStr doubleValue]];
+    
+    // 当前时间字符串格式
+    NSString *nowDateStr = [dateFomatter stringFromDate:nowDate];
+    // 当前时间data格式
+    nowDate = [dateFomatter dateFromString:nowDateStr];
+    // 当前日历
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    // 需要对比的时间数据
+    NSCalendarUnit unit = NSCalendarUnitYear | NSCalendarUnitMonth
+    | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+    // 对比时间差
+    NSDateComponents *dateCom = [calendar components:unit fromDate:nowDate toDate:myDate options:0];
+    
+    self.day = dateCom.month * 30  + dateCom.day;
+    self.hour = dateCom.hour;
+    
+    self.minute = dateCom.minute;
+    self.sec = dateCom.second;
+    if (_day <= 0) {
+        _day = 0;
+    }
+    
+    if (_hour <= 0) {
+        _hour = 0;
+    }
+    _minute--;
+    if (_minute <= 0) {
+        _minute = 0;
+    }
+    
+    if (_sec <= 0) {
+        _sec = 0;
+    }
+    
+    return [self getTimeStrWithday:self.day andHour:_hour andMinute:_minute andSecond:_sec];
+}
+
+- (NSAttributedString *)getTimeStrWithday:(NSInteger)day andHour:(NSInteger)hour andMinute:(NSInteger)minute andSecond:(NSInteger)second
+{
+    NSString * dayStr = day > 9 ? [NSString stringWithFormat:@"%ld", day]:[NSString stringWithFormat:@"0%ld", day];
+    NSString * hourStr = hour > 9 ? [NSString stringWithFormat:@"%ld", hour]:[NSString stringWithFormat:@"0%ld", hour];
+    NSString * minStr = minute > 9 ? [NSString stringWithFormat:@"%ld", minute]:[NSString stringWithFormat:@"0%ld", minute];
+    NSString * secStr = second > 9 ? [NSString stringWithFormat:@"%ld", second]:[NSString stringWithFormat:@"0%ld", second];
+    
+    
+    NSString * timeString = [NSString stringWithFormat:@" 倒计时:  %@ : %@ : %@ : %@  ",dayStr, hourStr,minStr, secStr];
+    
+    
+    
+    
+    NSRange dayRange = [timeString rangeOfString:dayStr];
+    NSRange range1 = NSMakeRange(dayRange.location, timeString.length - dayRange.location - dayRange.length);
+    
+    NSRange hourRange = [timeString rangeOfString:hourStr options:NSCaseInsensitiveSearch range:range1];
+    range1 = NSMakeRange(hourRange.location + hourRange.length, timeString.length - hourRange.location - hourRange.length);
+
+    NSRange minuteRange = [timeString rangeOfString:minStr options:NSCaseInsensitiveSearch range:range1];
+    range1 = NSMakeRange(minuteRange.location + minuteRange.length, timeString.length - minuteRange.location - minuteRange.length);
+
+    NSRange secondRange = [timeString rangeOfString:secStr options:NSCaseInsensitiveSearch range:range1];
+    NSLog(@"secondRange = %1d **** %1d", secondRange.location, secondRange.length);
+    
+    
+    NSMutableAttributedString * mTimeStr = [[NSMutableAttributedString alloc]initWithString:timeString];
+    
+    NSDictionary * timeAttribute = @{NSFontAttributeName:kMainFont,NSBackgroundColorAttributeName:UIColorFromRGB(0x000000)};
+    [mTimeStr setAttributes:timeAttribute range:NSMakeRange(0, 5)];
+    [mTimeStr setAttributes:timeAttribute range:NSMakeRange(dayRange.location - 1, dayRange.length + 2)];
+    [mTimeStr setAttributes:timeAttribute range:NSMakeRange(hourRange.location - 1, hourRange.length + 2)];
+    [mTimeStr setAttributes:timeAttribute range:NSMakeRange(minuteRange.location - 1, minuteRange.length + 2)];
+    [mTimeStr setAttributes:timeAttribute range:NSMakeRange(secondRange.location - 1, secondRange.length + 2)];
+
+    return mTimeStr;
+}
+
 
 @end
