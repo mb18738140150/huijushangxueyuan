@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AssociationCenterViewController : ViewController
 
+@property (nonatomic, strong)NSMutableDictionary * infoDic;
+
 @end
 
 NS_ASSUME_NONNULL_END

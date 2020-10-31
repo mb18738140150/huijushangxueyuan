@@ -8,7 +8,7 @@
 #import "MyTeamViewController.h"
 #import "MyTeamInfoMemberTableViewCell.h"
 #define kMyTeamInfoMemberTableViewCell @"MyTeamInfoMemberTableViewCell"
-
+#import "CheackTeamMemberViewController.h"
 
 @interface MyTeamViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_MockVIPBuy>
 
@@ -90,7 +90,9 @@
 
 
 - (void)checkAction{
+    CheackTeamMemberViewController * vc = [[CheackTeamMemberViewController alloc]init];
     
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didRequestMockVIPBuySuccessed

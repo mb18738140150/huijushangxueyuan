@@ -11,6 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AssociationCommentDetailViewController : ViewController
 
+@property (nonatomic, strong)NSDictionary * associationInfo;
+@property (nonatomic, strong)NSDictionary * infoDic;
+@property (nonatomic, copy)void(^commentBlock)(NSDictionary * info);
+@property (nonatomic, copy)void(^deleteBlock)(NSDictionary * info);
+
 @end
 
 NS_ASSUME_NONNULL_END

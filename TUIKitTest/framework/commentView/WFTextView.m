@@ -569,7 +569,12 @@ void Draw_Emoji_For_Line(CGContextRef context, CTLineRef line, id owner, CGPoint
     myselfSelected.tag = 10102;
     [self insertSubview:myselfSelected belowSubview:self];
     myselfSelected.backgroundColor = kSelf_SelectedColor;
-    [_delegate clickWFCoretext:@"" replyIndex:_replyIndex];
+    if ([_delegate respondsToSelector:@selector(clickWFCoretext:replyIndex:)]) {
+        [_delegate clickWFCoretext:@"" replyIndex:_replyIndex];
+    }
+    if ([_delegate respondsToSelector:@selector(clickWFCoretextAllInfo:replyIndex:)]) {
+        [_delegate clickWFCoretextAllInfo:self.info replyIndex:_replyIndex];
+    }
     
     DELAYEXECUTE(0.3, {
         if ([self viewWithTag:10102]) {

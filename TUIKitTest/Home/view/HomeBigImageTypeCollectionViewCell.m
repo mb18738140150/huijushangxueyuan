@@ -66,7 +66,7 @@
     self.timeLB.textAlignment = NSTextAlignmentRight;
     [self.iconImageVIew addSubview:self.timeLB];
     self.timeLB.attributedText = [self getTimeWith:[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"begin_timestamp"]]];
-//    self.timeLB.hidden = YES;
+    self.timeLB.hidden = YES;
     
     // 直播状态
     self.livingStateView = [[LivingStateView alloc]initWithFrame:CGRectMake(5, self.iconImageVIew.hd_height - 25, 100, 20)];
@@ -335,7 +335,6 @@
     range1 = NSMakeRange(minuteRange.location + minuteRange.length, timeString.length - minuteRange.location - minuteRange.length);
 
     NSRange secondRange = [timeString rangeOfString:secStr options:NSCaseInsensitiveSearch range:range1];
-    NSLog(@"secondRange = %1d **** %1d", secondRange.location, secondRange.length);
     
     
     NSMutableAttributedString * mTimeStr = [[NSMutableAttributedString alloc]initWithString:timeString];

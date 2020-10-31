@@ -86,6 +86,7 @@
     [self.tableView.mj_header endRefreshing];
     if (newDataSource.count < 10) {
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
+        return;
     }else
     {
         [self.tableView.mj_footer endRefreshing];

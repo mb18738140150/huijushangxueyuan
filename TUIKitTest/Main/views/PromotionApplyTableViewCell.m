@@ -71,17 +71,17 @@
     phoneView.layer.borderWidth = 1;
     [contentView addSubview:phoneView];
     
-    self.chooseCountryBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _chooseCountryBtn.frame = CGRectMake(10, 1, 60, phoneView.hd_height - 2);
-    _chooseCountryBtn.backgroundColor = UIColorFromRGB(0xffffff);
-    _chooseCountryBtn.titleLabel.font = kMainFont;
-    [_chooseCountryBtn setTitle:@"+86" forState:UIControlStateNormal];
-    [_chooseCountryBtn setTitleColor:UIColorFromRGB(0x333333) forState:UIControlStateNormal];
-    [_chooseCountryBtn setImage:[UIImage imageNamed:@"down箭头"] forState:UIControlStateNormal];
-    [phoneView addSubview:_chooseCountryBtn];
-    [self resetChooseBtn];
+//    self.chooseCountryBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    _chooseCountryBtn.frame = CGRectMake(10, 1, 60, phoneView.hd_height - 2);
+//    _chooseCountryBtn.backgroundColor = UIColorFromRGB(0xffffff);
+//    _chooseCountryBtn.titleLabel.font = kMainFont;
+//    [_chooseCountryBtn setTitle:@"+86" forState:UIControlStateNormal];
+//    [_chooseCountryBtn setTitleColor:UIColorFromRGB(0x333333) forState:UIControlStateNormal];
+//    [_chooseCountryBtn setImage:[UIImage imageNamed:@"down箭头"] forState:UIControlStateNormal];
+//    [phoneView addSubview:_chooseCountryBtn];
+//    [self resetChooseBtn];
     
-    self.phoneTF = [[UITextField alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_chooseCountryBtn.frame) + 15, 1, phoneView.hd_width - 30, phoneView.hd_height - 2)];
+    self.phoneTF = [[UITextField alloc]initWithFrame:CGRectMake( 15, 1, phoneView.hd_width - 30, phoneView.hd_height - 2)];
     self.phoneTF.returnKeyType = UIReturnKeyDone;
     _phoneTF.textColor = UIColorFromRGB(0x333333);
     _phoneTF.placeholder = @"请输入手机号";
@@ -126,7 +126,7 @@
     [contentView addSubview:_applyBtn];
     
     
-    [self.chooseCountryBtn addTarget:self action:@selector(choosePhoneNumAction) forControlEvents:UIControlEventTouchUpInside];
+//    [self.chooseCountryBtn addTarget:self action:@selector(choosePhoneNumAction) forControlEvents:UIControlEventTouchUpInside];
     [self.getVerifyCodeBtn addTarget:self action:@selector(getVerifyCodeAction) forControlEvents:UIControlEventTouchUpInside];
     [self.applyBtn addTarget:self action:@selector(applyAction) forControlEvents:UIControlEventTouchUpInside];
     

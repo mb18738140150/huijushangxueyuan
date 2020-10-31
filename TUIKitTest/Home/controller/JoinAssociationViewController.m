@@ -10,14 +10,18 @@
 #define kJoinAssociationHeadTableViewCell @"JoinAssociationHeadTableViewCell"
 #import "AssociationCommentTableViewCell.h"
 #define kAssociationCommentTableViewCell @"AssociationCommentTableViewCell"
+#import "AssociationDetailViewController.h"
 
-@interface JoinAssociationViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface JoinAssociationViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_JoinAssociation>
 @property (nonatomic, strong)UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray *itemArray;
 
 @property (nonatomic, strong)ShareAndPaySelectView * payView;
 @property (nonatomic, strong)UIImageView * shareImageView;
 @property (nonatomic, strong)NSDictionary * shareInfo;
+@property (nonatomic, assign)int page;
+
+@property (nonatomic, strong)NSDictionary * associationInfo;
 
 @end
 
@@ -29,8 +33,10 @@
     }
     return _itemArray;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.page = 1;
     [self loadData];
     self.view.backgroundColor = UIColorFromRGB(0xf2f2f2);
     [self navigationViewSetup];
@@ -69,9 +75,8 @@
     self.tableView.backgroundColor = UIColorFromRGB(0xf2f2f2);
     [self.tableView registerClass:[JoinAssociationHeadTableViewCell class] forCellReuseIdentifier:kJoinAssociationHeadTableViewCell];
     [self.tableView registerClass:[AssociationCommentTableViewCell class] forCellReuseIdentifier:kAssociationCommentTableViewCell];
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
 
-//    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
-    
     
     UIView * bottomView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight - kNavigationBarHeight - kStatusBarHeight - 50, kScreenHeight, 50)];
     bottomView.backgroundColor = UIColorFromRGB(0xffffff);
@@ -86,29 +91,15 @@
     [joinBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
     joinBtn.titleLabel.font = kMainFont;
     [bottomView addSubview:joinBtn];
+    [joinBtn addTarget:self action:@selector(joinAction) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)loadData
 {
-    NSArray * imageArray = @[@"https://qiniu.luezhi.com/4263_70cd3_1597216334.png?imageslim",@"https://qiniu.luezhi.com/4263_70cd3_1597216334.png?imageslim",@"https://qiniu.luezhi.com/4263_3cf32_1600486365.png?imageslim",@"https://qiniu.luezhi.com/4263_3cf32_1600486365.png?imageslim",@"https://qiniu.luezhi.com/4263_c85e3_1601364131.jpg?imageslim",@"https://qiniu.luezhi.com/4263_c85e3_1601364131.jpg?imageslim", @"https://qiniu.luezhi.com/4263_c85e3_1601364131.jpg?imageslim",@"https://qiniu.luezhi.com/4263_8e29b_1601364117.jpg?imageslim",@"https://qiniu.luezhi.com/16003086956071600308695604-0.png?imageslim",@"https://qiniu.luezhi.com/4263_3cf32_1600486365.png?imageslim",@"https://qiniu.luezhi.com/4263_3cf32_1600486365.png?imageslim"];
-    
-    NSArray * imageArray1 = @[@"https://qiniu.luezhi.com/4263_8e29b_1601364117.jpg?imageslim",@"https://qiniu.luezhi.com/16003086956071600308695604-0.png?imageslim",@"https://qiniu.luezhi.com/4263_3cf32_1600486365.png?imageslim",@"https://qiniu.luezhi.com/4263_3cf32_1600486365.png?imageslim"];
-    
-    NSArray * imageArray2 = @[@"https://qiniu.luezhi.com/4263_70cd3_1597216334.png?imageslim",@"https://qiniu.luezhi.com/4263_70cd3_1597216334.png?imageslim",@"https://qiniu.luezhi.com/4263_3cf32_1600486365.png?imageslim",@"https://qiniu.luezhi.com/4263_3cf32_1600486365.png?imageslim",@"https://qiniu.luezhi.com/4263_c85e3_1601364131.jpg?imageslim",@"https://qiniu.luezhi.com/4263_c85e3_1601364131.jpg?imageslim",@"https://qiniu.luezhi.com/4263_3cf32_1600486365.png?imageslim"];
-    
-    NSDictionary * info = @{@"avatar":@"https://thirdwx.qlogo.cn/mmopen/vi_32/8Yibib2TosQHtccDAzEJobxoftcVujXyWhqVt0Hauz9pEhFIQ9x3euhhTLwPrVnYAGPOQ3s3jmCQVF6RPLv2rQyA/132",@"name":@"梁朝伟",@"images":imageArray,@"time":@"2020-10-28 12:12:89", @"content":@"还记得你覅U盾百日uehrjvnlknlrglermogpijeropigjerpig浦东人家公婆kg破开工；都没人工破没人"};
-    
-    NSDictionary * info1 = @{@"avatar":@"https://thirdwx.qlogo.cn/mmopen/vi_32/8Yibib2TosQHtccDAzEJobxoftcVujXyWhqVt0Hauz9pEhFIQ9x3euhhTLwPrVnYAGPOQ3s3jmCQVF6RPLv2rQyA/132",@"name":@"梁朝伟",@"images":@[],@"time":@"2020-10-28 12:12:89", @"content":@"还记得你覅U盾百日uehrjvnlknlrglermogpijeropigjerpig浦东人家公婆kg破开工；都没人工破没人"};
-    
-    NSDictionary * info2 = @{@"avatar":@"https://thirdwx.qlogo.cn/mmopen/vi_32/8Yibib2TosQHtccDAzEJobxoftcVujXyWhqVt0Hauz9pEhFIQ9x3euhhTLwPrVnYAGPOQ3s3jmCQVF6RPLv2rQyA/132",@"name":@"梁朝伟",@"images":imageArray1,@"time":@"2020-10-28 12:12:89", @"content":@"还记得你覅U盾百日uehrjvnlknlrglermogpijeropigjerpig浦东人家公婆kg破开工；都没人工破没人"};
-    
-    NSDictionary * info3 = @{@"avatar":@"https://thirdwx.qlogo.cn/mmopen/vi_32/8Yibib2TosQHtccDAzEJobxoftcVujXyWhqVt0Hauz9pEhFIQ9x3euhhTLwPrVnYAGPOQ3s3jmCQVF6RPLv2rQyA/132",@"name":@"梁朝伟",@"images":imageArray2,@"time":@"2020-10-28 12:12:89", @"content":@"还记得"};
-    
-    [self.itemArray addObject:info];
-    [self.itemArray addObject:info1];
-    [self.itemArray addObject:info2];
-    [self.itemArray addObject:info3];
-    
+    self.page = 1;
+    [SVProgressHUD show];
+    [[UserManager sharedManager] getJoinAssociationWith:@{kUrlName:@"api/community/communityinfoandJoin",@"c_id":[self.infoDic objectForKey:@"id"],kRequestType:@"get",@"include":@"share,dynamics"} withNotifiedObject:self];
+
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -135,7 +126,7 @@
     }
     
     JoinAssociationHeadTableViewCell *titleCell = [tableView dequeueReusableCellWithIdentifier:kJoinAssociationHeadTableViewCell forIndexPath:indexPath];
-    [titleCell resetCellContent:self.infoDic];
+    [titleCell resetCellContent:self.associationInfo];
     titleCell.activeBlock = ^{
         [weakSelf shareAction];
     };
@@ -148,8 +139,13 @@
         NSDictionary * info = self.itemArray[indexPath.row];
         NSString * contentStr = [info objectForKey:@"content"];
         CGFloat height = [contentStr boundingRectWithSize:CGSizeMake(tableView.hd_width - 70, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kMainFont} context:nil].size.height;
+//        NSString * htmlString = [UIUtility judgeStr:[info objectForKey:@"content"]];
+//        htmlString = [htmlString gtm_stringByUnescapingFromHTML];
+//        NSAttributedString * attrStr = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+//        CGFloat height = [attrStr boundingRectWithSize:CGSizeMake(tableView.hd_width - 70, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size.height;
         
-        int imageCount = [[info objectForKey:@"images"] count] % 3 == 0 ? [[info objectForKey:@"images"] count] / 3 : [[info objectForKey:@"images"] count] / 3 + 1;
+        
+        int imageCount = [[info objectForKey:@"c_imgs"] count] % 3 == 0 ? [[info objectForKey:@"c_imgs"] count] / 3 : [[info objectForKey:@"c_imgs"] count] / 3 + 1;
         CGFloat imageHeight = (kCellHeightOfCategoryView + 5) * imageCount;
         
         
@@ -197,6 +193,50 @@
                                  InScene:WXSceneTimeline];
     }
 }
+
+- (void)joinAction
+{
+    AssociationDetailViewController * vc = [[AssociationDetailViewController alloc]init];
+    vc.infoDic = self.infoDic;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - associationDetail
+
+
+- (void)getShareInfo:(NSDictionary *)info
+{
+    NSDictionary * shareInfo = [info objectForKey:@"share"];
+    self.shareInfo = shareInfo;
+    self.shareImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
+    [self.view addSubview:self.shareImageView];
+    self.shareImageView.hidden = YES;
+    
+    [self.shareImageView sd_setImageWithURL:[NSURL URLWithString:[[UIUtility judgeStr:[shareInfo objectForKey:@"thumb"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:[UIImage imageNamed:@"courseDefaultImage"] options:SDWebImageAllowInvalidSSLCertificates];
+    
+}
+
+- (void)didJoinAssociationSuccessed{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    self.associationInfo = [[UserManager sharedManager] getJoinAssociationInfo];
+    self.itemArray = [[self.associationInfo objectForKey:@"dynamics"] objectForKey:@"data"];
+    
+    
+    [self getShareInfo:self.associationInfo];
+    [self.tableView reloadData];
+}
+
+- (void)didJoinAssociationFailed:(NSString *)failInfo
+{
+    [SVProgressHUD dismiss];
+    [SVProgressHUD showErrorWithStatus:failInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
+
+
 
 - (void)dealloc
 {

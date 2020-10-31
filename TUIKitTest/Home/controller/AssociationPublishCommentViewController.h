@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AssociationPublishCommentViewController : ViewController
 
+@property (nonatomic, copy)void(^publishBlock)(NSDictionary *info);
+@property (nonatomic, strong)NSDictionary * info;
+
 @end
 
 NS_ASSUME_NONNULL_END

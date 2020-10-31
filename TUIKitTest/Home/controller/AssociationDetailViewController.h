@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AssociationDetailViewController : ViewController
 
+@property (nonatomic, strong)NSDictionary * infoDic;
+
 @end
 
 NS_ASSUME_NONNULL_END

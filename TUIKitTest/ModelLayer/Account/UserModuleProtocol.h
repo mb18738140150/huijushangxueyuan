@@ -210,10 +210,61 @@
 
 @end
 
+@protocol UserModule_AssociationList <NSObject>
 
+- (void)didAssociationListSuccessed;
+- (void)didAssociationListFailed:(NSString *)failInfo;
 
+@end
 
+@protocol UserModule_JoinAssociation <NSObject>
 
+- (void)didJoinAssociationSuccessed;
+- (void)didJoinAssociationFailed:(NSString *)failInfo;
+
+@end
+
+@protocol UserModule_AssociationDetail <NSObject>
+
+- (void)didAssociationDetailSuccessed;
+- (void)didAssociationDetailFailed:(NSString *)failInfo;
+
+@end
+
+@protocol UserModule_AssociationDynamic <NSObject>
+
+- (void)didAssociationDynamicSuccessed;
+- (void)didAssociationDynamicFailed:(NSString *)failInfo;
+
+@end
+
+@protocol UserModule_deleteDynamic <NSObject>
+
+- (void)didDeleteDynamicSuccessed;
+- (void)didDeleteDynamicFailed:(NSString *)failInfo;
+
+@end
+
+@protocol UserModule_jingpinDynamic <NSObject>
+
+- (void)didjingpinDynamicSuccessed;
+- (void)didjingpinDynamicFailed:(NSString *)failInfo;
+
+@end
+
+@protocol UserModule_AddDynamicComment <NSObject>
+
+- (void)didAddDynamicCommentSuccessed;
+- (void)didAddDynamicCommentFailed:(NSString *)failInfo;
+
+@end
+
+@protocol UserModule_DeleteDynamicComment <NSObject>
+
+- (void)didDeleteDynamicCommentSuccessed;
+- (void)didDeleteDynamicCommentFailed:(NSString *)failInfo;
+
+@end
 
 
 

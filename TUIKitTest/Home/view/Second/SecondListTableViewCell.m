@@ -244,7 +244,7 @@
     payCountLabel.text = comeStr;
     
     
-    NSString * moneyStr = [NSString stringWithFormat:@"%@%@", [SoftManager shareSoftManager].coinName,[info objectForKey:@"look_num"]];
+    NSString * moneyStr = [NSString stringWithFormat:@"%@%@", [SoftManager shareSoftManager].coinName,[info objectForKey:@"divide_money"]];
     CGFloat width1 = [moneyStr boundingRectWithSize:CGSizeMake(MAXFLOAT, 20) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kMainFont_12} context:nil].size.width;
     self.payCountLabel = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(payCountLabel.frame) - 1, payCountLabel.hd_y, width1 + 5, payCountLabel.hd_height)];
     _payCountLabel.backgroundColor = UIRGBColor(74, 44, 16);
@@ -358,6 +358,13 @@
     }else
     {
         return [NSString stringWithFormat:@"￥%@ ￥%@", str1,str2];
+    }
+}
+
+- (void)applyAction
+{
+    if (self.promotionBlock) {
+        self.promotionBlock(self.info);
     }
 }
 

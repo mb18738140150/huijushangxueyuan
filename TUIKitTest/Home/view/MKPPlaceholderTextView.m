@@ -73,6 +73,10 @@
     [self.placeholderLabel sizeToFit];
 }
 
+-(void)resetPlaceholderLabel
+{
+    self.placeholderLabel.hd_width = self.hd_width - 2 * self.placeholderLabel.hd_x;
+}
 #pragma mark - 重写setter
 -(void)setPlaceholderColor:(UIColor *)placeholderColor
 {
@@ -109,5 +113,8 @@
     
     [self textDidChange];
 }
-
+- (void)setPlaceholderTextAlignment:(NSTextAlignment)alignment
+{
+    self.placeholderLabel.textAlignment = alignment;
+}
 @end

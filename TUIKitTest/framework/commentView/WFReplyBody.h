@@ -29,4 +29,6 @@
 
 @property (nonatomic, copy)NSNumber * commentId;
 
+@property (nonatomic, copy)NSDictionary * info;
+
 @end

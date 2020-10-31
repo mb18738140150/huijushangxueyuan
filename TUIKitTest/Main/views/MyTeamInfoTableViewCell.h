@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MyTeamInfoTableViewCell : UITableViewCell
 
+- (void)refreshUIWithInfo:(NSDictionary *)info;
+
 @end
 
 NS_ASSUME_NONNULL_END

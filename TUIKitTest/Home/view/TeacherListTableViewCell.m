@@ -13,7 +13,7 @@
 @property (nonatomic, strong)UILabel * titleLB;
 @property (nonatomic, strong)UILabel * countLB;
 @property (nonatomic, strong)UIImageView * goImage;
-
+@property (nonatomic, strong)UIButton *blackBtn;
 @end
 
 @implementation TeacherListTableViewCell
@@ -159,6 +159,67 @@
         [btn addTarget:self action:@selector(checkDetail) forControlEvents:UIControlEventTouchUpInside];
         [backView addSubview:btn];
         
+    }
+}
+
+- (void)refreshMemberUIWith:(NSDictionary *)info
+{
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    [self.contentView removeAllSubviews];
+    self.backgroundColor = UIColorFromRGB(0xf2f2f2);
+    self.infoDic = info;
+    
+    UIView * backView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.hd_width - 0, self.hd_height)];
+    backView.backgroundColor = UIColorFromRGB(0xffffff);
+    [self.contentView addSubview:backView];
+    
+    self.courseCover = [[UIImageView alloc]initWithFrame:CGRectMake(15, 10, backView.hd_height - 20, backView.hd_height - 20)];
+    [self.courseCover sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [info objectForKey:@"avatar"]]] placeholderImage:[UIImage imageNamed:@"头像加载失败"] options:SDWebImageAllowInvalidSSLCertificates];
+    self.courseCover.layer.cornerRadius = self.courseCover.hd_height / 2;
+    self.courseCover.layer.masksToBounds = YES;
+    [backView addSubview:self.courseCover];
+    
+    self.titleLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.courseCover.frame) + 15, self.courseCover.hd_y, self.hd_width - 30, self.courseCover.hd_height)];
+    self.titleLB.textColor = UIColorFromRGB(0x333333);
+    self.titleLB.font = kMainFont;
+    self.titleLB.text = [NSString stringWithFormat:@"%@", [UIUtility judgeStr:[info objectForKey:@"c_name"]]];
+    
+    [backView addSubview:self.titleLB];
+    
+    UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(kScreenWidth - 100, 0, 80, self.hd_height);
+    if ([[info objectForKey:@"is_black"] intValue] == 1) {
+        [button setTitle:@"加入黑名单" forState:UIControlStateNormal];
+    }else
+    {
+        [button setTitle:@"移出黑名单" forState:UIControlStateNormal];
+    }
+    button.titleLabel.font = kMainFont;
+    [button setTitleColor:kCommonMainBlueColor forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(blackAction) forControlEvents:UIControlEventTouchUpInside];
+    button.hidden = YES;
+    self.blackBtn = button;
+    [self.contentView addSubview:button];
+    
+    UIView * separateView = [[UIView alloc]initWithFrame:CGRectMake(15, self.hd_height - 1, backView.hd_width - 30, 1)];
+    separateView.backgroundColor = UIColorFromRGB(0xf2f2f2);
+    [backView addSubview:separateView];
+    
+}
+
+- (void)resetEditBtn:(BOOL)canEdit
+{
+    if (canEdit) {
+        self.blackBtn.hidden = NO;
+    }else
+    {
+        self.blackBtn.hidden = YES;
+    }
+}
+
+- (void)blackAction{
+    if (self.blackBlock) {
+        self.blackBlock(self.infoDic);
     }
 }
 

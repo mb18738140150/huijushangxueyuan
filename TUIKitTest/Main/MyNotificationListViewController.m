@@ -95,6 +95,7 @@
     NSArray * list = [[UserManager sharedManager] getNotificationArray];
     if (list.count == 0) {
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
+        return;
     }else
     {
         [self.tableView.mj_footer endRefreshing];

@@ -15,7 +15,7 @@
 
 @property (nonatomic, assign)BOOL isTeacher;
 @property (nonatomic, assign)int  news_num;
-
+@property (nonatomic, assign)BOOL  is_admin;
 
 + (instancetype)sharedManager;
 
@@ -157,6 +157,32 @@
 - (void)getVerifyAccountWithAccountNumber:(NSString *)accountNumber withNotifiedObject:(id<UserModule_VerifyAccountProtocol>)object;
 - (void)getVerifyCodeWithPhoneNumber:(NSDictionary *)phoneNumber withNotifiedObject:(id<UserModule_VerifyCodeProtocol>)object;
 - (NSString *)getVerifyCode;
+
+// 获取社群列表
+- (void)getAssociationListWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_AssociationList>)object;
+-(NSArray *)getAssociationList;
+
+// 社群
+- (void)getJoinAssociationWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_JoinAssociation>)object;
+- (NSDictionary *)getJoinAssociationInfo;
+- (void)getAssociationDetailWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_AssociationDetail>)object;
+- (NSDictionary *)getAssociationDetailInfo;
+- (void)getAssociationDynamicWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_AssociationDynamic>)object;
+- (NSArray *)getAssociationDynamicList;
+- (void)getdeleteDynamicWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_deleteDynamic>)object;
+
+// 设置精品
+- (void)getjingpinDynamicWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_jingpinDynamic>)object;
+
+// 添加 删除动态评论
+- (void)getAddDynamicCommentWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_AddDynamicComment>)object;
+- (void)getDeleteDynamicCommentWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_DeleteDynamicComment>)object;
+
+
+
+
+
+
 
 
 - (NSArray *)getHomeAnswerArray;

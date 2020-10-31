@@ -10,9 +10,9 @@
 #import "AssociationListTableViewCell.h"
 #define kAssociationListTableViewCell @"AssociationListTableViewCell"
 
-@interface AssoiciationListViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface AssoiciationListViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_AssociationList>
 @property (nonatomic, strong)UITableView * tableView;
-
+@property (nonatomic, assign)int page;
 @property (nonatomic, strong) NSMutableArray *itemArray;
 @end
 
@@ -26,11 +26,13 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.itemArray = [self.array mutableCopy];
+    self.page = 1;
     [self navigationViewSetup];
     [self prepareUI];
+    [self loadData];
 }
+
+
 
 #pragma mark - ui
 - (void)navigationViewSetup
@@ -62,12 +64,20 @@
     self.tableView.backgroundColor = UIColorFromRGB(0xf2f2f2);
     [self.tableView registerClass:[AssociationListTableViewCell class] forCellReuseIdentifier:kAssociationListTableViewCell];
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
-//    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(doNextPageQuestionRequest)];
+    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(doNextPageQuestionRequest)];
 }
 
 - (void)loadData
 {
-    
+    self.page = 1;
+    [SVProgressHUD show];
+    [[UserManager sharedManager] getAssociationListWith:@{kUrlName:@"api/community/lists",@"page":@(self.page)} withNotifiedObject:self];
+}
+
+- (void)doNextPageQuestionRequest
+{
+    self.page++;
+    [[UserManager sharedManager] getAssociationListWith:@{kUrlName:@"api/community/lists",@"page":@(self.page)} withNotifiedObject:self];
 }
 
 
@@ -97,6 +107,41 @@
 {
     return 80;
 }
+
+- (void)didAssociationListSuccessed
+{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    NSArray * list = [[UserManager sharedManager] getAssociationList];
+    if (list.count <= 0) {
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+        return;
+    }else
+    {
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+    }
+    if (self.page == 1) {
+        [self.itemArray removeAllObjects];
+    }
+    
+    for (NSDictionary * info in list) {
+        [self.itemArray addObject:info];
+    }
+    [self.tableView reloadData];
+    
+}
+
+- (void)didAssociationListFailed:(NSString *)failInfo
+{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    [self.tableView.mj_footer endRefreshing];
+    [SVProgressHUD showErrorWithStatus:failInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
+
 
 
 @end

@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy)void(^buyCourseBlock)();
 
+@property (nonatomic, copy)void(^promotionBlock)(NSDictionary * info);
 
 @property (nonatomic, strong)NSDictionary * info;
 - (void)resetCellContent:(NSDictionary *)info;

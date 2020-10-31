@@ -90,6 +90,14 @@
 #import "PayCourseOperation.h"
 #import "MyIncomeOperation.h"
 #import "MyPromotionOperation.h"
+#import "AssociationListOperation.h"
+#import "JoinAssociationOperation.h"
+#import "AssociationDetailOperation.h"
+#import "AssociationDynamicOperation.h"
+#import "DeleteDynamicOperation.h"
+#import "JingpinDynamicOperation.h"
+#import "AddDynamicCommentOperation.h"
+#import "DeleteDynamicComment.h"
 
 @interface UserManager()
 @property (nonatomic,strong) TabbarOperation       *tabbarOperation;
@@ -114,6 +122,14 @@
 @property (nonatomic, strong)MyIncomeOperation         *myIncomeOperation;
 @property (nonatomic, strong)MyPromotionOperation         *myPromotionOperation;
 @property (nonatomic, strong)AddCourseStudyRecordOperation            *applyPromotionOperation;
+@property (nonatomic, strong)AssociationListOperation            *AssociationListOperation;
+@property (nonatomic, strong)JoinAssociationOperation            *JoinAssociationOperation;
+@property (nonatomic, strong)AssociationDetailOperation            *AssociationDetailOperation;
+@property (nonatomic, strong)AssociationDynamicOperation            *AssociationDynamicOperation;
+@property (nonatomic, strong)DeleteDynamicOperation            *DeleteDynamicOperation;
+@property (nonatomic, strong)JingpinDynamicOperation            *jingpinDynamicOperation;
+@property (nonatomic, strong)AddDynamicCommentOperation            *addDynamicCommentOperation;
+@property (nonatomic, strong)DeleteDynamicComment            *deleteDynamicComment;
 
 @property (nonatomic, strong)AddShoppingCarOperation         *addShoppingCarOperation;
 @property (nonatomic, strong)DeleteShoppingCarOperation         *deleteShoppingCarOperation;
@@ -228,8 +244,15 @@
         self.myIncomeOperation = [[MyIncomeOperation alloc]init];
         self.myPromotionOperation = [[MyPromotionOperation alloc]init];
         self.applyPromotionOperation = [[AddCourseStudyRecordOperation alloc]init];
+        self.AssociationListOperation = [[AssociationListOperation alloc]init];
+        self.JoinAssociationOperation = [[JoinAssociationOperation alloc]init];
+        self.AssociationDetailOperation = [[AssociationDetailOperation alloc]init];
+        self.AssociationDynamicOperation = [[AssociationDynamicOperation alloc]init];
+        self.DeleteDynamicOperation = [[DeleteDynamicOperation alloc]init];
+        self.jingpinDynamicOperation = [[JingpinDynamicOperation alloc]init];
+        self.addDynamicCommentOperation = [[AddDynamicCommentOperation alloc]init];
+        self.deleteDynamicComment = [[DeleteDynamicComment alloc]init];
 
-        
         self.SecondCategoryOperation = [[SecondCategoryOperation alloc]init];
         self.categoryCourseOperation = [[CategoryCourseOperation alloc]init];
         
@@ -682,6 +705,64 @@
 - (NSString *)getVerifyCode
 {
     return self.verifyCodeOperation.verifyCode;
+}
+
+// 获取社群列表
+- (void)getAssociationListWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_AssociationList>)object
+{
+    [self.AssociationListOperation getAssociationListWith:info withNotifiedObject:object];
+}
+-(NSArray *)getAssociationList
+{
+    return self.AssociationListOperation.list;
+}
+
+// 社群
+- (void)getJoinAssociationWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_JoinAssociation>)object
+{
+    [self.JoinAssociationOperation getJoinAssociationWith:info withNotifiedObject:object];
+}
+
+- (NSDictionary *)getJoinAssociationInfo
+{
+    return self.JoinAssociationOperation.info;
+}
+
+- (void)getAssociationDetailWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_AssociationDetail>)object
+{
+    [self.AssociationDetailOperation getAssociationDetailWith:info withNotifiedObject:object];
+}
+- (NSDictionary *)getAssociationDetailInfo
+{
+    return self.AssociationDetailOperation.info;
+}
+- (void)getAssociationDynamicWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_AssociationDynamic>)object
+{
+    [self.AssociationDynamicOperation getAssociationDynamicWith:info withNotifiedObject:object];
+}
+- (NSArray *)getAssociationDynamicList
+{
+    return self.AssociationDynamicOperation.list;
+}
+- (void)getdeleteDynamicWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_deleteDynamic>)object
+{
+    [self.DeleteDynamicOperation getdeleteDynamicWith:info withNotifiedObject:object];
+}
+
+// 设置精品
+- (void)getjingpinDynamicWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_jingpinDynamic>)object
+{
+    [self.jingpinDynamicOperation getjingpinDynamicWith:info withNotifiedObject:object];
+}
+
+// 添加动态评论
+- (void)getAddDynamicCommentWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_AddDynamicComment>)object
+{
+    [self.addDynamicCommentOperation getAddDynamicCommentWith:info withNotifiedObject:object];
+}
+- (void)getDeleteDynamicCommentWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_DeleteDynamicComment>)object
+{
+    [self.deleteDynamicComment getDeleteDynamicCommentWith:info withNotifiedObject:object];
 }
 
 

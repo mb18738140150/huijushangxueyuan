@@ -13,12 +13,12 @@
 @interface MyIncomeViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_IncomeInfo,UserModule_GiftList>
 @property (nonatomic, assign)int page;
 @property (nonatomic, assign)int pagesize;
+@property (nonatomic, strong) NSMutableArray *pageIndexArray;
 @property (nonatomic, strong)ZWMSegmentView * courseSegment;
 
 @property (nonatomic, strong)UITableView * tableView;
 @property (nonatomic, strong) NSArray *categoryArray;
 @property (nonatomic, strong) NSMutableArray *itemArray;
-@property (nonatomic, strong) NSMutableArray *pageIndexArray;
 
 @property (nonatomic, assign)BOOL isTeacher;
 @property (nonatomic, strong)NSString * sort;// desc:倒序 asc:正序

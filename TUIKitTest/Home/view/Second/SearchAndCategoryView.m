@@ -113,8 +113,8 @@
     self.zixunSegment = [[ZWMSegmentView alloc] initWithFrame:CGRectMake(17.5, CGRectGetMaxY(self.backView.frame), self.backView.hd_width, 44) titles:titleArray];
        __weak typeof(self)weakSelf = self;
        _zixunSegment.backgroundColor=[UIColor whiteColor];
-       _zixunSegment.indicateColor = kCommonMainBlueColor;
-    _zixunSegment.segmentTintColor = kCommonMainBlueColor;
+       _zixunSegment.indicateColor = UIColorFromRGB(0x333333);
+    _zixunSegment.segmentTintColor = UIColorFromRGB(0x333333);
     
        [self addSubview:_zixunSegment];
 }

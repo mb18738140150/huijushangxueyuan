@@ -15,6 +15,7 @@
 @protocol WFCoretextDelegate <NSObject>
 
 - (void)clickWFCoretext:(NSString *)clickString replyIndex:(NSInteger)index;
+- (void)clickWFCoretextAllInfo:(NSDictionary *)info replyIndex:(NSInteger)index;
 
 - (void)longClickWFCoretext:(NSString *)clickString replyIndex:(NSInteger)index;
 
@@ -33,6 +34,8 @@
 @property (nonatomic,assign) CFIndex limitCharIndex;//限制行的最后一个char的index
 @property (nonatomic,assign) BOOL canClickAll;//是否可点击整段文字
 @property (nonatomic,assign) NSInteger replyIndex;
+
+@property (nonatomic, assign)NSDictionary * info;// 该评论信息（包含id等信息）
 
 @property (nonatomic, strong)NSMutableArray * datauserInfoArr;// 对应的用户信息数组
 

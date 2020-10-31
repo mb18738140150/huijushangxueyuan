@@ -12,7 +12,7 @@
 - (void)resetCellContent:(NSDictionary *)info
 {
     [self.contentView removeAllSubviews];
-
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
     float cellWidth = self.contentView.hd_width;
     
     // 100
@@ -25,7 +25,7 @@
     
     // teacher
     self.groupIconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
-    [self.groupIconImageView sd_setImageWithURL:[NSURL URLWithString:[info objectForKey:@"logo"]] placeholderImage:[[UIImage imageNamed:@"img_km0"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] options:SDWebImageAllowInvalidSSLCertificates];
+    [self.groupIconImageView sd_setImageWithURL:[NSURL URLWithString:[info objectForKey:@"thumb"]] placeholderImage:[[UIImage imageNamed:@"courseDefaultImage"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] options:SDWebImageAllowInvalidSSLCertificates];
     self.groupIconImageView.layer.cornerRadius = kMainCornerRadius * 2;
     self.groupIconImageView.layer.masksToBounds = YES;
     [backView addSubview:self.groupIconImageView];
