@@ -476,7 +476,7 @@ typedef enum : NSUInteger {
 
 - (void)alipay:(NSString *)url
 {
-    [[AlipaySDK defaultService] payOrder:url fromScheme:@"alipay" callback:^(NSDictionary *resultDic) {
+    [[AlipaySDK defaultService] payOrder:url fromScheme:@"huijushangxueyuan" callback:^(NSDictionary *resultDic) {
         NSLog(@"%@",resultDic);
         NSString *str = resultDic[@"memo"];
         [SVProgressHUD showErrorWithStatus:str];

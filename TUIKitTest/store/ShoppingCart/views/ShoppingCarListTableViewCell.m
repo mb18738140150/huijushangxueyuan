@@ -28,7 +28,7 @@
 
 - (void)refreshSelectUIWithInfo:(NSDictionary *)info
 {
-    
+    self.info = info;
     UIButton * selectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     selectBtn.frame = CGRectMake(10, self.hd_height / 2 - 7, 15, 15);
     [selectBtn setImage:[UIImage imageNamed:@"shoppingCar_selected"] forState:UIControlStateSelected];
@@ -38,12 +38,59 @@
     [self.contentView addSubview:selectBtn];
     
     self.iconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(selectBtn.frame) + 10, 10, 85, 60)];
-    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:[info objectForKey:@"image"]] placeholderImage:[UIImage imageNamed:@"placeholdImage"]];
+    self.iconImageView.layer.cornerRadius = 5;
+    self.iconImageView.layer.masksToBounds = YES;
+    [self.contentView addSubview:self.iconImageView];
+    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[info objectForKey:@"thumb"]]] placeholderImage:[UIImage imageNamed:@"courseDefaultImage"] options:SDWebImageAllowInvalidSSLCertificates];
+    
+    self.titleLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.iconImageView.frame) + 10, self.iconImageView.hd_y, self.hd_width - 120 - 35, 15)];
+    self.titleLB.text = [info objectForKey:@"title"];
+    self.titleLB.font = [UIFont systemFontOfSize:12];
+    self.titleLB.textColor = UIColorFromRGB(0x000000);
+    [self.contentView addSubview:self.titleLB];
+    
+    self.priceLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.iconImageView.frame) + 10, self.iconImageView.hd_y + 15, self.hd_width - 200, 15)];
+    self.priceLB.font = [UIFont systemFontOfSize:12];
+    self.priceLB.textColor = kCommonMainBlueColor;
+    [self.contentView addSubview:self.priceLB];
+    NSString * priceLB = [NSString stringWithFormat:@"￥%@", [info objectForKey:@"price"]];
+    self.priceLB.text = priceLB;
+    
+    __weak typeof(self)weakSelf = self;
+    self.packageCountView = [[PackageCountView alloc]initWithFrame:CGRectMake(self.priceLB.hd_x , CGRectGetMaxY(self.priceLB.frame), 85, 30)];
+    self.packageCountView.countBlock = ^(int count) {
+        weakSelf.buyCount = count;
+        if (weakSelf.countBlock) {
+            weakSelf.countBlock(count);
+        }
+    };
+    self.packageCountView.countLB.text = [NSString stringWithFormat:@"%@", [info objectForKey:@"count"]];
+    
+    [self.contentView addSubview:self.packageCountView];
+    
+    
+    UIButton * deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    deleteBtn.frame = CGRectMake(kScreenWidth - 40, self.packageCountView.hd_y + 10, 20, 20);
+    [deleteBtn setImage:[UIImage imageNamed:@"删除"] forState:UIControlStateNormal];
+    [self.contentView addSubview:deleteBtn];
+    
+    [deleteBtn addTarget:self action:@selector(deleteAction) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIView * seperateView = [[UIView alloc]initWithFrame:CGRectMake(15, self.contentView.hd_height - 1, self.hd_width - 30, 1)];
+    seperateView.backgroundColor = UIColorFromRGB(0xececec);
+    [self.contentView addSubview:seperateView];
+}
+
+- (void)refreshUIWithInfo:(NSDictionary *)info
+{
+   
+    self.iconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, 10, 85, 60)];
+    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:[info objectForKey:@"thumb"]] placeholderImage:[UIImage imageNamed:@"courseDefaultImage"]];
     self.iconImageView.layer.cornerRadius = 5;
     self.iconImageView.layer.masksToBounds = YES;
     [self.contentView addSubview:self.iconImageView];
     
-    self.titleLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.iconImageView.frame) + 10, self.iconImageView.hd_y, self.hd_width - 120 - 35, 20)];
+    self.titleLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.iconImageView.frame) + 10, self.iconImageView.hd_y, self.hd_width - 120, 15)];
     self.titleLB.text = [info objectForKey:@"title"];
     self.titleLB.font = [UIFont systemFontOfSize:12];
     self.titleLB.textColor = UIColorFromRGB(0x000000);
@@ -63,52 +110,7 @@
     self.priceLB.text = priceLB;
     
     __weak typeof(self)weakSelf = self;
-    self.packageCountView = [[PackageCountView alloc]initWithFrame:CGRectMake(self.hd_width - 100 , self.priceLB.hd_y, 85, 23)];
-    self.packageCountView.countBlock = ^(int count) {
-        weakSelf.buyCount = count;
-        if (weakSelf.countBlock) {
-            weakSelf.countBlock(count);
-        }
-    };
-    self.packageCountView.countLB.text = [NSString stringWithFormat:@"%@", [info objectForKey:@"count"]];
-    
-    [self.contentView addSubview:self.packageCountView];
-    
-    UIView * seperateView = [[UIView alloc]initWithFrame:CGRectMake(15, self.contentView.hd_height - 1, self.hd_width - 30, 1)];
-    seperateView.backgroundColor = UIColorFromRGB(0xececec);
-    [self.contentView addSubview:seperateView];
-}
-
-- (void)refreshUIWithInfo:(NSDictionary *)info
-{
-   
-    self.iconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, 10, 85, 60)];
-    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:[info objectForKey:@"image"]] placeholderImage:[UIImage imageNamed:@"placeholdImage"]];
-    self.iconImageView.layer.cornerRadius = 5;
-    self.iconImageView.layer.masksToBounds = YES;
-    [self.contentView addSubview:self.iconImageView];
-    
-    self.titleLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.iconImageView.frame) + 10, self.iconImageView.hd_y, self.hd_width - 120, 20)];
-    self.titleLB.text = [info objectForKey:@"title"];
-    self.titleLB.font = [UIFont systemFontOfSize:12];
-    self.titleLB.textColor = UIColorFromRGB(0x000000);
-    [self.contentView addSubview:self.titleLB];
-    
-    self.tipLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.iconImageView.frame) + 10, self.iconImageView.hd_y + 20, self.hd_width - 120, 20)];
-    self.tipLB.textColor = UIColorFromRGB(0x666666);
-    self.tipLB.text = [NSString stringWithFormat:@"%@", [info objectForKey:@"tip"]];
-    self.tipLB.font = [UIFont systemFontOfSize:10];
-    [self.contentView addSubview:self.tipLB];
-    
-    self.priceLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.iconImageView.frame) + 10, self.iconImageView.hd_y + 40, self.hd_width - 200, 20)];
-    self.priceLB.font = [UIFont systemFontOfSize:12];
-    self.priceLB.textColor = kCommonMainBlueColor;
-    [self.contentView addSubview:self.priceLB];
-    NSString * priceLB = [NSString stringWithFormat:@"￥%@", [info objectForKey:@"price"]];
-    self.priceLB.text = priceLB;
-    
-    __weak typeof(self)weakSelf = self;
-    self.packageCountView = [[PackageCountView alloc]initWithFrame:CGRectMake(self.hd_width - 100 , self.priceLB.hd_y, 85, 23)];
+    self.packageCountView = [[PackageCountView alloc]initWithFrame:CGRectMake(self.hd_width - 100 , CGRectGetMaxY(self.priceLB.frame), 85, 23)];
     self.packageCountView.countBlock = ^(int count) {
         weakSelf.buyCount = count;
         if (weakSelf.countBlock) {
@@ -130,7 +132,7 @@
     
     
     self.iconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, 10, 85, 60)];
-    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:[info objectForKey:@"image"]] placeholderImage:[UIImage imageNamed:@"placeholdImage"]];
+    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:[info objectForKey:@"image"]] placeholderImage:[UIImage imageNamed:@"courseDefaultImage"]];
     self.iconImageView.layer.cornerRadius = 5;
     self.iconImageView.layer.masksToBounds = YES;
     [self.contentView addSubview:self.iconImageView];
@@ -171,6 +173,13 @@
 {
     if (self.selectBtnClickBlock) {
         self.selectBtnClickBlock(self.info,self.selectBtn.selected);
+    }
+}
+
+- (void)deleteAction
+{
+    if (self.deleteBlock) {
+        self.deleteBlock(self.info);
     }
 }
 

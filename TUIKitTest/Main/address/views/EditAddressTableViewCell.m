@@ -54,7 +54,7 @@
     self.morenBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.morenBtn.frame = CGRectMake(self.hd_width - 30, 17, 15, 15);
     [self.morenBtn setImage:[UIImage imageNamed:@"ic_unselected_address"] forState:UIControlStateNormal];
-    [self.morenBtn setImage:[UIImage imageNamed:@"ic_selected"] forState:UIControlStateSelected];
+    [self.morenBtn setImage:[UIImage imageNamed:@"地址勾选"] forState:UIControlStateSelected];
     [self.morenBtn addTarget:self action:@selector(morenAction) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:self.morenBtn];
     self.morenBtn.hidden = YES;

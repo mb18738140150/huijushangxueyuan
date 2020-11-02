@@ -288,6 +288,10 @@
 		006D427D252E02ED0009072A /* LiveGiftSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 006D427C252E02ED0009072A /* LiveGiftSelectView.m */; };
 		006D4283252E067C0009072A /* PackageCountView.m in Sources */ = {isa = PBXBuildFile; fileRef = 006D4282252E067B0009072A /* PackageCountView.m */; };
 		00723404254461DF005D4238 /* LivingSecretViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00723403254461DF005D4238 /* LivingSecretViewController.m */; };
+		00796C55254FB2B70078EF5C /* StoreSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00796C54254FB2B70078EF5C /* StoreSecondViewController.m */; };
+		00796C5B254FB4A80078EF5C /* CommodityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00796C5A254FB4A80078EF5C /* CommodityTableViewCell.m */; };
+		00796C61255045B50078EF5C /* AssociationRelevanceCourseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 00796C60255045B50078EF5C /* AssociationRelevanceCourseView.m */; };
+		00796C67255045D20078EF5C /* AssociationRelevanceCourseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00796C66255045D20078EF5C /* AssociationRelevanceCourseTableViewCell.m */; };
 		0079EA0A252174AD00307D71 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0079EA09252174AD00307D71 /* AppDelegate.m */; };
 		0079EA0D252174AD00307D71 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0079EA0C252174AD00307D71 /* SceneDelegate.m */; };
 		0079EA10252174AD00307D71 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0079EA0F252174AD00307D71 /* ViewController.m */; };
@@ -1306,6 +1310,14 @@
 		006D4282252E067B0009072A /* PackageCountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageCountView.m; sourceTree = "<group>"; };
 		00723402254461DF005D4238 /* LivingSecretViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivingSecretViewController.h; sourceTree = "<group>"; };
 		00723403254461DF005D4238 /* LivingSecretViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivingSecretViewController.m; sourceTree = "<group>"; };
+		00796C53254FB2B70078EF5C /* StoreSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoreSecondViewController.h; sourceTree = "<group>"; };
+		00796C54254FB2B70078EF5C /* StoreSecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StoreSecondViewController.m; sourceTree = "<group>"; };
+		00796C59254FB4A80078EF5C /* CommodityTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommodityTableViewCell.h; sourceTree = "<group>"; };
+		00796C5A254FB4A80078EF5C /* CommodityTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommodityTableViewCell.m; sourceTree = "<group>"; };
+		00796C5F255045B50078EF5C /* AssociationRelevanceCourseView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssociationRelevanceCourseView.h; sourceTree = "<group>"; };
+		00796C60255045B50078EF5C /* AssociationRelevanceCourseView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssociationRelevanceCourseView.m; sourceTree = "<group>"; };
+		00796C65255045D20078EF5C /* AssociationRelevanceCourseTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssociationRelevanceCourseTableViewCell.h; sourceTree = "<group>"; };
+		00796C66255045D20078EF5C /* AssociationRelevanceCourseTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssociationRelevanceCourseTableViewCell.m; sourceTree = "<group>"; };
 		0079EA05252174AD00307D71 /* TUIKitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TUIKitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0079EA08252174AD00307D71 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0079EA09252174AD00307D71 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -2710,6 +2722,8 @@
 				003459F1253DD15D001F9C3F /* view */,
 				003459EB253DD046001F9C3F /* StoreViewController.h */,
 				003459EC253DD046001F9C3F /* StoreViewController.m */,
+				00796C53254FB2B70078EF5C /* StoreSecondViewController.h */,
+				00796C54254FB2B70078EF5C /* StoreSecondViewController.m */,
 				003459FB253DDA95001F9C3F /* CommodityDetailViewController.h */,
 				003459FC253DDA95001F9C3F /* CommodityDetailViewController.m */,
 			);
@@ -2721,6 +2735,8 @@
 			children = (
 				003459F2253DD193001F9C3F /* CommodityCollectionViewCell.h */,
 				003459F3253DD193001F9C3F /* CommodityCollectionViewCell.m */,
+				00796C59254FB4A80078EF5C /* CommodityTableViewCell.h */,
+				00796C5A254FB4A80078EF5C /* CommodityTableViewCell.m */,
 				00345A01253DDAC6001F9C3F /* CommodityBannerTableViewCell.h */,
 				00345A02253DDAC6001F9C3F /* CommodityBannerTableViewCell.m */,
 				00345A07253DDAD9001F9C3F /* CommodityInfoTableViewCell.h */,
@@ -3090,12 +3106,12 @@
 		0079EA9425217AF700307D71 /* Course */ = {
 			isa = PBXGroup;
 			children = (
+				0079EAB825217AF700307D71 /* CourseModuleModel.h */,
 				0079EA9525217AF700307D71 /* CourseModuleModel.m */,
+				0079EAB725217AF700307D71 /* CourseraManager.h */,
 				0079EA9625217AF700307D71 /* CourseraManager.m */,
 				0079EA9725217AF700307D71 /* CourseModuleProtocol.h */,
 				0079EA9825217AF700307D71 /* models */,
-				0079EAB725217AF700307D71 /* CourseraManager.h */,
-				0079EAB825217AF700307D71 /* CourseModuleModel.h */,
 				0079EAB925217AF700307D71 /* RequestOperation */,
 			);
 			path = Course;
@@ -4948,6 +4964,10 @@
 				006B40B4254AAD1E005C057F /* WriteCommentContentView.m */,
 				00353E49254D74F000221F16 /* DynamicChangeImageCollectionViewCell.h */,
 				00353E4A254D74F000221F16 /* DynamicChangeImageCollectionViewCell.m */,
+				00796C5F255045B50078EF5C /* AssociationRelevanceCourseView.h */,
+				00796C60255045B50078EF5C /* AssociationRelevanceCourseView.m */,
+				00796C65255045D20078EF5C /* AssociationRelevanceCourseTableViewCell.h */,
+				00796C66255045D20078EF5C /* AssociationRelevanceCourseTableViewCell.m */,
 			);
 			path = associationView;
 			sourceTree = "<group>";
@@ -5491,6 +5511,7 @@
 				0079EEC125217AFE00307D71 /* NSString+Size.m in Sources */,
 				00D342CA2549A0CE00161F15 /* AssociationListTableViewCell.m in Sources */,
 				001CDA1A254815180052B7D7 /* PromotionApplyTableViewCell.m in Sources */,
+				00796C55254FB2B70078EF5C /* StoreSecondViewController.m in Sources */,
 				0079EE6A25217AFD00307D71 /* QuestionReplyModel.m in Sources */,
 				00632FF825465CDE000C84FA /* NSString+NSString_ILExtension.m in Sources */,
 				0079EFA025217AFE00307D71 /* HomeSearchCollectionViewCell.m in Sources */,
@@ -5553,6 +5574,7 @@
 				000C1A11253E88AA0002DE10 /* ShoppingCarListOperation.m in Sources */,
 				000C1A30253E8D950002DE10 /* PayModeView.m in Sources */,
 				0079EF6025217AFE00307D71 /* YGBrightnessAndVolumeView.m in Sources */,
+				00796C67255045D20078EF5C /* AssociationRelevanceCourseTableViewCell.m in Sources */,
 				000C1A00253E87880002DE10 /* ConfirmOrderInfoTableViewCell.m in Sources */,
 				0079EE3925217AFD00307D71 /* EndLivingCourseOperation.m in Sources */,
 				0079EEBC25217AFE00307D71 /* NSString+MD5.m in Sources */,
@@ -5651,6 +5673,7 @@
 				000A749D253435AB0065A62C /* CustomCell.m in Sources */,
 				0079EF3425217AFE00307D71 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.mm in Sources */,
 				004FAF18252F1721004A50E7 /* MainViewController.m in Sources */,
+				00796C61255045B50078EF5C /* AssociationRelevanceCourseView.m in Sources */,
 				005BC84B2522E9E500323103 /* AFImageDownloader.m in Sources */,
 				00930E17253099A400267B62 /* MyOrderStateTableViewCell.m in Sources */,
 				0079EE7A25217AFD00307D71 /* NSURLSession+TYCorrectedResumeData.m in Sources */,
@@ -5666,6 +5689,7 @@
 				0079EE7125217AFD00307D71 /* QuestionPublishOperation.m in Sources */,
 				0079EF1D25217AFE00307D71 /* UIWindow+LXCurrentViewController.m in Sources */,
 				0079EE9F25217AFE00307D71 /* PayCourseOperation.m in Sources */,
+				00796C5B254FB4A80078EF5C /* CommodityTableViewCell.m in Sources */,
 				003459BE253DBDC5001F9C3F /* AddressListViewController.m in Sources */,
 				008269502524B557007D7955 /* PAirSandbox.m in Sources */,
 				000A75782536F2100065A62C /* GTMNSString+HTML.m in Sources */,

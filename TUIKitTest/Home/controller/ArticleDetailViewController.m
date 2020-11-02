@@ -107,7 +107,6 @@ typedef enum : NSUInteger {
     
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payClick:) name:kNotificationOfShareAndPay object:nil];
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccedsss:) name:kNotificationOfBuyCourseSuccess object:nil];
 }
 
@@ -119,7 +118,6 @@ typedef enum : NSUInteger {
 
 - (void)payClick:(NSNotification *)notification
 {
-    
     NSDictionary *infoDic = notification.object;
     [self.payView removeFromSuperview];
     if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_wechatPay) {
@@ -193,7 +191,7 @@ typedef enum : NSUInteger {
 
 - (void)alipay:(NSString *)url
 {
-    [[AlipaySDK defaultService] payOrder:url fromScheme:@"alipay" callback:^(NSDictionary *resultDic) {
+    [[AlipaySDK defaultService] payOrder:url fromScheme:@"huijushangxueyuan" callback:^(NSDictionary *resultDic) {
         NSLog(@"%@",resultDic);
         NSString *str = resultDic[@"memo"];
         [SVProgressHUD showErrorWithStatus:str];

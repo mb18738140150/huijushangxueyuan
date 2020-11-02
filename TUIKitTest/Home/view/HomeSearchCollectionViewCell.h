@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy)void(^searchBlock)(NSString *key);
 - (void)refreshUIWithData:(NSDictionary *)info;
 - (void)resignFirstResponder;
+
+- (void)showClickBtn;
+
 @end
 
 NS_ASSUME_NONNULL_END

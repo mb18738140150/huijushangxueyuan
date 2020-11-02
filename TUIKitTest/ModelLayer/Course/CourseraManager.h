@@ -101,6 +101,7 @@
  @param object 请求成功后通知的对象
  */
 - (void)didRequestLearningCourseWithInfoDic:(NSDictionary *)infoDic NotifiedObject:(id<CourseModule_LearningCourseProtocol>)object;
+- (NSArray *)getLearningCourseInfoArray;
 
 - (void)didRequestCompleteCourseWithInfoDic:(NSDictionary *)infoDic NotifiedObject:(id<CourseModule_CompleteCourseProtocol>)object;
 
@@ -340,7 +341,7 @@
 
  @return 学习中的课程信息
  */
-- (NSArray *)getLearningCourseInfoArray;
+
 
 - (NSArray *)getCompleteCourseInfoArray;
 

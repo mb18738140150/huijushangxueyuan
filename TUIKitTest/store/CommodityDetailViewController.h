@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CommodityDetailViewController : ViewController
 
+@property (nonatomic, strong)NSDictionary * info;
+
 @end
 
 NS_ASSUME_NONNULL_END

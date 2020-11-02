@@ -1,15 +1,13 @@
 //
-//  HomeJustaposeCollectionViewCell.m
-//  huijushangxueyuan
+//  CommodityTableViewCell.m
+//  TUIKitTest
 //
-//  Created by aaa on 2020/9/22.
-//  Copyright © 2020 mcb. All rights reserved.
+//  Created by aaa on 2020/11/2.
 //
 
-#import "HomeJustaposeCollectionViewCell.h"
+#import "CommodityTableViewCell.h"
 
-@implementation HomeJustaposeCollectionViewCell
-
+@implementation CommodityTableViewCell
 - (void)refreshUIWith:(NSDictionary *)infoDic andItem:(int)item
 {
     [self.contentView removeAllSubviews];
@@ -22,54 +20,44 @@
     self.backView.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.backView];
     
+    
     CGFloat leftWidth = 0;
     CGFloat topSpace = 0;
     if (self.isOneCourse) {
         topSpace = 20;
     }
     
-    
+    UIView * boardView = [[UIView alloc]init];
     // 直播大图
     if (item % 2 != 0) {
         leftWidth = 5;
-        self.iconImageVIew = [[UIImageView alloc]initWithFrame:CGRectMake(5, topSpace, self.hd_width - 22.5, (self.hd_width - 22.5) / 2 )];
+        self.iconImageVIew = [[UIImageView alloc]initWithFrame:CGRectMake(5, topSpace, self.hd_width - 22.5, (self.hd_width - 22.5)  )];
+        boardView.frame = CGRectMake(5, topSpace, self.hd_width - 22.5, (self.hd_width - 22.5) + 60 );
     }else
     {
         leftWidth = 17.5;
-        self.iconImageVIew = [[UIImageView alloc]initWithFrame:CGRectMake(17.5, topSpace, self.hd_width - 22.5, (self.hd_width - 22.5) / 2 )];
+        self.iconImageVIew = [[UIImageView alloc]initWithFrame:CGRectMake(17.5, topSpace, self.hd_width - 22.5, (self.hd_width - 22.5) )];
+        boardView.frame = CGRectMake(17.5, topSpace, self.hd_width - 22.5, (self.hd_width - 22.5) + 60);
     }
+    boardView.layer.cornerRadius = 5;
+    boardView.layer.masksToBounds = YES;
+    boardView.layer.borderColor = UIColorFromRGB(0xf2f2f2).CGColor;
+    boardView.layer.borderWidth = 1;
+    [self.backView addSubview:boardView];
     
     [self.iconImageVIew sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[infoDic objectForKey:@"thumb"]]] placeholderImage:[UIImage imageNamed:@"courseDefaultImage"] options:SDWebImageAllowInvalidSSLCertificates];
     
     [self.backView addSubview:self.iconImageVIew];
-    UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.iconImageVIew.bounds byRoundingCorners:UIRectCornerTopLeft|UIRectCornerTopRight cornerRadii:CGSizeMake(10, 10)];
+    UIBezierPath * bezierpath = [UIBezierPath bezierPathWithRoundedRect:self.iconImageVIew.bounds byRoundingCorners:UIRectCornerTopLeft|UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
     CAShapeLayer * shapLayer = [[CAShapeLayer alloc]init];
     shapLayer.frame = self.iconImageVIew.bounds;
     shapLayer.path = bezierpath.CGPath;
     [self.iconImageVIew.layer setMask: shapLayer];
     
-    // 直播状态
-    self.livingStateView = [[LivingStateView alloc]initWithFrame:CGRectMake(0, self.iconImageVIew.hd_height - 20, 100, 20)];
-    
-    NSString * types = [infoDic objectForKey:@"types"];
-    if ([types isEqualToString:@"article"]) {
-        self.livingStateView.livingState = HomeLivingStateType_imageAndText_right;
-    }else if ([types isEqualToString:@"image"])
-    {
-        self.livingStateView.livingState = HomeLivingStateType_image_right;
-    }else if ([types isEqualToString:@"audio"])
-    {
-        self.livingStateView.livingState = HomeLivingStateType_audio_right;
-    }else if ([types isEqualToString:@"video"])
-    {
-        self.livingStateView.livingState = HomeLivingStateType_video_right;
-    }
-    [self.iconImageVIew addSubview:self.livingStateView];
-    
     CGFloat seperateWidth = 10;
     
     // title
-    self.titleLB = [[UILabel alloc]initWithFrame:CGRectMake(self.iconImageVIew.hd_x , CGRectGetMaxY(self.iconImageVIew.frame) + seperateWidth, self.backView.hd_width - 22.5, 40)];
+    self.titleLB = [[UILabel alloc]initWithFrame:CGRectMake(self.iconImageVIew.hd_x , CGRectGetMaxY(self.iconImageVIew.frame) + seperateWidth, self.backView.hd_width - 22.5, 15)];
     self.titleLB.numberOfLines = 0;
     self.titleLB.font = kMainFont;
     self.titleLB.textColor = UIColorFromRGB(0x333333);
@@ -78,7 +66,7 @@
     
     
     // price
-    self.priceLB = [[UILabel alloc]initWithFrame:CGRectMake(self.titleLB.hd_x, CGRectGetMaxY(self.titleLB.frame) + seperateWidth / 2, 120, 16.5)];
+    self.priceLB = [[UILabel alloc]initWithFrame:CGRectMake(self.titleLB.hd_x, CGRectGetMaxY(self.titleLB.frame) + seperateWidth, 120, 15)];
     self.priceLB.font = kMainFont_12;
     self.priceLB.textColor = UIColorFromRGB(0xCCA95D);
     NSString * oldStr = [self getOldStrWithSource1:[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"show_paymoney"]] andSource2:[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"off_paymoney"]]];
@@ -89,30 +77,6 @@
     [NewStr addAttributes:attribute range:NSMakeRange([[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"show_paymoney"]] length]+ 1, oldStr.length - [[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"show_paymoney"]] length] - 1)];
     self.priceLB.attributedText = NewStr;
     
-    // joinBtn
-    self.applyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.applyBtn.frame = CGRectMake(self.backView.hd_width - 120, CGRectGetMaxY(self.iconImageVIew.frame) + 57, 120 - leftWidth, 13);
-    self.applyBtn.hd_centerY = self.priceLB.hd_centerY;
-    [self.backView addSubview:self.applyBtn];
-    
-    [self.applyBtn setTitle:[NSString stringWithFormat:@"%@人已看过", [infoDic objectForKey:@"look_num"]] forState:UIControlStateNormal];
-    [self.applyBtn setTitleColor:UIColorFromRGB(0x999999) forState:UIControlStateNormal];
-    self.applyBtn.backgroundColor = [UIColor whiteColor];
-    self.applyBtn.titleLabel.font = kMainFont_10;
-    self.applyBtn.titleLabel.textAlignment = NSTextAlignmentRight;
-    
-//    if ([[infoDic objectForKey:@"is_pay"] intValue] == 1) {
-//        [self.applyBtn setTitle:@"免费" forState:UIControlStateNormal];
-//        [self.applyBtn setTitleColor:UIColorFromRGB(0xCCA95D) forState:UIControlStateNormal];
-//    }else
-//    {
-//        [self.applyBtn setTitle:@"去购买" forState:UIControlStateNormal];
-//        self.applyBtn.titleLabel.textAlignment = NSTextAlignmentRight;
-//        [self.applyBtn setTitleColor:UIColorFromRGB(0x999999) forState:UIControlStateNormal];
-//        self.applyBtn.titleLabel.font = [UIFont systemFontOfSize:10];
-//    }
-    
-    [self.applyBtn addTarget:self action:@selector(applyAction) forControlEvents:UIControlEventTouchUpInside];
 }
 
 
@@ -140,4 +104,15 @@
         return [NSString stringWithFormat:@"￥%@ ￥%@", str1,str2];
     }
 }
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
 @end

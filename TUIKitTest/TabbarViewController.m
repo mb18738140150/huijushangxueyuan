@@ -14,6 +14,7 @@
 
 #import "TUIConversationCellData.h"
 #import "MainViewController.h"
+#import "StoreViewController.h"
 
 @interface TabbarViewController ()<UITabBarControllerDelegate,UserModule_CourseDetailProtocol>
 
@@ -114,6 +115,9 @@
             }else if ([[tabbarInfo objectForKey:@"url"] isEqualToString:@"center"])
             {
                 vc = [[MainViewController alloc]init];
+            }else if ([[tabbarInfo objectForKey:@"url"] isEqualToString:@"shop_index"])
+            {
+                vc = [[StoreViewController alloc]init];
             }
             
             UINavigationController *mainNavigation = [[UINavigationController alloc] initWithRootViewController:vc];

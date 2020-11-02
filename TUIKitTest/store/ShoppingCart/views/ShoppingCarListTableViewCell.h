@@ -23,6 +23,7 @@
 
 @property (nonatomic, copy)void(^countBlock)(int count);
 @property (nonatomic, copy)void(^selectBtnClickBlock)(NSDictionary * info,BOOL select);
+@property (nonatomic, copy)void(^deleteBlock)(NSDictionary * info);
 
 
 - (void)refreshUIWithInfo:(NSDictionary *)info isCanSelect:(BOOL)select;

@@ -277,7 +277,8 @@
     
     int imageCount = [[info objectForKey:@"c_imgs"] count] % 3 == 0 ? [[info objectForKey:@"c_imgs"] count] / 3 : [[info objectForKey:@"c_imgs"] count] / 3 + 1;
     CGFloat imageHeight = (kCellHeightOfCategoryView + 5) * imageCount;
-    NSString * zanStr = @"、马传博、{{nick_name}}、不喜欢没礼貌的人- 等五人觉得很赞";
+    NSString * zanStr = [NSString stringWithFormat:@"、%@ 等人觉得很赞", [[info objectForKey:@"zan_info"] objectForKey:@"c_name"]];
+    
     CGFloat zanHeight = [zanStr boundingRectWithSize:CGSizeMake(kScreenWidth - 70, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kMainFont_12} context:nil].size.height;
     
     UILabel * zanLB = [[UILabel alloc]initWithFrame:CGRectMake(_titleLB.hd_x, CGRectGetMaxY(_contentLB.frame) + imageHeight + 15, kScreenWidth - 70, zanHeight + 15)];
@@ -286,9 +287,20 @@
     zanLB.numberOfLines = 0;
     [self.contentView addSubview:zanLB];
     
-    NSMutableAttributedString * mZanStr = [[NSMutableAttributedString alloc]initWithString:zanStr];
     NSDictionary * zanAttribute = @{NSFontAttributeName:kMainFont_12,NSForegroundColorAttributeName:UIColorFromRGB(0x333333)};
-    [mZanStr addAttributes:zanAttribute range:NSMakeRange(zanStr.length - 7, 7)];
+    NSMutableAttributedString * mZanStr = [[NSMutableAttributedString alloc]initWithString:zanStr];
+    if ([[info objectForKey:@"zan_info"] objectForKey:@"c_name"]) {
+        if ([[[info objectForKey:@"zan_info"] objectForKey:@"c_name"] length] > 0) {
+            mZanStr = [[NSMutableAttributedString alloc]initWithString:zanStr];
+            [mZanStr addAttributes:zanAttribute range:NSMakeRange(zanStr.length - 6, 6)];
+        }else
+        {
+            mZanStr = [[NSMutableAttributedString alloc]initWithString:@""];
+        }
+    }else
+    {
+        mZanStr = [[NSMutableAttributedString alloc]initWithString:@""];
+    }
     
     NSTextAttachment * attach = [[NSTextAttachment alloc]init];
     attach.image = [UIImage imageNamed:@"dynamic_点赞2"];

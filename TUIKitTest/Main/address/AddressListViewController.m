@@ -38,15 +38,6 @@
 }
 - (void)loadData
 {
-    NSDictionary * dataInfo = @{@"accept_name":@"深海",@"mobile":@"18734890150",@"address":@"河南省郑州市金水区航海路未来路交叉口h和还是得还谁都不服是电饭煲",@"city":@"河南省 郑州市"};
-    NSDictionary  * passwordFoodInfo = @{@"accept_name":@"深海",@"mobile":@"18734890150",@"address":@"河南省郑州市金水区航海路未来路交叉口",@"city":@"河南省 郑州市"};
-    NSDictionary  * phoneNumberInfo = @{@"accept_name":@"深海",@"mobile":@"18734890150",@"address":@"河南省郑州市金水区航海路未来路交叉口",@"city":@"河南省 郑州市"};
-    NSDictionary  * addressInfo = @{@"accept_name":@"深海",@"mobile":@"18734890150",@"address":@"河南省郑州市金水区航海路未来路交叉口",@"city":@"河南省 郑州市"};
-
-    [self.dataSource addObject:dataInfo];
-    [self.dataSource addObject:passwordFoodInfo];
-    [self.dataSource addObject:phoneNumberInfo];
-    [self.dataSource addObject:addressInfo];
     [self doResetQuestionRequest];
 }
 
@@ -103,9 +94,8 @@
 #pragma mark - getAddressList
 - (void)doResetQuestionRequest
 {
-    [self.tableview.mj_header endRefreshing];
-//    [SVProgressHUD show];
-//    [[UserManager sharedManager] getAddressListWithDic:@{@"command":@"12",@"user_id":@([[UserManager sharedManager] getUserId])} withNotifiedObject:self];
+    [SVProgressHUD show];
+    [[UserManager sharedManager] getAddressListWithDic:@{kUrlName:@"api/shop/address/lists"} withNotifiedObject:self];
 }
 
 - (void)didAddressListFailed:(NSString *)failedInfo
@@ -122,7 +112,7 @@
 {
     [self.tableview.mj_header endRefreshing];
     [SVProgressHUD dismiss];
-    
+    self.dataSource = [[[UserManager sharedManager] getAddressList] mutableCopy];
     [self.tableview reloadData];
 }
 

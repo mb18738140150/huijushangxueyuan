@@ -52,58 +52,17 @@
 
 - (void)didRequestSuccessed:(NSDictionary *)successInfo
 {
-    if ([[self.infoDic objectForKey:@"type"] intValue] == 0) {
-        [self.learningCourseArray removeAllObjects];
-        NSArray *data = [successInfo objectForKey:@"data"];
-        for (NSDictionary *dic in data) {
-            CourseModel *model = [[CourseModel alloc] init];
-            model.courseID = [[dic objectForKey:@"id"] intValue];
-            model.courseName = [dic objectForKey:@"courseName"];
-            model.courseCover = [dic objectForKey:@"cover"];
-            model.coueseTeacherName = [dic objectForKey:@"teacherName"];
-            model.learnProgress = [[dic objectForKey:@"learnProgress"] doubleValue];
-            model.lastTime = [dic objectForKey:@"lastLearnTime"];
-            [self.learningCourseArray addObject:model];
-        }
-        if (isObjectNotNil(self.notifiedObject)) {
-            [self.notifiedObject didRequestLearningCourseSuccessed];
-        }
-    }else
-    {
-        [self.completeCourseArray removeAllObjects];
-        NSArray *data = [successInfo objectForKey:@"data"];
-        for (NSDictionary *dic in data) {
-            CourseModel *model = [[CourseModel alloc] init];
-            model.courseID = [[dic objectForKey:@"id"] intValue];
-            model.courseName = [dic objectForKey:@"courseName"];
-            model.courseCover = [dic objectForKey:@"cover"];
-            model.coueseTeacherName = [dic objectForKey:@"teacherName"];
-            model.learnProgress = [[dic objectForKey:@"learnProgress"] doubleValue];
-            model.lastTime = [dic objectForKey:@"lastLearnTime"];
-            [self.completeCourseArray addObject:model];
-        }
-        if (isObjectNotNil(self.complateNotifiedObject)) {
-            [self.complateNotifiedObject didRequestCompleteCourseSuccessed];
-        }
+    self.learningCourseArray = [[successInfo objectForKey:@"data"] mutableCopy];
+    if (isObjectNotNil(self.notifiedObject)) {
+        [self.notifiedObject didRequestLearningCourseSuccessed];
     }
-    
 }
 
 - (void)didRequestFailed:(NSString *)failInfo
 {
-    if ([[self.infoDic objectForKey:@"type"] intValue] == 0) {
-    
-        if (isObjectNotNil(self.notifiedObject)) {
-            [self.notifiedObject didRequestLearningCourseFailed:failInfo];
-        }
-    }else
-    {
-        if (isObjectNotNil(self.complateNotifiedObject)) {
-            [self.complateNotifiedObject didRequestCompleteCourseFailed:failInfo];
-        }
+    if (isObjectNotNil(self.notifiedObject)) {
+        [self.notifiedObject didRequestLearningCourseFailed:failInfo];
     }
-    
-    
 }
 
 @end

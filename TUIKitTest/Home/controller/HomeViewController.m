@@ -167,6 +167,7 @@
         {
             HomeSearchCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeSearchCollectionViewCell forIndexPath:indexPath];
             [cell refreshUIWithData:info];
+            [cell showClickBtn];
             cell.searchBlock = ^(NSString * _Nonnull key) {
                 SearchCourseViewController * vc = [[SearchCourseViewController alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
@@ -728,7 +729,7 @@
         }else if([innerType isEqualToString:@"shop_index"])
         {
             StoreViewController * vc = [[StoreViewController alloc]init];
-            vc.hidesBottomBarWhenPushed = YES;
+//            vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
         }else if ([innerType isEqualToString:@"yd_payred_index"])
         {

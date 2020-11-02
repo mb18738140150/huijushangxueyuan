@@ -94,58 +94,7 @@
     [[UserManager sharedManager] getCourseTeacherWith:@{kUrlName:@"api/community/communityuserlist",@"requestType":@"get",@"c_id":[self.infoDic objectForKey:@"id"],@"page":@(self.page)} withNotifiedObject:self];
 }
 
-- (void)didCourseTeacherSuccessed
-{
-    [SVProgressHUD dismiss];
-    [self.tableView.mj_header endRefreshing];
-    NSArray * list = [[UserManager sharedManager] getCourseTeaccherArray];
-    if (list.count == 0) {
-        if (self.page > 1) {
-            self.page--;
-        }
-        [self.tableView.mj_footer endRefreshingWithNoMoreData];
-        
-        return;
-    }else{
-        [self.tableView.mj_footer endRefreshing];
-    }
-    
-    if (self.currentBlackInfo) {
-        NSDictionary * info1;
-        for (NSDictionary * info in list) {
-            if ([[info objectForKey:@"id"] isEqual:[self.currentBlackInfo objectForKey:@"id"]]) {
-                info1 = info;
-                break;
-            }
-        }
-        NSInteger index = [self.dataSource indexOfObject:self.currentBlackInfo];
-        [self.dataSource replaceObjectAtIndex:index withObject:info1];
-        
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-        self.currentBlackInfo = nil;
-        return;
-    }
-    
-    
-    if (self.page == 1) {
-        [self.dataSource removeAllObjects];
-    }
-    for (NSDictionary * info in list) {
-        [self.dataSource addObject:info];
-    }
-    [self.tableView reloadData];
-}
 
-- (void)didCourseTeacherFailed:(NSString *)failedInfo
-{
-    [SVProgressHUD dismiss];
-    [self.tableView.mj_header endRefreshing];
-    self.currentBlackInfo = nil;
-    [SVProgressHUD showErrorWithStatus:failedInfo];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [SVProgressHUD dismiss];
-    });
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -227,7 +176,61 @@
     [SVProgressHUD showSuccessWithStatus:@"设置成功"];
     self.editBtn.selected = NO;
     self.canEdit = NO;
+    [self.tableView reloadData];
     [[UserManager sharedManager] getCourseTeacherWith:@{kUrlName:@"api/community/communityuserlist",@"requestType":@"get",@"c_id":[self.infoDic objectForKey:@"id"],@"page":@(self.page)} withNotifiedObject:self];
+}
+
+- (void)didCourseTeacherSuccessed
+{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    NSArray * list = [[UserManager sharedManager] getCourseTeaccherArray];
+    if (list.count == 0) {
+        if (self.page > 1) {
+            self.page--;
+        }
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+        
+        return;
+    }else{
+        [self.tableView.mj_footer endRefreshing];
+    }
+    
+    if (self.currentBlackInfo) {
+        NSDictionary * info1;
+        for (NSDictionary * info in list) {
+            if ([[info objectForKey:@"id"] isEqual:[self.currentBlackInfo objectForKey:@"id"]]) {
+                info1 = info;
+                break;
+            }
+        }
+        NSInteger index = [self.dataSource indexOfObject:self.currentBlackInfo];
+        [self.dataSource replaceObjectAtIndex:index withObject:info1];
+        
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        self.currentBlackInfo = nil;
+        return;
+    }
+    
+    
+    if (self.page == 1) {
+        [self.dataSource removeAllObjects];
+    }
+    for (NSDictionary * info in list) {
+        [self.dataSource addObject:info];
+    }
+    [self.tableView reloadData];
+}
+
+- (void)didCourseTeacherFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    self.currentBlackInfo = nil;
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
 }
 
 - (void)didRequestMockVIPBuyFailed:(NSString *)failedInfo

@@ -25,8 +25,8 @@
 
 @property (nonatomic, strong)NSString * nameStr;
 @property (nonatomic, strong)NSString * phoneStr;
-@property (nonatomic, strong)NSString * provinceStr;
-@property (nonatomic, strong)NSString * cityStr;
+//@property (nonatomic, strong)NSString * provinceStr;
+//@property (nonatomic, strong)NSString * cityStr;
 @property (nonatomic, strong)NSString * areaStr;
 @property (nonatomic, strong)NSString * addressStr;
 @property (nonatomic, strong) YAddressPickerView *addView;
@@ -59,15 +59,15 @@
 - (void)loadData
 {
     if (self.infoDic) {
-        self.isMoren = [[self.infoDic objectForKey:@"is_default"] intValue];
-        self.nameStr = [self.infoDic objectForKey:@"accept_name"];
-        NSDictionary * nameInfo = @{@"title":@"姓名",@"content":[self.infoDic objectForKey:@"accept_name"],@"placeholder":@(0)};
+        self.isMoren = [[self.infoDic objectForKey:@"default"] intValue];
+        self.nameStr = [self.infoDic objectForKey:@"username"];
+        NSDictionary * nameInfo = @{@"title":@"姓名",@"content":[self.infoDic objectForKey:@"username"],@"placeholder":@(0)};
         NSDictionary  * phoneNumberInfo = @{@"title":@"手机号",@"content":[self.infoDic objectForKey:@"mobile"],@"placeholder":@(0)};
         self.phoneStr = [self.infoDic objectForKey:@"mobile"];
         
-        NSDictionary  * addressInfo = @{@"title":@"地址",@"content":[NSString stringWithFormat:@"%@%@%@", [self.infoDic objectForKey:@"province"],[self.infoDic objectForKey:@"city"],[self.infoDic objectForKey:@"area"]],@"placeholder":@(0)};
-        self.provinceStr = [self.infoDic objectForKey:@"province"];
-        self.cityStr = [self.infoDic objectForKey:@"city"];
+        NSDictionary  * addressInfo = @{@"title":@"地址",@"content":[NSString stringWithFormat:@"%@", [self.infoDic objectForKey:@"area"]],@"placeholder":@(0)};
+//        self.provinceStr = [self.infoDic objectForKey:@"province"];
+//        self.cityStr = [self.infoDic objectForKey:@"city"];
         self.areaStr = [self.infoDic objectForKey:@"area"];
         
         NSDictionary  * addressDetailInfo = @{@"title":@"详细地址",@"content":[self.infoDic objectForKey:@"address"],@"placeholder":@(0)};
@@ -81,7 +81,7 @@
         NSDictionary  * morenInfo = @{@"title":@"设置默认地址",@"content":@""};
         NSDictionary  * deleteInfo = @{@"title":@"删除此收货地址",@"content":@""};
         [self.dataSource_moren addObject:morenInfo];
-        [self.dataSource_moren addObject:deleteInfo];
+//        [self.dataSource_moren addObject:deleteInfo];
         return;
     }
     
@@ -141,6 +141,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 1) {
+        return self.dataSource_moren.count;
         if (self.infoDic == nil) {
             return 1;
         }else{
@@ -158,8 +159,8 @@
     if (indexPath.section == 0) {
         [cell refreshUIWith:[self.dataSource objectAtIndex:indexPath.row]];
         if (indexPath.row == 2) {
-            if (self.provinceStr.length > 0) {
-                [cell refreshUIWith:@{@"title":@"地址",@"content":[NSString stringWithFormat:@"%@%@%@", self.provinceStr,self.cityStr,self.areaStr],@"placeholder":@(0)}];
+            if (self.areaStr.length > 0) {
+                [cell refreshUIWith:@{@"title":@"地址",@"content":[NSString stringWithFormat:@"%@",self.areaStr],@"placeholder":@(0)}];
             }
             [cell chooceAddress];
             cell.addressBlock = ^(NSDictionary *info) {
@@ -269,7 +270,7 @@
 - (void)storeAddress
 {
     NSLog(@"保存地址");
-    if (self.nameStr.length == 0 || self.phoneStr.length == 0 || self.provinceStr.length == 0 || self.addressStr.length == 0) {
+    if (self.nameStr.length == 0 || self.phoneStr.length == 0 || self.areaStr.length == 0 || self.addressStr.length == 0) {
         [SVProgressHUD showErrorWithStatus:@"姓名、手机号与地址均不能为空"];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [SVProgressHUD dismiss];
@@ -292,10 +293,10 @@
     [SVProgressHUD show];
     if (self.infoDic) {
         
-        [[UserManager sharedManager] editAddressWithDic:@{@"command":@11,@"id":[self.infoDic objectForKey:@"id"],@"accept_name":self.nameStr,@"is_default":@(is_default),@"mobile":self.phoneStr,@"province":self.provinceStr,@"city":self.cityStr,@"area":self.areaStr,@"address":self.addressStr} withNotifiedObject:self];
+        [[UserManager sharedManager] editAddressWithDic:@{kUrlName:@"api/shop/address/update",@"username":self.nameStr,@"default":@(is_default),@"mobile":self.phoneStr,@"area":self.areaStr,@"address":self.addressStr,@"address_id":[self.infoDic objectForKey:@"id"]} withNotifiedObject:self];
     }else
     {
-        [[UserManager sharedManager] editAddressWithDic:@{@"command":@11,@"id":@0,@"accept_name":self.nameStr,@"is_default":@(is_default),@"mobile":self.phoneStr,@"province":self.provinceStr,@"city":self.cityStr,@"area":self.areaStr,@"address":self.addressStr} withNotifiedObject:self];
+        [[UserManager sharedManager] editAddressWithDic:@{kUrlName:@"api/shop/address/create",@"username":self.nameStr,@"default":@(is_default),@"mobile":self.phoneStr,@"area":self.areaStr,@"address":self.addressStr} withNotifiedObject:self];
     }
     
 }
@@ -355,20 +356,19 @@
 
 - (void)completingTheSelection:(NSString *)province city:(NSString *)city area:(NSString *)area{
     
-    NSString * str  = [NSString stringWithFormat:@"%@ %@ %@",province,city,area];
-    self.provinceStr = province;
-    self.cityStr = city;
-    self.areaStr = area;
+    NSString * str  = [NSString stringWithFormat:@"%@%@%@",province,city,area];
+
+    self.areaStr = str;
     NSLog(@"%@", str);
     [self.tableview reloadData];
 }
 
 - (void)areaPickerView:(BTAreaPickViewController *)areaPickerView doneAreaModel:(BTAreaPickViewModel *)model{
     
-    self.provinceStr = model.selectedProvince.name;
-    self.cityStr = model.selectedCitie.name;
-    self.areaStr = model.selectedArea.name;
-    
+//    self.provinceStr = model.selectedProvince.name;
+//    self.cityStr = model.selectedCitie.name;
+    NSString * str  = [NSString stringWithFormat:@"%@%@%@",model.selectedProvince.name,model.selectedCitie.name,model.selectedArea.name];
+    self.areaStr = str;
     NSLog(@"doneAreaModel %@",model.description);
 }
 

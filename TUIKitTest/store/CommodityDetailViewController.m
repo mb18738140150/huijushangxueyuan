@@ -15,7 +15,7 @@
 #import "ShoppingCarViewController.h"
 
 
-@interface CommodityDetailViewController ()<UITableViewDelegate, UITableViewDataSource,WKUIDelegate,WKNavigationDelegate>
+@interface CommodityDetailViewController ()<UITableViewDelegate, UITableViewDataSource,WKUIDelegate,WKNavigationDelegate,UserModule_CourseDetailProtocol,UserModule_AddShoppingCarProtocol,UserModule_ShoppingCarListProtocol>
 
 @property (nonatomic, strong)UITableView * tableView;
 @property (nonatomic, strong)NSArray * dataSource;
@@ -23,7 +23,7 @@
 @property (nonatomic, strong)WKWebView * webView;
 @property (nonatomic, assign)CGFloat webViewHeight;
 
-@property (nonatomic, strong)NSDictionary * vipCardDetailInfo;
+@property (nonatomic, strong)NSDictionary * goodDetailInfo;
 @property (nonatomic, strong)NSMutableArray * freeArray;
 
 
@@ -67,23 +67,12 @@
     _webView.navigationDelegate = self;
     _webView.scrollView.delegate = self;
     _webView.scrollView.scrollEnabled = NO;
-//    NSString *headerString = @"<header><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'><style>img{max-width:100%}</style></header>";
-//
-//
-//    [_webView loadHTMLString:[headerString stringByAppendingString:@""] baseURL:nil];
-    NSString *headerString = @"<header><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'><style>img{max-width:100%}</style></header>";
     
-    NSString * htmlStr = [UIUtility judgeStr:@"<p style=\"text-align: left;\"><br/></p><p style=\"text-align:center\"><img title=\"uploads/0708/159419762891408860.jpg\" style=\"width: 100%;\" alt=\"报名介绍图.jpg\" src=\"https://qiniu.luezhi.com/uploads/0708/159419762891408860.jpg?imageslim\"/></p><p><br/></p><p><br/></p><p style=\"text-align: center;\"><br/></p><p><br/></p><p style=\"text-align: center;\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</p>"];
-    
-//    [_webView loadHTMLString:[headerString stringByAppendingString:[htmlStr stringByDecodingHTMLEntities]] baseURL:[NSURL URLWithString:@"https://h5.luezhi.com"]];
-//    [_webView loadHTMLString:[htmlStr stringByDecodingHTMLEntities] baseURL:[NSURL URLWithString:@"https://qiniu.luezhi.com"]];
-    
-    [self testLoadHtmlImage:[headerString stringByAppendingString:[htmlStr stringByDecodingHTMLEntities]]];
-    
-    [self.tableView reloadData];
+    self.webViewHeight = 0;
     
     [self prepareUI];
     
+    [self.tableView reloadData];
     [self loadData];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeClick:) name:kNotificationOfStoreAction object:nil];
@@ -91,8 +80,9 @@
 
 - (void)loadData
 {
-//    [SVProgressHUD show];
-    
+    [SVProgressHUD show];
+    [[UserManager sharedManager] getCourseDetailWith:@{kUrlName:@"api/shop/good/detail",kRequestType:@"get",@"good_id":[self.info objectForKey:@"id"]} withNotifiedObject:self];
+    [[UserManager sharedManager] didRequestShoppingCarListWith:@{kUrlName:@"api/shop/cart/lists",kRequestType:@"get"} withNotifiedObject:self ];
 }
 
 - (void)dealloc
@@ -105,6 +95,8 @@
     self.webView = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationOfStoreAction object:nil];
 }
+
+
 
 #pragma mark - ui
 - (void)navigationViewSetup
@@ -224,6 +216,7 @@
 - (void)addAction
 {
     NSLog(@"addShoppingCar");
+    [[UserManager sharedManager] didRequestAddShoppingCarWith:@{kUrlName:@"api/shop/cart/create",@"good_id":[UIUtility judgeStr:[self.goodDetailInfo objectForKey:@"id"]]} withNotifiedObject:self];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -249,13 +242,13 @@
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             CommodityBannerTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kCommodityBannerTableViewCell forIndexPath:indexPath];
-            cell.bannerImgUrlArray = @[[[[UserManager sharedManager] getUserInfos] objectForKey:kUserHeaderImageUrl]];
+            cell.bannerImgUrlArray = self.freeArray;
             [cell resetSubviews];
             return cell;
         }else
         {
             CommodityInfoTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kCommodityInfoTableViewCell forIndexPath:indexPath];
-            [cell refreshUIWith:@{}];
+            [cell refreshUIWith:self.goodDetailInfo];
             return cell;
         }
         
@@ -272,7 +265,7 @@
         if (indexPath.row == 0) {
             return tableView.hd_width;
         }
-        NSString * str = @"srlijfoiperhiflskmvcopiejr9pisdvclxk cl/,x vl, .c, vl;kxzmvo[idjar0-fuqew0-9fuwq0[e9fjwqpeo,mfa'powekf0[ae4jfpwmc;aslkf[pawif[]pqweklf[\pwe";
+        NSString * str = [self.goodDetailInfo objectForKey:@"desc"];
         CGFloat height = [str boundingRectWithSize:CGSizeMake(tableView.hd_width - 40, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kMainFont_12} context:nil].size.height;
         return  height + 75;
     }
@@ -328,8 +321,63 @@
    
 }
 
-#pragma mark - vipcardDetail
+#pragma mark - goodDetail
+- (void)didCourseDetailSuccessed
+{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    self.goodDetailInfo = [[UserManager sharedManager] getCourseDetailInfo];
+    self.freeArray = [self.goodDetailInfo objectForKey:@"banner"];
+    
+    NSString *headerString = @"<header><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'><style>img{max-width:100%}</style></header>";
+    NSString * htmlStr = [UIUtility judgeStr:[self.goodDetailInfo objectForKey:@"content"]];
+    [self testLoadHtmlImage:[headerString stringByAppendingString:[htmlStr stringByDecodingHTMLEntities]]];
+    
+    [self.tableView reloadData];
+}
 
+- (void)didCourseDetailFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
+
+- (void)didRequestAddShoppingCarSuccessed
+{
+    [SVProgressHUD showSuccessWithStatus:@"添加成功"];
+    [self loadData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
+
+- (void)didRequestAddShoppingCarFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
+
+- (void)didRequestShoppingCarListSuccessed
+{
+    NSArray * array = [[UserManager sharedManager]getShoppingCarList];
+    [_shoppingCarView resetNumber:[NSString stringWithFormat:@"%d", array.count]];
+}
+
+- (void)didRequestShoppingCarListFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
 
 #pragma mark - scrollView delegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView

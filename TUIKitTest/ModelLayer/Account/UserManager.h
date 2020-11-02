@@ -99,9 +99,9 @@
 
 // 获取收货地址
 - (void)getAddressListWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_AddressListProtocol>)object;
+- (NSArray *)getAddressList;
 // 编辑收货地址
 - (void)editAddressWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_EditAddressProtocol>)object;
-- (NSArray *)getAddressList;
 // 删除地址
 - (void)didRequestDeleteAddressWithCourseInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_DeleteAddressProtocol>)object;
 

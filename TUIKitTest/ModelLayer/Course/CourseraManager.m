@@ -1082,18 +1082,7 @@
 
 - (NSArray *)getLearningCourseInfoArray
 {
-    NSMutableArray *array = [[NSMutableArray alloc] init];
-    for (CourseModel *model in self.learningCourseOperation.learningCourseArray) {
-        NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-        [dic setObject:model.courseName forKey:kCourseName];
-        [dic setObject:@(model.courseID) forKey:kCourseID];
-        [dic setObject:model.courseCover forKey:kCourseCover];
-        [dic setObject:model.coueseTeacherName forKey:kCourseTeacherName];
-        [dic setObject:model.lastTime forKey:kLivingTime];
-        [dic setObject:[NSNumber numberWithDouble:model.learnProgress] forKey:kLearnProgress];
-        [array addObject:dic];
-    }
-    return array;
+    return self.learningCourseOperation.learningCourseArray;
 }
 
 - (NSArray *)getCompleteCourseInfoArray

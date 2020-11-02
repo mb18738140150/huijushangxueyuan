@@ -279,6 +279,7 @@
 
 
 
+
 @protocol UserModule_LeadtypeProtocol <NSObject>
 
 - (void)didLeadtypeSuccessed;

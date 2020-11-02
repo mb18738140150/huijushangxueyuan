@@ -61,21 +61,7 @@
 
 - (void)loadData
 {
-    [self.tableview.mj_header endRefreshing];
-    
-    NSDictionary * dataInfo = @{@"title":@"深海",@"image":[[[UserManager sharedManager] getUserInfos] objectForKey:kUserHeaderImageUrl],@"tip":@"不要啦",@"price":@"999.9",@"count":@1,@"goods_id":@1};
-    NSDictionary  * passwordFoodInfo = @{@"title":@"e",@"image":[[[UserManager sharedManager] getUserInfos] objectForKey:kUserHeaderImageUrl],@"tip":@"不要",@"price":@"699.9",@"count":@2,@"goods_id":@2};
-    NSDictionary  * phoneNumberInfo = @{@"title":@"深海2",@"image":[[[UserManager sharedManager] getUserInfos] objectForKey:kUserHeaderImageUrl],@"tip":@"不要啦",@"price":@"600",@"count":@1,@"goods_id":@3};
-    NSDictionary  * addressInfo = @{@"title":@"玉4",@"image":[[[UserManager sharedManager] getUserInfos] objectForKey:kUserHeaderImageUrl],@"tip":@"不要啦",@"price":@"800",@"count":@1,@"goods_id":@4};
-
-    [self.dataSource addObject:dataInfo];
-    [self.dataSource addObject:passwordFoodInfo];
-    [self.dataSource addObject:phoneNumberInfo];
-    [self.dataSource addObject:addressInfo];
-    
-    
-//    [SVProgressHUD show];
-//    [[UserManager sharedManager] didRequestShoppingCarListWith:@{@"command":@21,@"shop_id":[[UserManager sharedManager].currentSelectStore objectForKey:@"id"]} withNotifiedObject:self ];
+    [self doResetQuestionRequest];
 }
 
 - (void)navigationViewSetup
@@ -88,7 +74,7 @@
     self.navigationController.navigationBar.barTintColor = kCommonNavigationBarColor;
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:kCommonMainTextColor_50};
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(settingAction)];
-    self.navigationItem.rightBarButtonItem = item;
+//    self.navigationItem.rightBarButtonItem = item;
     [self.navigationItem.rightBarButtonItem setTintColor:kMainTextColor];
     
     TeamHitBarButtonItem * leftBarItem = [TeamHitBarButtonItem leftButtonWithImage:[UIImage imageNamed:@"public-返回"] title:@""];
@@ -133,9 +119,7 @@
     self.shoppingCarBottomView.selectAllBlock = ^(BOOL select) {
         [weakSelf selectAllCommodity:select];
     };
-    self.shoppingCarBottomView.deleteShoppingCarBlock = ^(NSDictionary *info) {
-        [weakSelf deleteAction];
-    };
+    
     self.shoppingCarBottomView.buyShoppingCarBlock = ^(NSDictionary *info) {
         [weakSelf buyAction];
     };
@@ -147,8 +131,7 @@
 - (void)doResetQuestionRequest
 {
     [SVProgressHUD show];
-//    [[UserManager sharedManager] didRequestShoppingCarListWith:@{@"command":@21,@"shop_id":[[UserManager sharedManager].currentSelectStore objectForKey:@"id"]} withNotifiedObject:self ];
-    [self loadData];
+    [[UserManager sharedManager] didRequestShoppingCarListWith:@{kUrlName:@"api/shop/cart/lists",kRequestType:@"get"} withNotifiedObject:self ];
 }
 
 #pragma mark - tableview delegate & datasource
@@ -174,19 +157,22 @@
         NSDictionary * dic = [weakSelf.dataSource objectAtIndex:indexPath.row];
         weakSelf.currentEditInfo = dic;
         [SVProgressHUD show];
-//        [[UserManager sharedManager] didRequestAddShoppingCarWith:@{@"command":@19,@"channel_id":[dic objectForKey:@"channel_id"],@"article_id":[dic objectForKey:@"article_id"],@"goods_id":[dic objectForKey:@"goods_id"],@"quantity":@(count),@"shop_id":[[UserManager sharedManager].currentSelectStore objectForKey:@"id"]} withNotifiedObject:self];
+        [[UserManager sharedManager] didRequestAddShoppingCarWith:@{kUrlName:@"api/shop/cart/updateNum",@"cart_id":[dic objectForKey:@"id"],@"num":@(count)} withNotifiedObject:self];
         
-        NSInteger index = [weakSelf.dataSource indexOfObject:dic];
-        NSMutableDictionary * mInfo = [[NSMutableDictionary alloc]initWithDictionary:dic];
-        [weakSelf.dataSource removeObject:dic];
-        [mInfo setObject:[NSString stringWithFormat:@"%d", count] forKey:@"count"];
-        [weakSelf.dataSource insertObject:mInfo atIndex:index];
-        [weakSelf.tableview reloadData];
-        [weakSelf refreshAllPrice:mInfo];
+//        NSInteger index = [weakSelf.dataSource indexOfObject:dic];
+//        NSMutableDictionary * mInfo = [[NSMutableDictionary alloc]initWithDictionary:dic];
+//        [weakSelf.dataSource removeObject:dic];
+//        [mInfo setObject:[NSString stringWithFormat:@"%d", count] forKey:@"count"];
+//        [weakSelf.dataSource insertObject:mInfo atIndex:index];
+//        [weakSelf.tableview reloadData];
+//        [weakSelf refreshAllPrice:mInfo];
     };
     
     cell.selectBtnClickBlock = ^(NSDictionary *info,BOOL select) {
         [weakSelf refreshShoppingCar:info andSelect:select];
+    };
+    cell.deleteBlock = ^(NSDictionary *info) {
+        [weakSelf deleteAction:info];
     };
     return cell;
 }
@@ -202,6 +188,7 @@
     [self refreshShoppingCar:info andSelect:NO];
 }
 
+#pragma mark - refreshShoppingCar
 - (void)refreshShoppingCar:(NSDictionary *)info andSelect:(BOOL)select
 {
     BOOL isContain = [self isContain:info];
@@ -216,30 +203,6 @@
     [self.shoppingCarBottomView refreshPrice:@{@"price":@(allPrice)}];
     
     [self.tableview reloadData];
-}
-
-- (BOOL)isContain:(NSDictionary *)info
-{
-    BOOL isContain = NO;
-    for (NSDictionary * selectInfo in self.selectArray) {
-        if ([self isEqual:selectInfo withISelectInfo:info]) {
-            isContain = YES;
-            break;
-        }
-    }
-    return isContain;
-}
-
-- (void)deleteSelectInfo:(NSDictionary *)info
-{
-    NSDictionary * deleteInfo = info;
-    for (NSDictionary * selectInfo in self.selectArray) {
-        if ([self isEqual:selectInfo withISelectInfo:info]) {
-            deleteInfo = selectInfo;
-            break;
-        }
-    }
-    [self.selectArray removeObject:deleteInfo];
 }
 
 
@@ -266,6 +229,18 @@
     [self.shoppingCarBottomView refreshPrice:@{@"price":@(allPrice)}];
 }
 
+- (BOOL)isContain:(NSDictionary *)info
+{
+    BOOL isContain = NO;
+    for (NSDictionary * selectInfo in self.selectArray) {
+        if ([self isEqual:selectInfo withISelectInfo:info]) {
+            isContain = YES;
+            break;
+        }
+    }
+    return isContain;
+}
+
 - (BOOL)isEqual:(NSDictionary *)info withISelectInfo:(NSDictionary *)selectInfo
 {
     BOOL isEqual = NO;
@@ -277,7 +252,22 @@
     return isEqual;
 }
 
-#pragma mark - selectAll -- delete -- buy -operation
+#pragma mark - 删除购物车商品
+- (void)deleteSelectInfo:(NSDictionary *)info
+{
+    NSDictionary * deleteInfo = info;
+    for (NSDictionary * selectInfo in self.selectArray) {
+        if ([self isEqual:selectInfo withISelectInfo:info]) {
+            deleteInfo = selectInfo;
+            break;
+        }
+    }
+    [self.selectArray removeObject:deleteInfo];
+}
+
+
+
+#pragma mark - selectAll -- buy -operation
 - (void)selectAllCommodity:(BOOL)select
 {
     [self.selectArray removeAllObjects];
@@ -313,11 +303,11 @@
 
 
 
-- (void)deleteAction
+- (void)deleteAction:(NSDictionary *)info
 {
     NSLog(@"delete");
     [SVProgressHUD show];
-//    [[UserManager sharedManager] didRequestDeleteShoppingCarWith:@{@"command":@20,@"delete_list":[self getDeleteInfoArray]} withNotifiedObject:self];
+    [[UserManager sharedManager] didRequestDeleteShoppingCarWith:@{kUrlName:@"api/shop/cart/delete",@"cart_id":[info objectForKey:@"id"]} withNotifiedObject:self];
 }
 
 - (NSArray *)getDeleteInfoArray
@@ -325,10 +315,9 @@
     NSMutableArray * deleteArray = [NSMutableArray array];
     for (NSDictionary * info in self.selectArray) {
         NSMutableDictionary * mInfo = [NSMutableDictionary dictionary];
-        [mInfo setObject:[info objectForKey:@"channel_id"] forKey:@"channel_id"];
-        [mInfo setObject:[info objectForKey:@"article_id"] forKey:@"article_id"];
-        [mInfo setObject:[info objectForKey:@"goods_id"] forKey:@"goods_id"];
-//        [mInfo setObject:[[UserManager sharedManager].currentSelectStore objectForKey:@"id"] forKey:@"shop_id"];
+        [mInfo setObject:[info objectForKey:@"pay_money"] forKey:@"price"];
+        [mInfo setObject:[info objectForKey:@"num"] forKey:@"count"];
+        [mInfo setObject:[info objectForKey:@"id"] forKey:@"goods_id"];
         [deleteArray addObject:mInfo];
     }
     return deleteArray;
@@ -356,10 +345,9 @@
     NSArray * list = [[UserManager sharedManager] getShoppingCarList];
     for (NSDictionary * info in list) {
         NSMutableDictionary * mInfo = [[NSMutableDictionary alloc]initWithDictionary:info];
-        [mInfo setObject:[info objectForKey:@"quantity"] forKey:@"count"];
-        [mInfo setObject:[info objectForKey:@"user_price"] forKey:@"price"];
-        [mInfo setObject:[info objectForKey:@"spec_text"] forKey:@"tip"];
-//        [mInfo setObject:[NSString stringWithFormat:@"%@%@", kRootImageUrl,[info objectForKey:@"img_url"]] forKey:@"image"];
+        [mInfo setObject:[info objectForKey:@"pay_money"] forKey:@"price"];
+        [mInfo setObject:[info objectForKey:@"num"] forKey:@"count"];
+        [mInfo setObject:[info objectForKey:@"id"] forKey:@"goods_id"];
         [self.dataSource addObject:mInfo];
     }
     

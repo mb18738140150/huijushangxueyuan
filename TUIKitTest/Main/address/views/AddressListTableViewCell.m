@@ -33,13 +33,22 @@
     self.informationLB = [[UILabel alloc]initWithFrame:CGRectMake(20, 10, 200, 20)];
     self.informationLB.font = kMainFont;
     self.informationLB.textColor = UIColorFromRGB(0x000000);
-    NSString * str = [NSString stringWithFormat:@"%@    %@[默认]", [infoDic objectForKey:@"accept_name"], [infoDic objectForKey:@"mobile"]];
+    
+    NSString * str = [NSString stringWithFormat:@"%@    %@[默认]", [infoDic objectForKey:@"username"], [infoDic objectForKey:@"mobile"]];
     [backView addSubview:self.informationLB];
+    if (![[infoDic objectForKey:@"default"] boolValue]) {
+        str = [NSString stringWithFormat:@"%@    %@", [infoDic objectForKey:@"username"], [infoDic objectForKey:@"mobile"]];
+    }else
+    {
+        str = [NSString stringWithFormat:@"%@    %@[默认]", [infoDic objectForKey:@"username"], [infoDic objectForKey:@"mobile"]];
+    }
     NSDictionary * nameAttribute = @{NSFontAttributeName:kMainFont,NSForegroundColorAttributeName:kCommonMainBlueColor};
     NSDictionary * morenAttribute = @{NSFontAttributeName:kMainFont_12,NSForegroundColorAttributeName:kCommonMainBlueColor};
     NSMutableAttributedString * mStr = [[NSMutableAttributedString alloc]initWithString:str];
-    [mStr addAttributes:nameAttribute range:NSMakeRange(0, [[infoDic objectForKey:@"accept_name"] length])];
-    [mStr addAttributes:morenAttribute range:NSMakeRange(str.length - 4, 4)];
+    [mStr addAttributes:nameAttribute range:NSMakeRange(0, [[infoDic objectForKey:@"username"] length])];
+    if ([[infoDic objectForKey:@"default"] boolValue]) {
+        [mStr addAttributes:morenAttribute range:NSMakeRange(str.length - 4, 4)];
+    }
     self.informationLB.attributedText = mStr;
     
     self.editBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -60,7 +69,7 @@
     self.addressLB.font = kMainFont;
     self.addressLB.textColor = UIColorFromRGB(0x666666);
     
-    self.addressLB.text = [NSString stringWithFormat:@"%@%@%@\n%@", [infoDic objectForKey:@"province"]?[infoDic objectForKey:@"province"]:@"",[infoDic objectForKey:@"city"]?[infoDic objectForKey:@"city"]:@"",[infoDic objectForKey:@"area"]?[infoDic objectForKey:@"area"]:@"",[infoDic objectForKey:@"address"]];
+    self.addressLB.text = [NSString stringWithFormat:@"%@\n%@",[infoDic objectForKey:@"area"]?[infoDic objectForKey:@"area"]:@"",[infoDic objectForKey:@"address"]];
     self.addressLB.numberOfLines = 0;
     [backView addSubview:self.addressLB];
     
@@ -107,7 +116,7 @@
     self.informationLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.mapImageView.frame) + 10, 10, 200, 30)];
     self.informationLB.font = kMainFont;
     self.informationLB.textColor = UIColorFromRGB(0x000000);
-    self.informationLB.text = [NSString stringWithFormat:@"%@", [infoDic objectForKey:@"accept_name"]];
+    self.informationLB.text = [NSString stringWithFormat:@"%@", [infoDic objectForKey:@"username"]];
     [self.contentView addSubview:self.informationLB];
     
     self.mobilLB = [[UILabel alloc]initWithFrame:CGRectMake(self.hd_width - 150, 10, 100, 30)];
@@ -121,7 +130,7 @@
     self.addressLB.font = kMainFont_12;
     self.addressLB.textColor = UIColorFromRGB(0x666666);
     self.addressLB.numberOfLines = 0;
-    self.addressLB.text = [NSString stringWithFormat:@"%@%@%@%@", [infoDic objectForKey:@"province"]?[infoDic objectForKey:@"province"]:@"",[infoDic objectForKey:@"city"]?[infoDic objectForKey:@"city"]:@"",[infoDic objectForKey:@"area"]?[infoDic objectForKey:@"area"]:@"",[infoDic objectForKey:@"address"]];
+    self.addressLB.text = [NSString stringWithFormat:@"%@%@",[infoDic objectForKey:@"area"]?[infoDic objectForKey:@"area"]:@"",[infoDic objectForKey:@"address"]];
     [self.contentView addSubview:self.addressLB];
     
     

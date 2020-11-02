@@ -130,7 +130,7 @@
 - (void)loadData
 {
     self.page = 1;
-    [[UserManager sharedManager] didRequestMockVIPBuyWithInfo:@{kUrlName:@"api/community/dynamicDetail",@"c_id":[self.infoDic objectForKey:@"c_id"],@"d_id":[self.infoDic objectForKey:@"id"],@"include":@"zan_name",kRequestType:@"get"} withNotifiedObject:self];
+    [[UserManager sharedManager] didRequestMockVIPBuyWithInfo:@{kUrlName:@"api/community/dynamicDetail",@"c_id":[self.infoDic objectForKey:@"c_id"],@"d_id":[self.infoDic objectForKey:@"id"],@"include":@"zan_info",kRequestType:@"get"} withNotifiedObject:self];
     
     [self doRequest];
 }
@@ -230,7 +230,7 @@
         }
         
         AssociationCommentTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kAssociationCommentTableViewCell forIndexPath:indexPath];
-        [cell refresCommentDetailhUIWith:self.infoDic];
+        [cell refresCommentDetailhUIWith:self.dynamicInfo];
         cell.deleteBlock = ^(NSDictionary * _Nonnull info) {
             [weakSelf deleteDynamic:info];
         };
@@ -265,7 +265,7 @@
         int imageCount = [[info objectForKey:@"c_imgs"] count] % 3 == 0 ? [[info objectForKey:@"c_imgs"] count] / 3 : [[info objectForKey:@"c_imgs"] count] / 3 + 1;
         CGFloat imageHeight = (kCellHeightOfCategoryView + 5) * imageCount;
         
-        NSString * zanStr = @"、马传博、{{nick_name}}、不喜欢没礼貌的人- 等五人觉得很赞";
+        NSString * zanStr = [NSString stringWithFormat:@"、%@ 等五人觉得很赞", [[info objectForKey:@"zan_info"] objectForKey:@"c_name"]];
         CGFloat zanHeight = [zanStr boundingRectWithSize:CGSizeMake(kScreenWidth - 70, MAXFRAG) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kMainFont_12} context:nil].size.height;
         
         return 15 + 30 + 10 + height + 5 + imageHeight + 10 + zanHeight + 15 + 15;
@@ -558,7 +558,7 @@
 #pragma mark - zan
 - (void)didRequestCommentZanSuccessed
 {
-    [[UserManager sharedManager] didRequestMockVIPBuyWithInfo:@{kUrlName:@"api/community/dynamicDetail",@"c_id":[self.infoDic objectForKey:@"c_id"],@"d_id":[self.infoDic objectForKey:@"id"],@"include":@"zan_name",kRequestType:@"get"} withNotifiedObject:self];
+    [[UserManager sharedManager] didRequestMockVIPBuyWithInfo:@{kUrlName:@"api/community/dynamicDetail",@"c_id":[self.infoDic objectForKey:@"c_id"],@"d_id":[self.infoDic objectForKey:@"id"],@"include":@"zan_info",kRequestType:@"get"} withNotifiedObject:self];
 }
 
 - (void)didRequestCommentZanFailed:(NSString *)failedInfo

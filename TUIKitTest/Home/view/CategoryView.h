@@ -19,6 +19,7 @@ typedef enum {
     Page_MYBuyCourse,
     Page_MyOrderState,
     Page_Store,
+    Page_Store_main,
     Page_ShareAndPay,
 }PageType;
 

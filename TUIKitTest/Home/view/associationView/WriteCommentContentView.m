@@ -73,7 +73,8 @@
 
 - (void)refreshUIWithInfo:(NSDictionary *)info
 {
-    if([[self.infoDic objectForKey:@"is_zan"] intValue])
+    self.infoDic = info;
+    if([[[info objectForKey:@"zan_info"] objectForKey:@"is_zan"] intValue])
     {
         [self.goodBtn setImage:[UIImage imageNamed:@"comment_点赞2"] forState:UIControlStateNormal];
     }else

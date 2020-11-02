@@ -7,6 +7,7 @@
 
 #import "StoreViewController.h"
 #import "HomeViewController.h"
+#import "StoreSecondViewController.h"
 
 #import "HomeSearchCollectionViewCell.h"
 #define kHomeSearchCollectionViewCell @"HomeSearchCollectionViewCell"
@@ -23,33 +24,56 @@
 #import "ScanSuccessJumpVC.h"
 #import "CommodityDetailViewController.h"
 
-@interface StoreViewController ()<UICollectionViewDelegate, UICollectionViewDataSource,UserModule_LeadtypeProtocol,UICollectionViewDelegateFlowLayout>
+@interface StoreViewController ()<UICollectionViewDelegate, UICollectionViewDataSource,UserModule_LeadtypeProtocol,UICollectionViewDelegateFlowLayout,UserModule_SecondCategoryProtocol,UserModule_GiftList>
 
 @property (nonatomic, strong)UICollectionView * collectionView;
-@property (nonatomic, strong)NSArray * dataArray;
+@property (nonatomic, strong)NSMutableArray * dataArray;
+@property (nonatomic, strong)NSMutableArray * categoryArray;
+
+@property (nonatomic, strong)NSString * keyword;
+@property (nonatomic, assign)int page;
+
+@property (nonatomic, strong)HomeSearchCollectionViewCell * searchCell;
 
 @end
 
 @implementation StoreViewController
 
+- (NSMutableArray *)dataArray
+{
+    if (!_dataArray) {
+        _dataArray = [NSMutableArray array];
+    }
+    return _dataArray;
+}
+
+- (NSMutableArray *)categoryArray
+{
+    if (!_categoryArray) {
+        _categoryArray = [NSMutableArray array];
+    }
+    return _categoryArray;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self navigationViewSetup];
+    self.keyword = @"";
+    self.page = 1;
     [self loadData];
     [self prepareUI];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(categoryClick:) name:kNotificationOfMainPageCategoryClick object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(categoryClick:) name:kNotificationOfStoreMainAction object:nil];
     
 }
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationOfMainPageCategoryClick object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self ];
 }
 
 - (void)navigationViewSetup
 {
-    
     self.navigationItem.title = @"商城首页";
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -60,7 +84,10 @@
 
 - (void)loadData
 {
-    [[UserManager sharedManager] getLeadTypeWith:@{kUrlName:@"api/index"} withNotifiedObject:self];
+    [SVProgressHUD show];
+    self.page = 1;
+    [[UserManager sharedManager] getSecondCategoryeWith:@{kUrlName:@"api/shop/good/categories"} withNotifiedObject:self];
+    [[UserManager sharedManager] didRequestGiftListWithInfo:@{kUrlName:@"api/shop/good/lists",@"cate_id":@0,@"keyword":self.keyword,@"page":@(self.page)} withNotifiedObject:self];
 }
 
 - (void)prepareUI
@@ -88,44 +115,46 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return self.dataArray.count;
+    return 5;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NSString * type = [[self.dataArray objectAtIndex:section] objectForKey:@"type"];
-    
-    // search banner navbars vipcard adver teacher oneCourse 只有一个  vipcard adver oneCourse 没有头部
-    if ([type isEqualToString:@"search"] || [type isEqualToString:@"banner"] || [type isEqualToString:@"navbars"] || [type isEqualToString:@"vipCard"] || [type isEqualToString:@"adver"] || [type isEqualToString:@"teacher"] || [type isEqualToString:@"oneCourse"] || [type isEqualToString:@"vip"] || [type isEqualToString:@"attention"]  ) {
-        return 1;
-    }else
-    {
-        NSArray * dataArray = [[self.dataArray objectAtIndex:section] objectForKey:@"data"];
-        return dataArray.count;
+    if (section == 4) {
+        return self.dataArray.count;
     }
+    return 1;
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary * info = [self.dataArray objectAtIndex:indexPath.section];
-    NSString * type = [info objectForKey:@"type"];
     __weak typeof(self)weakSelf = self;
-    switch ([self getHomeCellType:info]) {
-        case HomeCellType_search:
+    switch (indexPath.section) {
+        case 0:
         {
             HomeSearchCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeSearchCollectionViewCell forIndexPath:indexPath];
-            [cell refreshUIWithData:info];
+            [cell refreshUIWithData:@{@"keyword":self.keyword}];
+            cell.searchBlock = ^(NSString * _Nonnull key) {
+                if (key.length == 0) {
+                    weakSelf.keyword = @"";
+                }else
+                {
+                    weakSelf.keyword = key;
+                }
+                [weakSelf loadData];
+            };
+            self.searchCell = cell;
             return cell;
         }
             break;
-        case HomeCellType_banner:
+        case 1:
         {
             HomeBannerCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeBannerCollectionViewCell forIndexPath:indexPath];
             NSMutableArray * imageUrlArray = [NSMutableArray array];
-            NSArray * bannerInfos = [info objectForKey:@"data"];
-            for (NSDictionary * bannerInfo in [info objectForKey:@"data"]) {
-                if ([UIUtility judgeStr:[bannerInfo objectForKey:@"image"]]) {
-                    [imageUrlArray addObject:[bannerInfo objectForKey:@"image"]];
+            NSArray * bannerInfos = self.categoryArray;
+            for (NSDictionary * bannerInfo in bannerInfos) {
+                if ([UIUtility judgeStr:[bannerInfo objectForKey:@"thumb"]]) {
+                    [imageUrlArray addObject:[bannerInfo objectForKey:@"thumb"]];
                 }
             }
             cell.bannerImgUrlArray = imageUrlArray;
@@ -138,74 +167,44 @@
             return cell;
         }
             break;
-        case HomeCellType_category:
+        case 2:
         {
-            NSArray * navbars = [info objectForKey:@"data"];
+            NSArray * navbars = self.categoryArray;
             HomeCategoryCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeCategoryCollectionViewCell forIndexPath:indexPath];
-            cell.pageType = PageMain;
+            cell.pageType = Page_Store_main;
             [cell resetWithCategoryInfos:navbars];
             return cell;
         }
             break;
-        case HomeCellType_JustaposeType:
+        case 3:
         {
+            HomeOpenVIPCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeOpenVIPCollectionViewCell forIndexPath:indexPath];
+            [cell resetUIWithInfo:@{}];
+            return cell;
         }
-        case HomeCellType_BigImageType:// topic
-        {
-        }
-        case HomeCellType_BigImageNoTeacherType: // series
-        {
-        }
-        case HomeCellType_ListType:
+            break;
+            
+        default:
         {
             CommodityCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCommodityCollectionViewCell forIndexPath:indexPath];
             
-            NSArray * dataArray = [info objectForKey:@"data"];
-            if ([dataArray isKindOfClass:[NSDictionary class]])  {
-                cell.isOneCourse = YES;
-                [cell refreshUIWith:[info objectForKey:@"data"] andItem:indexPath.item];
-            }else
-            {
-                cell.isOneCourse = NO;
-                [cell refreshUIWith:[dataArray objectAtIndex:indexPath.row] andItem:indexPath.item];
-            }
+            NSArray * dataArray = self.dataArray;
+            [cell refreshUIWith:[dataArray objectAtIndex:indexPath.row] andItem:indexPath.item];
             
             return cell;
         }
             break;
-        case HomeCellType_openVIP:
-        {
-            HomeOpenVIPCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeOpenVIPCollectionViewCell forIndexPath:indexPath];
-            [cell resetUIWithInfo:info];
-            return cell;
-        }
-            break;
-        default:
-            break;
     }
-    
-    HomeSearchCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeSearchCollectionViewCell forIndexPath:indexPath];
-    return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary * info = [self.dataArray objectAtIndex:indexPath.section];
-    NSString * type = [info objectForKey:@"type"];
-    switch ([self getHomeCellType:info]) {
-        case HomeCellType_openVIP:
-        {
-            [self.navigationController popViewControllerAnimated:YES];
-            return;
-        }
-            break;
-        
-        default:
-            break;
+    [self.searchCell resignFirstResponder];
+    if (indexPath.section == 4) {
+        CommodityDetailViewController * vc = [[CommodityDetailViewController alloc]init];
+        vc.info = self.dataArray[indexPath.row];
+        [self.navigationController pushViewController:vc animated:YES];
     }
-    CommodityDetailViewController * vc = [[CommodityDetailViewController alloc]init];
-    
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
@@ -217,14 +216,11 @@
         
         HomeTitleCollectionReusableView *headview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kHomeTitleCollectionReusableView forIndexPath:indexPath];
         
-        [headview resetUIWithInfo:self.dataArray[indexPath.section]];
+        [headview resetUIWithInfo:@{@"title":@"推荐商品"}];
         
         __weak typeof(self)weakSelf= self;
         headview.moreBlock = ^(NSDictionary * _Nonnull info) {
-            NSString * type = [info objectForKey:@"type"];
-            if ([type isEqualToString:@"topic"] || [type isEqualToString:@"series"]) {
-                
-            }
+            [weakSelf operationInfo:@{@"id":@0}];
         };
         reusableview = headview;
     }else if (kind == UICollectionElementKindSectionFooter)
@@ -243,32 +239,32 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary * info = [self.dataArray objectAtIndex:indexPath.section];
-    NSString * type = [info objectForKey:@"type"];
-    switch ([self getHomeCellType:info]) {
-        case HomeCellType_search:
-            return CGSizeMake(collectionView.hd_width, 75);
-            break;
-        case HomeCellType_banner:
-            return CGSizeMake(collectionView.hd_width, (collectionView.hd_width - 35) * 0.45);
-            break;
-        case HomeCellType_category:
+    switch (indexPath.section) {
+        case 0:
         {
-            NSArray * navbars = [info objectForKey:@"data"];
+            return CGSizeMake(collectionView.hd_width, 75);
+        }
+            break;
+        case 1:
+        {
+            return CGSizeMake(collectionView.hd_width, (collectionView.hd_width - 35) * 0.45);
+        }
+            break;
+        case 2:
+        {
+            NSArray * navbars = self.categoryArray;
             int count = navbars.count / 4 + 1;
             return CGSizeMake(collectionView.hd_width, (count) * 90 + 20);
         }
             break;
-        case HomeCellType_openVIP:
+        case 3:
+        {
             return CGSizeMake(collectionView.hd_width, 60);
+        }
             break;
-        case HomeCellType_JustaposeType: // type 为onCourse 高度加20
-        case HomeCellType_BigImageType: // type 为onCourse 高度加20
-        case HomeCellType_BigImageNoTeacherType: // type 为onCourse 高度加20
-        case HomeCellType_ListType: // type 为onCourse 高度加20
-            return CGSizeMake(collectionView.hd_width / 2 - 5 , collectionView.hd_width / 2 - 5 - 22.5 + 70);
-            break;
+            
         default:
+            return CGSizeMake(collectionView.hd_width / 2 - 5 , collectionView.hd_width / 2 - 5 - 22.5 + 70);
             break;
     }
     
@@ -277,22 +273,20 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
-    NSDictionary * info = self.dataArray[section];
-    NSString * type = [info objectForKey:@"type"];
-    if ([type isEqualToString:@"search"] || [type isEqualToString:@"banner"] || [type isEqualToString:@"navbars"] || [type isEqualToString:@"vipCard"] || [type isEqualToString:@"adver"] || [type isEqualToString:@"oneCourse"]|| [type isEqualToString:@"vip"]) {
-        return CGSizeZero;
+    if (section == 4) {
+        
+        return CGSizeMake(collectionView.hd_width, 65);
     }
-    return CGSizeMake(collectionView.hd_width, 65);
+    return CGSizeZero;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-    NSDictionary * info = self.dataArray[section];
-    NSString * type = [info objectForKey:@"type"];
-    if ([type isEqualToString:@"search"] || [type isEqualToString:@"banner"] || [type isEqualToString:@"navbars"]) {
-        return CGSizeZero;
+    if (section == 3) {
+        return CGSizeMake(collectionView.hd_width, 1);
     }
-    return CGSizeMake(collectionView.hd_width, 1);
+    
+    return CGSizeZero;
 }
 
 - (HomeCellType)getHomeCellType:(NSDictionary *)info
@@ -368,22 +362,6 @@
     return HomeCellType_search;
 }
 
-- (void)didLeadtypeSuccessed
-{
-    self.dataArray = [[UserManager sharedManager] getLeadTypeArray];
-    [self.collectionView reloadData];
-    [self.collectionView.mj_header endRefreshing];
-}
-
-- (void)didLeadtypeFailed:(NSString *)failedInfo
-{
-    [SVProgressHUD dismiss];
-    [self.collectionView.mj_header endRefreshing];
-    [SVProgressHUD showErrorWithStatus:failedInfo];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [SVProgressHUD dismiss];
-    });
-}
 
 - (void)categoryClick:(NSNotification *)notification
 {
@@ -395,50 +373,66 @@
 - (void)operationInfo:(NSDictionary *)info
 {
     NSLog(@"info = %@", info);
-    NSString * url_type = [info objectForKey:@"url_type"];
-    if ([url_type isEqualToString:@"none"]) {
-        
-    }else if ([url_type isEqualToString:@"inner"])
-    {
-        NSString * innerType = [UIUtility judgeStr:[info objectForKey:@"url"]];
-        /*
-         index    首页
-         center    个人中心
-         yd_payred_index    图文音视频
-         ask_expert    问答
-         zb_topics    直播
-         yx_activiy    优惠券
-         zb_series    直播专栏
-         yd_serialize    普通专栏
-         saas_bargain    砍价
-         vip_introduce    会员
-         shop_index    商城
-         mypay    我的已购
-         yx_extension_recruit    推广中心
-         yd_detail    图文音视频详情
-         
-         */
-        if ([innerType isEqualToString:@"index"]) {
-            NSLog(@"首页");
-        }else if ([innerType isEqualToString:@"center"])
-        {
-            NSLog(@"个人中心");
-        }
-        
-        
-    }else
-    {
-        // 跳转外部链接
-        ScanSuccessJumpVC * WebVC = [[ScanSuccessJumpVC alloc]init];
-        WebVC.comeFromVC = ScanSuccessJumpComeFromWB;
-        WebVC.jump_URL = [UIUtility judgeStr:[info objectForKey:@"url"]];
-        WebVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:WebVC animated:YES];
-    }
+    StoreSecondViewController * vc = [[StoreSecondViewController alloc]init];
+    vc.cate_id = [[info objectForKey:@"id"] intValue];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)didSecondCategorySuccessed
+{
+    [SVProgressHUD dismiss];
+    [self.categoryArray removeAllObjects];
     
+    NSMutableArray * array = [[[UserManager sharedManager] getSecondCategoryeArray] mutableCopy];
+    for (NSDictionary * info in array) {
+//        img_url
+        NSMutableDictionary * mInfo = [[NSMutableDictionary alloc]initWithDictionary:info];
+        if ([info objectForKey:@"thumb"]) {
+            [mInfo setObject:[info objectForKey:@"thumb"] forKey:@"img_url"];
+            [self.categoryArray addObject:mInfo];
+        }
+    }
+    [self.collectionView reloadData];
     
 }
 
+- (void)didSecondCategoryFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
 
+- (void)didRequestGiftListSuccessed
+{
+    [SVProgressHUD dismiss];
+    [self.collectionView.mj_header endRefreshing];
+    [self.collectionView.mj_footer endRefreshing];
+    NSArray * array = [[UserManager sharedManager] getGiftList];
+    if (array.count <= 0) {
+        [self.collectionView.mj_footer endRefreshingWithNoMoreData];
+    }
+    if (self.page == 1) {
+        [self.dataArray removeAllObjects];
+    }
+    for (NSDictionary * info in array) {
+        [self.dataArray addObject:info];
+    }
+    [self.collectionView reloadData];
+    
+}
+
+- (void)didRequestGiftListFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [self.collectionView.mj_header endRefreshing];
+    [self.collectionView.mj_footer endRefreshing];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
 
 @end

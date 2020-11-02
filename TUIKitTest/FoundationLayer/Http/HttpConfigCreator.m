@@ -497,9 +497,7 @@
 + (HttpConfigModel *)getLearningConfig:(NSDictionary *)infoDic
 {
     HttpConfigModel *learning = [[HttpConfigModel alloc] init];
-    NSDictionary *dic = @{kCommand:kCommandLearningCourse,
-                          @"type":[infoDic objectForKey:@"type"]};
-    [self setConfigModel:learning withInfo:dic];
+    [self setConfigModel:learning withInfo:infoDic];
     return learning;
 }
 

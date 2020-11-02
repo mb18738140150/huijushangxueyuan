@@ -16,6 +16,10 @@
 @property (nonatomic, strong)UIButton * cleanKeyBtn;
 @property (nonatomic, strong)UIButton * cancelBtn;
 
+@property (nonatomic, strong)UIButton * btn;
+
+
+
 @end
 
 @implementation HomeSearchCollectionViewCell
@@ -42,13 +46,21 @@
     self.textTF.delegate = self;
     self.textTF.returnKeyType = UIReturnKeySearch;
     [self.backView addSubview:self.textTF];
+    if ([info objectForKey:@"keyword"]) {
+        self.textTF.text = [info objectForKey:@"keyword"];
+    }
     
     UIButton * btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(0, 0, self.hd_width, self.hd_height);
     [btn addTarget:self action:@selector(searchAction) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:btn];
+    self.btn = btn;
+    btn.hidden = YES;
 }
-
+- (void)showClickBtn
+{
+    self.btn.hidden = NO;
+}
 - (void)searchAction
 {
     if (self.searchBlock) {
