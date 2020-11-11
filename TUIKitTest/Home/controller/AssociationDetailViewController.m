@@ -202,6 +202,15 @@ typedef enum : NSUInteger {
         AssociationCommentTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kAssociationCommentTableViewCell forIndexPath:indexPath];
         [cell refreshUIWith:self.itemArray[indexPath.row] andIsCanOperation:YES];
         
+        UIWindow * window=[[[UIApplication sharedApplication] delegate] window];
+        CGRect rect = [cell convertRect:cell.bounds toView:window];
+        cell.imageClickBlock = ^(NSArray * _Nonnull urlArray, int index) {
+            TestImageView *showView = [[TestImageView alloc] initWithFrame:weakSelf.view.frame andImageList:urlArray andCurrentIndex:index];
+            showView.outsideFrame = rect;
+            showView.insideFrame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+            [showView show];
+        };
+        
         cell.deleteBlock = ^(NSDictionary * _Nonnull info) {
             [weakSelf deleteComment:info];
         };

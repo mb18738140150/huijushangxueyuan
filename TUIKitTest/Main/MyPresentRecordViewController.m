@@ -14,6 +14,7 @@
 #import "ZWMSegmentView.h"
 #define kDataArray @"dataArray"
 #import "LivingCourseDetailViewController.h"
+#import "PresentDetailViewController.h"
 
 @interface MyPresentRecordViewController()<UITableViewDelegate, UITableViewDataSource,UserModule_SecondCategoryProtocol,UserModule_CategoryCourseProtocol>
 @property (nonatomic, assign)int page;
@@ -27,6 +28,9 @@
 @property (nonatomic, strong) NSMutableArray *pageIndexArray;
 @property (nonatomic, strong)SearchAndCategoryView * topView;
 
+@property (nonatomic, strong)ShareAndPaySelectView * payView;
+@property (nonatomic, strong)UIImageView * shareImageView;
+@property (nonatomic, strong)NSDictionary * shareInfo;
 @end
 
 @implementation MyPresentRecordViewController
@@ -45,6 +49,13 @@
     
     [self navigationViewSetup];
     [self prepareUI];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payClick:) name:kNotificationOfShareAndPay object:nil];
+
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - ui
@@ -157,7 +168,7 @@
     }
     
     // ,@"debug":@"kingofzihua",@"author_id":@"1475865"
-    [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:@"api/user/giveRecord",@"type":type,@"debug":@"kingofzihua",@"author_id":@"1475865",@"requestType":@"get"} withNotifiedObject:self];
+    [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:@"api/user/giveRecord",@"type":type,@"requestType":@"get"} withNotifiedObject:self];
     
     [self.tableView reloadData];
 }
@@ -169,13 +180,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    __weak typeof(self)weakSelf = self;
     MyPresentRecordTableViewCell *titleCell = [tableView dequeueReusableCellWithIdentifier:kMyPresentRecordTableViewCell forIndexPath:indexPath];
     
     [titleCell resetCellContent:self.itemArray[indexPath.row]];
     
     titleCell.presentBlock = ^{
-        NSLog(@"present");
+        [weakSelf promotionAction:weakSelf.itemArray[indexPath.row]];
     };
     
     return titleCell;
@@ -189,10 +200,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary * info = [self.itemArray objectAtIndex:indexPath.row];
-//    LivingCourseDetailViewController * vc = [[LivingCourseDetailViewController alloc]init];
-//    vc.info = info;
-//    vc.index = indexPath.row;
-//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - request
@@ -232,6 +239,74 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [SVProgressHUD dismiss];
     });
+}
+
+
+- (void)promotionAction:(NSDictionary *)info
+{
+    PresentDetailViewController * vc = [[PresentDetailViewController alloc]init];
+    vc.info = info;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+//    self.shareInfo = [info objectForKey:@"share"];
+//    [self getShareInfo:self.shareInfo];
+}
+
+- (void)getShareInfo:(NSDictionary *)info
+{
+    __weak typeof(self)weakSelf = self;
+    NSDictionary * shareInfo = info;
+    self.shareImageView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 1000, 100, 100)];
+    [self.view addSubview:self.shareImageView];
+    self.shareImageView.hidden = YES;
+//    [SVProgressHUD show];
+    [self.shareImageView sd_setImageWithURL:[NSURL URLWithString:[[UIUtility judgeStr:[shareInfo objectForKey:@"thumb"]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:[UIImage imageNamed:@"courseDefaultImage"] options:SDWebImageAllowInvalidSSLCertificates completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf shareAction];
+        });
+        
+        [SVProgressHUD dismiss];
+        NSLog(@"图片下载成功");
+    }];
+    
+}
+
+- (void)shareAction
+{
+    ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:YES];
+    UIWindow * window = [UIApplication sharedApplication].delegate.window;
+    [window addSubview:payView];
+    self.payView = payView;
+}
+- (void)payClick:(NSNotification *)notification
+{
+    NSDictionary *infoDic = notification.object;
+    [self.payView removeFromSuperview];
+    if ([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_shareFriend)
+    {
+        
+        NSDictionary * shareInfo = self.shareInfo;
+        UIImage *thumbImage = self.shareImageView.image;
+        NSString * urlStr = [UIUtility judgeStr:[shareInfo objectForKey:@"link"]];
+        [WXApiRequestHandler sendLinkURL:urlStr
+                                 TagName:@""
+                                   Title:[UIUtility judgeStr:[shareInfo objectForKey:@"title"]]
+                             Description:[UIUtility judgeStr:[shareInfo objectForKey:@"desc"]]
+                              ThumbImage:thumbImage
+                                 InScene:WXSceneSession];
+    }else if (([[infoDic objectForKey:kCourseCategoryId] intValue] == CategoryType_shareCircle))
+    {
+        NSDictionary * shareInfo = self.shareInfo;
+        UIImage *thumbImage = self.shareImageView.image;
+        NSString * urlStr = [UIUtility judgeStr:[shareInfo objectForKey:@"link"]];
+        [WXApiRequestHandler sendLinkURL:urlStr
+                                 TagName:@""
+                                   Title:[UIUtility judgeStr:[shareInfo objectForKey:@"title"]]
+                             Description:[UIUtility judgeStr:[shareInfo objectForKey:@"desc"]]
+                              ThumbImage:thumbImage
+                                 InScene:WXSceneTimeline];
+    }
 }
 
 

@@ -23,6 +23,7 @@
 @property (nonatomic, copy)void (^addShoppingCarBlock)(NSDictionary *info);
 
 - (void)refreshPrice:(NSDictionary *)infoDic;
+
 - (void)refreshGoodPrice:(NSDictionary *)infoDic;
 - (void)refreshTotalCount;
 

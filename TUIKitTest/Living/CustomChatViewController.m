@@ -32,6 +32,7 @@
 #import "CustomCell.h"
 #import "TestImageView.h"
 #import "ShareAndPaySelectView.h"
+#import "StoreViewController.h"
 
 @interface CustomChatViewController ()<TInputControllerDelegate,CustomTMessageControllerDelegate,CustomTUIChatControllerDelegate,UserModule_LiveChatRecord,UserModule_SendMessage,HttpUploadProtocol,UserModule_GiftList,UserModule_ShareList,BarrageViewDataSouce, BarrageViewDelegate,UserModule_Shutup,UserModule_MockVIPBuy, UserModule_MockPartnerBuy,UserModule_PayOrderProtocol,UserModule_MyVIPCardInfo>
 
@@ -129,6 +130,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccedsss:) name:kNotificationOfBuyCourseSuccess object:nil];
 }
+
 
 - (void)paySuccedsss:(NSNotification *)notification
 {
@@ -542,6 +544,21 @@
                 NSLog(@"客服");
             }
                 break;
+            case RightTabbarOperationType_store:
+            {
+                if (weakSelf.playerview) {
+                    [weakSelf.playerview pause];
+                }
+                if (weakSelf.livePlayer) {
+                    [weakSelf.livePlayer pause];
+                }
+                StoreViewController * vc = [[StoreViewController alloc]init];
+                vc.fromType = FromType_present;
+                UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                [weakSelf presentViewController:nav animated:YES completion:nil];
+                
+            }
+                break;
                 
             default:
                 break;
@@ -639,9 +656,7 @@
         self.livePlayer = nil;
     }
     NSLog(@"界面释放了");
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationOfShutUpNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationOfMockVIPBuyNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationOfAddChatRecord object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -867,7 +882,7 @@
     if ([messageData isKindOfClass:[TUIImageMessageCellData class]]) {
         NSLog(@"click TUIImageMessageCellData *** %@", messageData);
         TUIImageMessageCellData * imageData = messageData;
-        [self showBigImage:@[@{@"content":imageData.path}] andStartPoint:rect];
+        [self showBigImage:@[imageData.path] andStartPoint:rect];
     }
     
 }

@@ -22,6 +22,10 @@
 
 @property (nonatomic, strong)UIButton * zanBtn;
 @property (nonatomic, strong)UIButton * commentBtn;
+
+@property (nonatomic, strong)NSArray * imageUrlArray;
+
+
 @end
 
 @implementation AssociationCommentTableViewCell
@@ -105,14 +109,19 @@
     [backView addSubview:_contentLB];
     
     CGFloat spase = 5;
+    self.imageUrlArray = [info objectForKey:@"c_imgs"];
     for (int i = 0; i < [[info objectForKey:@"c_imgs"] count]; i++) {
         NSString * imageUrl = [[info objectForKey:@"c_imgs"] objectAtIndex:i];
         
         
         UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake((kCellHeightOfCategoryView + spase) * (i % 3) + 55, CGRectGetMaxY(_contentLB.frame) + 5 + (kCellHeightOfCategoryView + spase) * (i / 3), kCellHeightOfCategoryView, kCellHeightOfCategoryView)];
         [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", imageUrl]] placeholderImage:[UIImage imageNamed:@"头像加载失败"] options:SDWebImageAllowInvalidSSLCertificates];
+        imageView.tag = 1000 + i;
+        imageView.userInteractionEnabled = YES;
         [self.contentView addSubview:imageView];
         
+        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
+        [imageView addGestureRecognizer:tap];
     }
     
     
@@ -133,6 +142,14 @@
     
 }
 
+
+- (void)tapAction:(UITapGestureRecognizer *)tap
+{
+    UIView * topView = tap.view;
+    if (self.imageClickBlock) {
+        self.imageClickBlock(self.imageUrlArray, topView.tag - 1000);
+    }
+}
 
 - (void)addOperationBtn:(NSDictionary *)info
 {
@@ -264,14 +281,20 @@
     [backView addSubview:_contentLB];
     
     CGFloat spase = 5;
+    self.imageUrlArray = [info objectForKey:@"c_imgs"];
     for (int i = 0; i < [[info objectForKey:@"c_imgs"] count]; i++) {
         NSString * imageUrl = [[info objectForKey:@"c_imgs"] objectAtIndex:i];
         
         
         UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake((kCellHeightOfCategoryView + spase) * (i % 3) + 55, CGRectGetMaxY(_contentLB.frame) + 5 + (kCellHeightOfCategoryView + spase) * (i / 3), kCellHeightOfCategoryView, kCellHeightOfCategoryView)];
         [imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", imageUrl]] placeholderImage:[UIImage imageNamed:@"头像加载失败"] options:SDWebImageAllowInvalidSSLCertificates];
+        
+        imageView.tag = 1000 + i;
+        imageView.userInteractionEnabled = YES;
         [self.contentView addSubview:imageView];
         
+        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
+        [imageView addGestureRecognizer:tap];
     }
     
     

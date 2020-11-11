@@ -98,6 +98,7 @@
 #import "JingpinDynamicOperation.h"
 #import "AddDynamicCommentOperation.h"
 #import "DeleteDynamicComment.h"
+#import "StoreSettingOperation.h"
 
 @interface UserManager()
 @property (nonatomic,strong) TabbarOperation       *tabbarOperation;
@@ -130,6 +131,7 @@
 @property (nonatomic, strong)JingpinDynamicOperation            *jingpinDynamicOperation;
 @property (nonatomic, strong)AddDynamicCommentOperation            *addDynamicCommentOperation;
 @property (nonatomic, strong)DeleteDynamicComment            *deleteDynamicComment;
+@property (nonatomic, strong)StoreSettingOperation            *storeSettingOperation;
 
 @property (nonatomic, strong)AddShoppingCarOperation         *addShoppingCarOperation;
 @property (nonatomic, strong)DeleteShoppingCarOperation         *deleteShoppingCarOperation;
@@ -252,6 +254,7 @@
         self.jingpinDynamicOperation = [[JingpinDynamicOperation alloc]init];
         self.addDynamicCommentOperation = [[AddDynamicCommentOperation alloc]init];
         self.deleteDynamicComment = [[DeleteDynamicComment alloc]init];
+        self.storeSettingOperation = [[StoreSettingOperation alloc]init];
 
         self.SecondCategoryOperation = [[SecondCategoryOperation alloc]init];
         self.categoryCourseOperation = [[CategoryCourseOperation alloc]init];
@@ -621,6 +624,11 @@
     [self.createOrderOperation didRequestCreateOrderWithCourseInfo:infoDic withNotifiedObject:object];
 }
 
+- (NSDictionary *)getCreateOrderInfo
+{
+    return self.createOrderOperation.orderInfo;
+}
+
 // 评论
 - (void)didRequestCommentZantWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_CommentZanProtocol>)object
 {
@@ -764,6 +772,24 @@
 {
     [self.deleteDynamicComment getDeleteDynamicCommentWith:info withNotifiedObject:object];
 }
+
+// 店铺设置
+- (void)didRequestStoreSettingWithWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_StoreSetting>)object;
+{
+    [self.storeSettingOperation didRequestStoreSettingWithWithDic:infoDic withNotifiedObject:object];
+}
+- (NSDictionary *)getStoreSettingInfo
+{
+    return self.storeSettingOperation.info;
+}
+
+
+
+
+
+
+
+
 
 
 

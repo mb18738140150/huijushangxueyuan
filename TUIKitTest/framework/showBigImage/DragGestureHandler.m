@@ -24,6 +24,10 @@
 //背景视图
 @property (nonatomic, weak) UIView *bgView;
 
+@property (nonatomic,strong) UISwipeGestureRecognizer *leftGesture;
+@property (nonatomic,strong) UISwipeGestureRecognizer *rightGesture;
+@property (nonatomic,strong) UIPanGestureRecognizer *panGesture;
+
 @end
 
 @implementation DragGestureHandler
@@ -32,9 +36,35 @@
     if (self = [super init]) {
         self.gestureView = gestureView;
         self.bgView = bgView;
-        [self.bgView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)]];
+        
+        _leftGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextQuestion)];
+        _leftGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+        _rightGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(previousQuestion)];
+        _rightGesture.direction = UISwipeGestureRecognizerDirectionRight;
+        _panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
+        
+        [_panGesture requireGestureRecognizerToFail:_leftGesture];
+        [_panGesture requireGestureRecognizerToFail:_rightGesture];
+        
+        [self.bgView addGestureRecognizer:_leftGesture];
+        [self.bgView addGestureRecognizer:_rightGesture];
+        [self.bgView addGestureRecognizer:_panGesture];
     }
     return self;
+}
+
+- (void)nextQuestion
+{
+    if (self.nextBlock) {
+        self.nextBlock();
+    }
+}
+
+- (void)previousQuestion
+{
+    if (self.previousBlock) {
+        self.previousBlock();
+    }
 }
 
 - (void)panAction:(UIPanGestureRecognizer *)gesture {

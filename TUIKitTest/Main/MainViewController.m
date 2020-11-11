@@ -26,6 +26,10 @@
 #import "TeacherDetailViewController.h"
 #import "MyIncomeViewController.h"
 #import "MyPromotionViewController.h"
+#import "ShoppingCarViewController.h"
+#import "OrderListViewController.h"
+#import "BuySuccessAndPresentViewController.h"
+
 
 @interface MainViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_GetUserInfo,UserModule_MockVIPBuy>
 
@@ -34,6 +38,7 @@
 @property (nonatomic, assign)int news_num;
 
 @property (nonatomic, assign)BOOL divide_open;
+@property (nonatomic, assign)BOOL shop_open;
 @property (nonatomic, strong)NSDictionary * promotionInfo;
 
 @end
@@ -49,7 +54,9 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orderState:) name:kNotificationOfMainMyCategory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orderState:) name:kNotificationOfMainMyOrderState object:nil];
+
 }
+
 
 - (void)category:(NSNotification *)notification
 {
@@ -62,6 +69,7 @@
     [SVProgressHUD dismiss];
     [self.tableView.mj_header endRefreshing];
     [UserManager sharedManager].news_num = [[[[UserManager sharedManager] getUserInfo] objectForKey:@"news_num"] intValue];
+    
     self.promotionInfo = [[[UserManager sharedManager] getUserInfo] objectForKey:@"promoter"];
     [self.tableView reloadData];
 }
@@ -81,6 +89,7 @@
     [SVProgressHUD dismiss];
     BOOL divide_open = [[[[UserManager sharedManager] getVIPBuyInfo] objectForKey:@"divide_open"] boolValue];
     self.divide_open = divide_open;
+    self.shop_open = [[[[UserManager sharedManager] getVIPBuyInfo] objectForKey:@"shop_open"] boolValue];
     if (divide_open) {
         // 开启推广
         self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_推广中心",@"title":@"推广中心"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"}];
@@ -128,35 +137,44 @@
             break;
         case CategoryType_daiFuKuan:
         {
-            NSLog(@"CategoryType_daiFuKuan");
+            [self pushOrderList:1];
         }
             break;
         case CategoryType_daiShouHuo:
         {
-            NSLog(@"我CategoryType_daiShouHuo");
+            [self pushOrderList:2];
         }
             break;
         case CategoryType_daiFaHuo:
         {
-            NSLog(@"CategoryType_daiFaHuo");
+            [self pushOrderList:3];
         }
             break;
         case CategoryType_allOrder:
         {
-            NSLog(@"CategoryType_allOrder");
+            [self pushOrderList:0];
         }
             break;
         case CategoryType_ShoppingCar:
         {
-            NSLog(@"CategoryType_ShoppingCar");
+            ShoppingCarViewController * vc = [[ShoppingCarViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
         }
             break;
-            
         default:
             break;
     }
     
 //    NSLog(@"%@", infoDic);
+}
+
+- (void)pushOrderList:(int )cateId
+{
+    OrderListViewController * vc = [[OrderListViewController alloc]init];
+    vc.cateId = cateId;
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - ui
@@ -204,12 +222,16 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 4;
+        if (self.shop_open) {
+            return 4;
+        }
+        return 3;
     }else
     {
         return self.dataSource.count;
     }
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     __weak typeof(self)weakSelf = self;
@@ -303,6 +325,7 @@
             [self.navigationController pushViewController:vc animated:YES];
         }else if ([title containsString:@"赠送记录"])
         {
+            
             MyPresentRecordViewController * vc = [[MyPresentRecordViewController alloc]init];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];

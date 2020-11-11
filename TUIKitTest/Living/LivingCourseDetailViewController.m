@@ -20,6 +20,10 @@
 #import "MainVipCardListViewController.h"
 #import "ShareClickView.h"
 #import "LivingSecretViewController.h"
+#import "AssociationListTableViewCell.h"
+#define kAssociationListTableViewCell @"AssociationListTableViewCell"
+#import "JoinAssociationViewController.h"
+#import "BuyCourseSendViewController.h"
 
 typedef enum : NSUInteger {
     topic_type_free = 1,
@@ -34,12 +38,12 @@ typedef enum : NSUInteger {
     Topic_style_sanfang,
 } Topic_style;
 
-@interface LivingCourseDetailViewController ()<UserModule_CourseDetailProtocol,UITableViewDelegate, UITableViewDataSource,UserModule_PayOrderProtocol,WKUIDelegate,WKNavigationDelegate,UserModule_MockVIPBuy>
+@interface LivingCourseDetailViewController ()<UserModule_CourseDetailProtocol,UITableViewDelegate, UITableViewDataSource,UserModule_PayOrderProtocol,WKUIDelegate,WKNavigationDelegate,UserModule_MockVIPBuy,UserModule_MockPartnerBuy>
 
 @property (nonatomic, strong)UITableView * tableView;
 
 @property (nonatomic, strong)NSDictionary * courseDetailInfo;
-
+@property (nonatomic, strong)CategoryView * storeView;
 @property (nonatomic, strong)UIButton *playBackBtn;
 @property (nonatomic, assign)Topic_type topic_type; // 收费类型 1.免费 2.收费 3.加密
 @property (nonatomic, assign)Topic_style topic_style;// 课程类型 1.音频直播 2.直播 3.录播 4.三方直播
@@ -57,13 +61,21 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong)NSMutableArray * urlDictsArray;
 @property (nonatomic, strong)NSString * detailHtml;
 
-@property (nonatomic, strong)NSDictionary * subscribInfo;
+@property (nonatomic, strong)NSDictionary * subscribInfo;// 预约信息
 
 @property (nonatomic, strong)ShareAndPaySelectView * payView;
-
+@property (nonatomic, strong)NSMutableArray * communities;
 @end
 
 @implementation LivingCourseDetailViewController
+
+- (NSMutableArray *)communities
+{
+    if (!_communities) {
+        _communities = [NSMutableArray array];
+    }
+    return _communities;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -73,6 +85,7 @@ typedef enum : NSUInteger {
     
     self.psd = @"";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payClick:) name:kNotificationOfShareAndPay object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(giveAction) name:kNotificationOfSendCourse object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccedsss:) name:kNotificationOfBuyCourseSuccess object:nil];
 }
@@ -227,6 +240,7 @@ typedef enum : NSUInteger {
     [self.tableView registerClass:[LivingCourseDetailTableViewCell class] forCellReuseIdentifier:kLivingCourseDetailTableViewCell];
     [self.tableView registerClass:[LivingTeacherIntroTableViewCell class] forCellReuseIdentifier:kLivingTeacherIntroTableViewCell];
     [self.tableView registerClass:[MainOpenVIPCardTableViewCell class] forCellReuseIdentifier:kMainOpenVIPCardTableViewCell];
+    [self.tableView registerClass:[AssociationListTableViewCell class] forCellReuseIdentifier:kAssociationListTableViewCell];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellID"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
@@ -242,6 +256,16 @@ typedef enum : NSUInteger {
     [_playBackBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
     [_playBackBtn addTarget:self action:@selector(playAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_playBackBtn];
+    
+    CategoryView *cateView = [[CategoryView alloc] initWithFrame:CGRectMake(0, _playBackBtn.hd_y, 60, 40)];
+    cateView.pageType = Page_sendCourse;
+    cateView.info = @{@"id":@(1)};
+    cateView.categoryName = @"赠送好友";
+    cateView.categoryCoverUrl = @"main_赠送记录";
+    [cateView setupSmallContent];
+    [self.view addSubview:cateView];
+    self.storeView = cateView;
+    self.storeView.hidden = YES;
     
     __weak typeof(self)weakSelf = self;
     self.shareView = [[ShareClickView alloc]initWithFrame:CGRectMake(kScreenWidth - 60, 40, 60, 30)];
@@ -273,6 +297,11 @@ typedef enum : NSUInteger {
         return;
     }
     self.navigationItem.title = [NSString stringWithFormat:@"%@", [self.courseDetailInfo objectForKey:@"title"]];
+    
+    if ([[self.courseDetailInfo objectForKey:@"give"] boolValue]) {
+        self.storeView.hidden = NO;
+        self.playBackBtn.frame = CGRectMake(CGRectGetMaxX(_storeView.frame), kScreenHeight - kNavigationBarHeight - kStatusBarHeight - 45, kScreenWidth - 15 - 60, 40);
+    }
     
     if ([self.courseDetailInfo objectForKey:@"purchase"]) {
         
@@ -325,6 +354,14 @@ typedef enum : NSUInteger {
         [_playBackBtn setTitle:@"进入观看" forState:UIControlStateNormal];
     }
     
+}
+
+- (void)giveAction
+{
+    BuyCourseSendViewController * vc = [[BuyCourseSendViewController alloc]init];
+    vc.info = self.courseDetailInfo;
+    vc.isArticle = NO;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)playAction
@@ -403,7 +440,7 @@ typedef enum : NSUInteger {
 #pragma mark - tableviewdelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -417,6 +454,9 @@ typedef enum : NSUInteger {
     }else if (section == 2)
     {
         return 1;
+    }else if (section == 3)
+    {
+        return self.communities.count;
     }
     if (self.courseDetailInfo) {
         if ([[self.courseDetailInfo objectForKey:@"topic_type"] intValue] == 1) {
@@ -428,10 +468,19 @@ typedef enum : NSUInteger {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    __weak typeof(self)weakSelf = self;
     if (indexPath.row == 0 && indexPath.section == 0) {
         LivingCourseDetailTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kLivingCourseDetailTableViewCell forIndexPath:indexPath];
         [cell refreshUIWithInfo:self.courseDetailInfo];
-        
+        cell.subscribBlock = ^(BOOL isSubscrib) {
+            [SVProgressHUD show];
+            if (isSubscrib) {
+                [[UserManager sharedManager] didRequestMockPartnerBuyWithInfo:@{kUrlName:@"api/topic/unreserve",@"topic_id":[NSString stringWithFormat:@"%@", [self.info objectForKey:@"id"]]} withNotifiedObject:weakSelf];
+            }else
+            {
+                [[UserManager sharedManager] didRequestMockPartnerBuyWithInfo:@{kUrlName:@"api/topic/reserve",@"topic_id":[NSString stringWithFormat:@"%@", [self.info objectForKey:@"id"]]} withNotifiedObject:weakSelf];
+            }
+        };
         return cell;
     }else if (indexPath.row == 1 && indexPath.section == 0)
     {
@@ -446,7 +495,17 @@ typedef enum : NSUInteger {
         }
         return cell;
     }
-    
+    if (indexPath.section == 3) {
+        AssociationListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kAssociationListTableViewCell forIndexPath:indexPath];
+        [cell resetCellContent:self.communities[indexPath.row]];
+        [cell resetTitle];
+        cell.cancelOrderLivingCourseBlock = ^(NSDictionary * _Nonnull info) {
+            JoinAssociationViewController * vc = [[JoinAssociationViewController alloc]init];
+            vc.infoDic = weakSelf.communities[indexPath.row];
+            [weakSelf.navigationController pushViewController:vc animated:YES];
+        };
+        return cell;
+    }
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellID" forIndexPath:indexPath];
     [cell.contentView removeAllSubviews];
     [cell.contentView addSubview:self.webView];
@@ -465,6 +524,9 @@ typedef enum : NSUInteger {
     }else if (indexPath.row == 1 && indexPath.section == 0)
     {
         return 60;
+    }else if (indexPath.section == 3)
+    {
+        return 80;
     }
     
     if (indexPath.section == 1) {
@@ -483,7 +545,7 @@ typedef enum : NSUInteger {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 2) {
+    if (section == 2 || section == 3) {
         return 0;
     }
     if (section == 1) {
@@ -497,6 +559,19 @@ typedef enum : NSUInteger {
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    if (section == 3)
+    {
+        UIView * headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
+        headView.backgroundColor = UIColorFromRGB(0xffffff);
+        
+        UILabel * titleLb = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, kScreenWidth - 30, 50)];
+        titleLb.text = @"相关社群";
+        titleLb.textColor = UIColorFromRGB(0x111111);
+        titleLb.font = [UIFont boldSystemFontOfSize:16];
+        [headView addSubview:titleLb];
+        
+        return headView;
+    }
     UIView * headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, tableView.hd_width, 40)];
     headView.backgroundColor = UIColorFromRGB(0xffffff);
     
@@ -513,6 +588,12 @@ typedef enum : NSUInteger {
 {
     if (section == 2) {
         return 40;
+    }
+    else if (section == 3)
+    {
+        if (self.communities.count > 0) {
+            return 50;
+        }
     }
     return 0;
 }
@@ -536,6 +617,7 @@ typedef enum : NSUInteger {
     [SVProgressHUD dismiss];
     [self.tableView.mj_header endRefreshing];
     self.courseDetailInfo = [[UserManager sharedManager] getCourseDetailInfo];
+    self.communities = [[self.courseDetailInfo objectForKey:@"communities"] objectForKey:@"data"];
     [self resetPayBtn];
     
     [self getShareInfo:self.courseDetailInfo];
@@ -578,6 +660,21 @@ typedef enum : NSUInteger {
 }
 
 - (void)didRequestMockVIPBuyFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
+
+- (void)didRequestMockPartnerBuySuccessed
+{
+    [SVProgressHUD dismiss];
+    [[UserManager sharedManager] didRequestMockVIPBuyWithInfo:@{@"topic_id":[NSString stringWithFormat:@"%@", [self.info objectForKey:@"id"]],kUrlName:@"api/topic/reserveStatus",@"requestType":@"get"} withNotifiedObject:self];
+}
+
+- (void)didRequestMockPartnerBuyFailed:(NSString *)failedInfo
 {
     [SVProgressHUD dismiss];
     [SVProgressHUD showErrorWithStatus:failedInfo];

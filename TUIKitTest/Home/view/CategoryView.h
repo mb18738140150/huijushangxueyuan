@@ -21,6 +21,7 @@ typedef enum {
     Page_Store,
     Page_Store_main,
     Page_ShareAndPay,
+    Page_sendCourse,
 }PageType;
 
 @interface CategoryView : UIView

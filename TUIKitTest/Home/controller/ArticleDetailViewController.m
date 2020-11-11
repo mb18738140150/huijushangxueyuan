@@ -28,8 +28,10 @@
 
 #import "ShareClickView.h"
 #import "ShareAndPaySelectView.h"
-
-
+#import "AssociationListTableViewCell.h"
+#define kAssociationListTableViewCell @"AssociationListTableViewCell"
+#import "JoinAssociationViewController.h"
+#import "BuyCourseSendViewController.h"
 
 typedef enum : NSUInteger {
     ArticleType_article,
@@ -54,6 +56,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong)UILabel * durationLB;
 @property (nonatomic, strong)UISlider *progressSlider;
 @property (nonatomic, strong)UIButton * payStateBtn;
+@property (nonatomic, strong)CategoryView * storeView;
 
 @property (nonatomic, strong)WKWebView * webView;
 @property (nonatomic, assign)CGFloat webViewHeight;
@@ -76,10 +79,19 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, strong)ShareAndPaySelectView * payView;
 
+@property (nonatomic, strong)NSMutableArray * communities;
 
 @end
 
 @implementation ArticleDetailViewController
+
+- (NSMutableArray *)communities
+{
+    if (!_communities) {
+        _communities = [NSMutableArray array];
+    }
+    return _communities;
+}
 
 - (NSMutableArray *)images
 {
@@ -105,9 +117,19 @@ typedef enum : NSUInteger {
     [self doResetQuestionRequest];
     [self prepareUI];
     
+}
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payClick:) name:kNotificationOfShareAndPay object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccedsss:) name:kNotificationOfBuyCourseSuccess object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(giveAction) name:kNotificationOfSendCourse object:nil];
+
 }
 
 - (void)paySuccedsss:(NSNotification *)notification
@@ -155,8 +177,6 @@ typedef enum : NSUInteger {
                               ThumbImage:thumbImage
                                  InScene:WXSceneTimeline];
     }
-    
-    
 }
 
 - (void)didRequestPayOrderSuccessed
@@ -272,7 +292,8 @@ typedef enum : NSUInteger {
     [self.tableView registerClass:[ArticleCategoryTableViewCell class] forCellReuseIdentifier:kArticleCategoryTableViewCell];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellID"];
     [self.tableView registerClass:[ArticleImageTableViewCell class] forCellReuseIdentifier:kArticleImageTableViewCell];
-    
+    [self.tableView registerClass:[AssociationListTableViewCell class] forCellReuseIdentifier:kAssociationListTableViewCell];
+
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(doResetQuestionRequest)];
         
     __weak typeof(self)weakSelf = self;
@@ -347,7 +368,17 @@ typedef enum : NSUInteger {
     [_payStateBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
     [_payStateBtn addTarget:self action:@selector(playStateAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_payStateBtn];
-    
+
+
+    CategoryView *cateView = [[CategoryView alloc] initWithFrame:CGRectMake(0, _payStateBtn.hd_y, 60, 40)];
+    cateView.pageType = Page_sendCourse;
+    cateView.info = @{@"id":@(1)};
+    cateView.categoryName = @"赠送好友";
+    cateView.categoryCoverUrl = @"main_赠送记录";
+    [cateView setupSmallContent];
+    [self.view addSubview:cateView];
+    self.storeView = cateView;
+    self.storeView.hidden = YES;
     
     // webview
     self.webView = [[WKWebView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 10)];
@@ -370,7 +401,7 @@ typedef enum : NSUInteger {
         self.dataSource = [[self.courseDetailInfo objectForKey:@"common"] objectForKey:@"data"];
     }
     
-    
+    self.communities = [[self.courseDetailInfo objectForKey:@"communities"] objectForKey:@"data"];
     self.navigationItem.title = [self.courseDetailInfo objectForKey:@"title"];
     
     NSDictionary * purchase = [self.courseDetailInfo objectForKey:@"purchase"];
@@ -414,6 +445,11 @@ typedef enum : NSUInteger {
         [_payStateBtn setTitle:@"免费" forState:UIControlStateNormal];
         self.isShowAllContent = YES;
         self.payStateType = PayStateType_free;
+    }
+    
+    if ([[self.courseDetailInfo objectForKey:@"give"] boolValue]) {
+        self.storeView.hidden = NO;
+        self.payStateBtn.frame = CGRectMake(CGRectGetMaxX(_storeView.frame), kScreenHeight - kNavigationBarHeight - kStatusBarHeight - 45, kScreenWidth - 15 - 60, 40);
     }
     
     
@@ -474,7 +510,7 @@ typedef enum : NSUInteger {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -488,6 +524,9 @@ typedef enum : NSUInteger {
             return 1;
         }
         return 0;
+    }else if (section == 3)
+    {
+        return self.communities.count;
     }
     
     if (self.isShowAllContent) {
@@ -657,6 +696,17 @@ typedef enum : NSUInteger {
             return cell;
         } 
     }
+    if (indexPath.section == 3) {
+        AssociationListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kAssociationListTableViewCell forIndexPath:indexPath];
+        [cell resetCellContent:self.communities[indexPath.row]];
+        [cell resetTitle];
+        cell.cancelOrderLivingCourseBlock = ^(NSDictionary * _Nonnull info) {
+            JoinAssociationViewController * vc = [[JoinAssociationViewController alloc]init];
+            vc.infoDic = weakSelf.communities[indexPath.row];
+            [weakSelf.navigationController pushViewController:vc animated:YES];
+        };
+        return cell;
+    }
     
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellID" forIndexPath:indexPath];
     [cell.contentView removeAllSubviews];
@@ -737,6 +787,9 @@ typedef enum : NSUInteger {
     }else if (indexPath.section == 1)
     {
         return 20;
+    }else if (indexPath.section == 3)
+    {
+        return 80;
     }
     
     return 0;
@@ -746,6 +799,18 @@ typedef enum : NSUInteger {
 {
     if (section == 0) {
         return nil;
+    }else if (section == 3)
+    {
+        UIView * headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
+        headView.backgroundColor = UIColorFromRGB(0xffffff);
+        
+        UILabel * titleLb = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, kScreenWidth - 30, 50)];
+        titleLb.text = @"相关社群";
+        titleLb.textColor = UIColorFromRGB(0x111111);
+        titleLb.font = [UIFont boldSystemFontOfSize:16];
+        [headView addSubview:titleLb];
+        
+        return headView;
     }
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.hd_width, 65)];
     view.backgroundColor = [UIColor whiteColor];
@@ -756,7 +821,6 @@ typedef enum : NSUInteger {
     
     UIView * seperateView = [[UIView alloc]initWithFrame:CGRectMake(15, 44, kScreenWidth - 30, 1)];
     seperateView.backgroundColor = UIColorFromRGB(0xf2f2f2);
-    
     
     UIButton * commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     commentBtn.frame = CGRectMake(15, CGRectGetMaxY(segment.frame), 40, 20);
@@ -790,6 +854,11 @@ typedef enum : NSUInteger {
         {
             return 65;
         }
+    }else if (section == 3)
+    {
+        if (self.communities.count > 0) {
+            return 50;
+        }
     }
     return 0;
 }
@@ -807,6 +876,13 @@ typedef enum : NSUInteger {
     }
 }
 
+- (void)giveAction
+{
+    BuyCourseSendViewController * vc = [[BuyCourseSendViewController alloc]init];
+    vc.info = self.courseDetailInfo;
+    vc.isArticle = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 - (void)playStateAction
 {

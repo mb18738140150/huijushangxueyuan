@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LivingCourseDetailTableViewCell : UITableViewCell
 
+@property (nonatomic, copy)void (^subscribBlock)(BOOL isSubscrib);
 - (void)refreshUIWithInfo:(NSDictionary *)info;
 
 - (void)showSubscribLB;

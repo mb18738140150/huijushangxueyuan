@@ -174,6 +174,9 @@
     if (self.pageType == Page_Store_main) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfStoreMainAction object:self.info];
     }
+    if (self.pageType == Page_sendCourse) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfSendCourse object:self.info];
+    }
     if(self.pageType == Page_ShareAndPay)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfShareAndPay object:dic];

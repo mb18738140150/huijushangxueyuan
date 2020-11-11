@@ -23,6 +23,7 @@
 #define kHomeTitleCollectionReusableView @"HomeTitleCollectionReusableView"
 #import "ScanSuccessJumpVC.h"
 #import "CommodityDetailViewController.h"
+#import "OrderListViewController.h"
 
 @interface StoreViewController ()<UICollectionViewDelegate, UICollectionViewDataSource,UserModule_LeadtypeProtocol,UICollectionViewDelegateFlowLayout,UserModule_SecondCategoryProtocol,UserModule_GiftList>
 
@@ -65,7 +66,16 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(categoryClick:) name:kNotificationOfStoreMainAction object:nil];
     
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createOrderSuccedsss:) name:kNotificationOfCreateOrderSuccess object:nil];
+
 }
+
+//- (void)createOrderSuccedsss:(NSNotification *)notification
+//{
+//    OrderListViewController * vc = [[OrderListViewController alloc]init];
+//    vc.hidesBottomBarWhenPushed = YES;
+//    [self.navigationController pushViewController:vc  animated:YES];
+//}
 
 - (void)dealloc
 {
@@ -80,6 +90,22 @@
     
     self.navigationController.navigationBar.barTintColor = kCommonNavigationBarColor;
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:kCommonMainTextColor_50};
+    if (self.fromType != FromType_nomal) {
+        self.navigationController.navigationBar.barTintColor = kCommonNavigationBarColor;
+        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:kCommonMainTextColor_50};
+        TeamHitBarButtonItem * leftBarItem = [TeamHitBarButtonItem leftButtonWithImage:[UIImage imageNamed:@"public-返回"] title:@""];
+        [leftBarItem addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:leftBarItem];
+    }
+}
+
+- (void)backAction:(UIButton *)button
+{
+    if (self.fromType == FromType_present) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)loadData
@@ -203,6 +229,7 @@
     if (indexPath.section == 4) {
         CommodityDetailViewController * vc = [[CommodityDetailViewController alloc]init];
         vc.info = self.dataArray[indexPath.row];
+        vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -375,6 +402,7 @@
     NSLog(@"info = %@", info);
     StoreSecondViewController * vc = [[StoreSecondViewController alloc]init];
     vc.cate_id = [[info objectForKey:@"id"] intValue];
+    vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

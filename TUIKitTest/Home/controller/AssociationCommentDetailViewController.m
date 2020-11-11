@@ -234,6 +234,15 @@
         cell.deleteBlock = ^(NSDictionary * _Nonnull info) {
             [weakSelf deleteDynamic:info];
         };
+        
+        UIWindow * window=[[[UIApplication sharedApplication] delegate] window];
+        CGRect rect = [cell convertRect:cell.bounds toView:window];
+        cell.imageClickBlock = ^(NSArray * _Nonnull urlArray, int index) {
+            TestImageView *showView = [[TestImageView alloc] initWithFrame:weakSelf.view.frame andImageList:urlArray andCurrentIndex:index];
+            showView.outsideFrame = rect;
+            showView.insideFrame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+            [showView show];
+        };
         return cell;
     }
     

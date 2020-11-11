@@ -13,9 +13,14 @@
 @property (nonatomic, assign) CGRect outsideFrame;
 @property (nonatomic, assign) CGRect insideFrame;
 @property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIImageView *nextOrPreviousImageView;
+
+
 @property (nonatomic, strong)UIScrollView * scrollView;
 
 - (instancetype)initWithFrame:(CGRect)frame andImageList:(NSArray *)imageArray;
+- (instancetype)initWithFrame:(CGRect)frame andImageList:(NSArray *)imageArray andCurrentIndex:(int)index;
+
 
 - (void)show;
 

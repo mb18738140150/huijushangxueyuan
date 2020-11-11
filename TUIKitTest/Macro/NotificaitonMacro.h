@@ -40,6 +40,7 @@
 
 #define kNotificationOfLivingChatClick              @"livingChat"
 #define kNotificationOfBuyCourseSuccess              @"BuyCourseSuccess"
+#define kNotificationOfBuyCoursefailed              @"BuyCoursefailed"
 
 #define kNotificationOfLivingPlayBackClick          @"LivingPlayBackClick"
 
@@ -63,5 +64,10 @@
 #define kNotificationOfStoreAction                 @"NotificationOfStoreAction"
 #define kNotificationOfShareAndPay                 @"NotificationOfShareAndPay"
 #define kNotificationOfStoreMainAction                 @"NotificationOfStoreMainAction"
+#define kNotificationOfSendCourse                 @"NotificationOfSendCourse"
+
+#define kNotificationOfCreateOrderSuccess                 @"NotificationOfCreateOrderSuccess"
+#define kNotificationOfPresentSuccess                 @"PresentSuccess"
+
 
 #endif /* NotificaitonMacro_h */

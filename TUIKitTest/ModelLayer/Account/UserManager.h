@@ -121,6 +121,7 @@
 - (NSArray *)getMyOrderList;
 - (int )getMyOrderListTotalCount;
 - (void)didRequestCreateOrderWithCourseInfo:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_CreateOrderProtocol>)object;
+- (NSDictionary *)getCreateOrderInfo;
 
 // 评论
 - (void)didRequestCommentZantWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_CommentZanProtocol>)object;
@@ -178,7 +179,9 @@
 - (void)getAddDynamicCommentWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_AddDynamicComment>)object;
 - (void)getDeleteDynamicCommentWith:(NSDictionary *)info withNotifiedObject:(id<UserModule_DeleteDynamicComment>)object;
 
-
+// 店铺设置
+- (void)didRequestStoreSettingWithWithDic:(NSDictionary *)infoDic withNotifiedObject:(id<UserModule_StoreSetting>)object;
+- (NSDictionary *)getStoreSettingInfo;
 
 
 

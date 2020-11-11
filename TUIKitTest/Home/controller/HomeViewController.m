@@ -51,6 +51,7 @@
 #define kHomeVIPCardCollectionViewCell @"HomeVIPCardCollectionViewCell"
 #import "HomeAdverCollectionViewCell.h"
 #define kHomeAdverCollectionViewCell @"HomeAdverCollectionViewCell"
+#import "OrderListViewController.h"
 
 
 
@@ -93,17 +94,27 @@
 }
 - (void)navigationViewSetup
 {
-    
     self.navigationItem.title = @"汇聚商商学院";
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     self.navigationController.navigationBar.barTintColor = kCommonNavigationBarColor;
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:kCommonMainTextColor_50};
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createOrderSuccedsss:) name:kNotificationOfCreateOrderSuccess object:nil];
+
 }
+
+//- (void)createOrderSuccedsss:(NSNotification *)notification
+//{
+//    OrderListViewController * vc = [[OrderListViewController alloc]init];
+//    vc.hidesBottomBarWhenPushed = YES;
+//    [self.navigationController pushViewController:vc  animated:YES];
+//}
+
 - (void)loadData
 {
     [[UserManager sharedManager] getLeadTypeWith:@{kUrlName:@"api/index"} withNotifiedObject:self];
+    [[UserManager sharedManager] didRequestStoreSettingWithWithDic:@{kUrlName:@"api/custom/setting",kRequestType:@"get"} withNotifiedObject:nil];
 }
 
 - (void)prepareUI
@@ -730,6 +741,7 @@
         {
             StoreViewController * vc = [[StoreViewController alloc]init];
 //            vc.hidesBottomBarWhenPushed = YES;
+            vc.fromType = FromType_push;
             [self.navigationController pushViewController:vc animated:YES];
         }else if ([innerType isEqualToString:@"yd_payred_index"])
         {

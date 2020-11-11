@@ -96,6 +96,7 @@ typedef enum : NSUInteger {
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
     [self.webView stopLoading];
     _webView.UIDelegate = nil;

@@ -40,7 +40,7 @@
     [NSDictionary jr_swizzleMethod:@selector(description) withMethod:@selector(my_description) error:nil];
     [self getToken];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-
+    
     [[TUIKit sharedInstance] setupWithAppId:[kTXAppid longLongValue]];
     
     [WXApi startLogByLevel:WXLogLevelNormal logBlock:^(NSString *log) {
@@ -60,6 +60,16 @@
       // NSSet<UIUserNotificationCategory *> *categories for iOS8 and iOS9
     }
     [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
+    
+
+      // Required
+      // init Push
+      // notice: 2.1.5 版本的 SDK 新增的注册方法，改成可上报 IDFA，如果没有使用 IDFA 直接传 nil
+      [JPUSHService setupWithOption:launchOptions appKey:kJiGuangAppid
+                            channel:nil
+                   apsForProduction:NO
+              advertisingIdentifier:nil];
+    
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *lastVersions = [defaults stringForKey:@"lastVersions"];
@@ -99,13 +109,18 @@
     return YES;
 }
 
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:1];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+}
 
 #pragma mark - login
 - (void)managerDidRecvAuthResponse:(SendAuthResp *)response {
     NSString *strTitle = [NSString stringWithFormat:@"Auth结果"];
     NSString *strMsg = [NSString stringWithFormat:@"code:%@,state:%@,errcode:%d", response.code, response.state, response.errCode];
     
-    [[UserManager sharedManager] didLoginWithUserCode:@{@"code":response.code,kUrlName:@"api/wechat/getUserInfo"} withNotifiedObject:nil];
+    [[UserManager sharedManager] didLoginWithUserCode:@{@"code":response.code,kUrlName:@"api/wechat/getUserInfo"} withNotifiedObject:self];
     
     [UIAlertView showWithTitle:strTitle message:strMsg sure:nil];
 }
@@ -115,6 +130,9 @@
     [SVProgressHUD dismiss];
     if ([WXApi isWXAppInstalled] && [WXApi isWXAppSupportApi]) {
         [SVProgressHUD showSuccessWithStatus:@"登录成功"];
+        
+        [self resetJPuahAlias];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfLoginSuccess object:nil];
     }
     
@@ -189,33 +207,98 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 }
 
 #pragma mark - 添加处理 APNs 通知回调方法 JPUSHRegisterDelegate
-// iOS 12 Support
-- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center openSettingsForNotification:(UNNotification *)notification{
-  if (notification && [notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
-    //从通知界面直接进入应用
-  }else{
-    //从通知设置界面进入应用
-  }
+
+- (void)resetJPuahAlias
+{
+    [JPUSHService setAlias:[NSString stringWithFormat:@"%@", [[[UserManager sharedManager] getUserInfos] objectForKey:kUserId]] completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+        if (iResCode != 0) {
+            [self resetJPuahAlias];
+        }else
+        {
+            NSLog(@"设置别名成功");
+        }
+    } seq:100];
 }
 
-// iOS 10 Support
-- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
-  // Required
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger options))completionHandler {
   NSDictionary * userInfo = notification.request.content.userInfo;
+  
+  UNNotificationRequest *request = notification.request; // 收到推送的请求
+  UNNotificationContent *content = request.content; // 收到推送的消息内容
+  
+  NSNumber *badge = content.badge;  // 推送消息的角标
+  NSString *body = content.body;    // 推送消息体
+  UNNotificationSound *sound = content.sound;  // 推送消息的声音
+  NSString *subtitle = content.subtitle;  // 推送消息的副标题
+  NSString *title = content.title;  // 推送消息的标题
+  
   if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
     [JPUSHService handleRemoteNotification:userInfo];
+    NSLog(@"iOS10 前台收到远程通知:%@", [self logDic:userInfo]);
+
+      UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"iOS10 前台收到远程通知:%@", [self logDic:userInfo]] preferredStyle:UIAlertControllerStyleAlert];
+      [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+      }]];
+      [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
   }
-  completionHandler(UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有 Badge、Sound、Alert 三种类型可以选择设置
+  else {
+    // 判断为本地通知
+    NSLog(@"iOS10 前台收到本地通知:{\nbody:%@，\ntitle:%@,\nsubtitle:%@,\nbadge：%@，\nsound：%@，\nuserInfo：%@\n}",body,title,subtitle,badge,sound,userInfo);
+  }
+  completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有Badge、Sound、Alert三种类型可以设置
 }
 
-// iOS 10 Support
-- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
-  // Required
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)(void))completionHandler {
+  
   NSDictionary * userInfo = response.notification.request.content.userInfo;
+  UNNotificationRequest *request = response.notification.request; // 收到推送的请求
+  UNNotificationContent *content = request.content; // 收到推送的消息内容
+  
+  NSNumber *badge = content.badge;  // 推送消息的角标
+  NSString *body = content.body;    // 推送消息体
+  UNNotificationSound *sound = content.sound;  // 推送消息的声音
+  NSString *subtitle = content.subtitle;  // 推送消息的副标题
+  NSString *title = content.title;  // 推送消息的标题
+  
   if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
     [JPUSHService handleRemoteNotification:userInfo];
+    NSLog(@"iOS10 收到远程通知:%@", [self logDic:userInfo]);
+      
+      UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"iOS10 收到远程通知:%@", [self logDic:userInfo]] preferredStyle:UIAlertControllerStyleAlert];
+      [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+      }]];
+      [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+      
+      
+      [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"iOS10 收到远程通知:%@", [self logDic:userInfo]]];
+      
   }
+  else {
+    // 判断为本地通知
+    NSLog(@"iOS10 收到本地通知:{\nbody:%@，\ntitle:%@,\nsubtitle:%@,\nbadge：%@，\nsound：%@，\nuserInfo：%@\n}",body,title,subtitle,badge,sound,userInfo);
+  }
+  
   completionHandler();  // 系统要求执行这个方法
+}
+
+- (NSString *)logDic:(NSDictionary *)dic {
+  if (![dic count]) {
+    return nil;
+  }
+  NSString *tempStr1 =
+      [[dic description] stringByReplacingOccurrencesOfString:@"\\u"
+                                                   withString:@"\\U"];
+  NSString *tempStr2 =
+      [tempStr1 stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+  NSString *tempStr3 =
+      [[@"\"" stringByAppendingString:tempStr2] stringByAppendingString:@"\""];
+  NSData *tempData = [tempStr3 dataUsingEncoding:NSUTF8StringEncoding];
+  NSString *str =
+      [NSPropertyListSerialization propertyListFromData:tempData
+                                       mutabilityOption:NSPropertyListImmutable
+                                                 format:NULL
+                                       errorDescription:NULL];
+  return str;
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
@@ -274,6 +357,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 {
     if (resp.errCode == 0) {
         [SVProgressHUD showSuccessWithStatus:@"分享成功"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfPresentSuccess object:nil];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [SVProgressHUD dismiss];
         });
@@ -285,8 +369,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             [SVProgressHUD dismiss];
         });
     }
-    
-    
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
@@ -309,9 +391,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 NSLog(@"application 支付成功");
                 break;
             case 6001:// 取消
+                [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfBuyCoursefailed object:nil];
                 NSLog(@"application 用户中途取消");
                 break;
             default:
+                [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfBuyCoursefailed object:nil];
                 NSLog(@"application 支付失败");
                 break;
         }

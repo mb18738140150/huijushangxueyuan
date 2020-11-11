@@ -266,6 +266,13 @@
 
 @end
 
+@protocol UserModule_StoreSetting <NSObject>
+
+- (void)didStoreSettingSuccessed;
+- (void)didStoreSettingFailed:(NSString *)failInfo;
+
+@end
+
 
 
 

@@ -6,7 +6,7 @@
 //
 
 #import "MyIncomeViewController.h"
-
+#import "TiXianViewController.h"
 #import "MyIncomeHeaderTableViewCell.h"
 #define kMyIncomeHeaderTableViewCell @"MyIncomeHeaderTableViewCell"
 
@@ -222,6 +222,9 @@
         
         cell.tixianBlock = ^(NSDictionary * _Nonnull info) {
             NSLog(@" 去提现");
+            TiXianViewController * vc = [[TiXianViewController alloc]init];
+            vc.isTeacher = weakSelf.isTeacher;
+            [weakSelf.navigationController pushViewController:vc animated:YES];
         };
         cell.promisionBlock = ^(NSDictionary * _Nonnull info) {
             weakSelf.sort = @"desc";

@@ -16,6 +16,7 @@ typedef enum : NSUInteger {
     RightTabbarOperationType_Hehuoren,
     RightTabbarOperationType_publicNumber,
     RightTabbarOperationType_service,
+    RightTabbarOperationType_store,
 } RightTabbarOperationType;
 
 NS_ASSUME_NONNULL_BEGIN

@@ -89,6 +89,9 @@
 		002B16402542D319008B2607 /* 朋友圈.png in Resources */ = {isa = PBXBuildFile; fileRef = 002B163D2542D319008B2607 /* 朋友圈.png */; };
 		002B164D2542E58A008B2607 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 002B164B2542E58A008B2607 /* AlipaySDK.bundle */; };
 		002B164E2542E58A008B2607 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002B164C2542E58A008B2607 /* AlipaySDK.framework */; };
+		00342C752552581E00CE490E /* OrderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00342C742552581E00CE490E /* OrderListViewController.m */; };
+		00342C7B25529A4C00CE490E /* OrderBottomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00342C7A25529A4C00CE490E /* OrderBottomTableViewCell.m */; };
+		00342C802552ECD600CE490E /* livingShoppingCar.png in Resources */ = {isa = PBXBuildFile; fileRef = 00342C7F2552ECD600CE490E /* livingShoppingCar.png */; };
 		003458E5253D5DDF001F9C3F /* MyPresentRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 003458E4253D5DDF001F9C3F /* MyPresentRecordViewController.m */; };
 		003458EB253D606C001F9C3F /* MyPresentRecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 003458EA253D606C001F9C3F /* MyPresentRecordTableViewCell.m */; };
 		00345938253D75A6001F9C3F /* 地址勾选@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 003458F3253D75A6001F9C3F /* 地址勾选@2x.png */; };
@@ -246,7 +249,21 @@
 		0044BF322533530A00FACCE8 /* living_编组3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0044BF2F2533530A00FACCE8 /* living_编组3@2x.png */; };
 		0044BF332533530A00FACCE8 /* living_编组3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0044BF302533530A00FACCE8 /* living_编组3.png */; };
 		0044BF39253359E400FACCE8 /* LivingTeacherIntroTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0044BF38253359E400FACCE8 /* LivingTeacherIntroTableViewCell.m */; };
+		004849C22553A94C00CEB429 /* OrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 004849C12553A94C00CEB429 /* OrderDetailViewController.m */; };
+		004849C82553AAD800CEB429 /* OrderHeaderStateTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 004849C72553AAD800CEB429 /* OrderHeaderStateTableViewCell.m */; };
+		004849CE2553AAEB00CEB429 /* OrderCommoditysTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 004849CD2553AAEB00CEB429 /* OrderCommoditysTableViewCell.m */; };
+		004849D42553AAFD00CEB429 /* OrderSendInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 004849D32553AAFD00CEB429 /* OrderSendInfoTableViewCell.m */; };
+		004849DA2553AB1900CEB429 /* OrderPayInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 004849D92553AB1900CEB429 /* OrderPayInfoTableViewCell.m */; };
+		004849E92554099000CEB429 /* address_dianhua@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 004849E62554098C00CEB429 /* address_dianhua@3x.png */; };
+		004849EA2554099000CEB429 /* address_dianhua.png in Resources */ = {isa = PBXBuildFile; fileRef = 004849E72554098F00CEB429 /* address_dianhua.png */; };
+		004849EB2554099000CEB429 /* address_dianhua@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 004849E82554098F00CEB429 /* address_dianhua@2x.png */; };
+		004849F1255423E700CEB429 /* PresentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 004849F0255423E700CEB429 /* PresentDetailViewController.m */; };
+		004849F7255430C300CEB429 /* BuySuccessAndPresentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 004849F6255430C300CEB429 /* BuySuccessAndPresentViewController.m */; };
+		004849FD255444B300CEB429 /* BuyCourseSendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 004849FC255444B300CEB429 /* BuyCourseSendViewController.m */; };
+		00484A03255444D300CEB429 /* BuyCourseSendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00484A02255444D300CEB429 /* BuyCourseSendTableViewCell.m */; };
 		004FAF18252F1721004A50E7 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 004FAF17252F1721004A50E7 /* MainViewController.m */; };
+		0050D4DA255918A7008C5C22 /* TiXianViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0050D4D9255918A7008C5C22 /* TiXianViewController.m */; };
+		0050D4DF2559238B008C5C22 /* tixianSubmit.png in Resources */ = {isa = PBXBuildFile; fileRef = 0050D4DE2559238B008C5C22 /* tixianSubmit.png */; };
 		005BC83D2522E9E500323103 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 005BC81F2522E9E500323103 /* AFURLResponseSerialization.m */; };
 		005BC83E2522E9E500323103 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 005BC8202522E9E500323103 /* AFHTTPSessionManager.m */; };
 		005BC83F2522E9E500323103 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 005BC8222522E9E500323103 /* AFURLSessionManager.m */; };
@@ -287,6 +304,9 @@
 		006D4277252DFD3B0009072A /* GiftCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 006D4276252DFD3B0009072A /* GiftCollectionViewCell.m */; };
 		006D427D252E02ED0009072A /* LiveGiftSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 006D427C252E02ED0009072A /* LiveGiftSelectView.m */; };
 		006D4283252E067C0009072A /* PackageCountView.m in Sources */ = {isa = PBXBuildFile; fileRef = 006D4282252E067B0009072A /* PackageCountView.m */; };
+		0071D78C255149B400FCE459 /* StoreSettingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0071D78B255149B400FCE459 /* StoreSettingOperation.m */; };
+		0071D7922551523700FCE459 /* BuySendTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0071D7912551523700FCE459 /* BuySendTypeTableViewCell.m */; };
+		0071D7982551528100FCE459 /* BuySenfTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0071D7972551528100FCE459 /* BuySenfTypeView.m */; };
 		00723404254461DF005D4238 /* LivingSecretViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00723403254461DF005D4238 /* LivingSecretViewController.m */; };
 		00796C55254FB2B70078EF5C /* StoreSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00796C54254FB2B70078EF5C /* StoreSecondViewController.m */; };
 		00796C5B254FB4A80078EF5C /* CommodityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00796C5A254FB4A80078EF5C /* CommodityTableViewCell.m */; };
@@ -1016,6 +1036,11 @@
 		002B163D2542D319008B2607 /* 朋友圈.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "朋友圈.png"; sourceTree = "<group>"; };
 		002B164B2542E58A008B2607 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
 		002B164C2542E58A008B2607 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
+		00342C732552581E00CE490E /* OrderListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderListViewController.h; sourceTree = "<group>"; };
+		00342C742552581E00CE490E /* OrderListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderListViewController.m; sourceTree = "<group>"; };
+		00342C7925529A4C00CE490E /* OrderBottomTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderBottomTableViewCell.h; sourceTree = "<group>"; };
+		00342C7A25529A4C00CE490E /* OrderBottomTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderBottomTableViewCell.m; sourceTree = "<group>"; };
+		00342C7F2552ECD600CE490E /* livingShoppingCar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = livingShoppingCar.png; sourceTree = "<group>"; };
 		003458E3253D5DDF001F9C3F /* MyPresentRecordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyPresentRecordViewController.h; sourceTree = "<group>"; };
 		003458E4253D5DDF001F9C3F /* MyPresentRecordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyPresentRecordViewController.m; sourceTree = "<group>"; };
 		003458E9253D606C001F9C3F /* MyPresentRecordTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyPresentRecordTableViewCell.h; sourceTree = "<group>"; };
@@ -1223,8 +1248,32 @@
 		0044BF302533530A00FACCE8 /* living_编组3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "living_编组3.png"; sourceTree = "<group>"; };
 		0044BF37253359E400FACCE8 /* LivingTeacherIntroTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivingTeacherIntroTableViewCell.h; sourceTree = "<group>"; };
 		0044BF38253359E400FACCE8 /* LivingTeacherIntroTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivingTeacherIntroTableViewCell.m; sourceTree = "<group>"; };
+		004849C02553A94C00CEB429 /* OrderDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderDetailViewController.h; sourceTree = "<group>"; };
+		004849C12553A94C00CEB429 /* OrderDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderDetailViewController.m; sourceTree = "<group>"; };
+		004849C62553AAD800CEB429 /* OrderHeaderStateTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderHeaderStateTableViewCell.h; sourceTree = "<group>"; };
+		004849C72553AAD800CEB429 /* OrderHeaderStateTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderHeaderStateTableViewCell.m; sourceTree = "<group>"; };
+		004849CC2553AAEB00CEB429 /* OrderCommoditysTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderCommoditysTableViewCell.h; sourceTree = "<group>"; };
+		004849CD2553AAEB00CEB429 /* OrderCommoditysTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderCommoditysTableViewCell.m; sourceTree = "<group>"; };
+		004849D22553AAFD00CEB429 /* OrderSendInfoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderSendInfoTableViewCell.h; sourceTree = "<group>"; };
+		004849D32553AAFD00CEB429 /* OrderSendInfoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderSendInfoTableViewCell.m; sourceTree = "<group>"; };
+		004849D82553AB1900CEB429 /* OrderPayInfoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderPayInfoTableViewCell.h; sourceTree = "<group>"; };
+		004849D92553AB1900CEB429 /* OrderPayInfoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderPayInfoTableViewCell.m; sourceTree = "<group>"; };
+		004849E62554098C00CEB429 /* address_dianhua@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "address_dianhua@3x.png"; sourceTree = "<group>"; };
+		004849E72554098F00CEB429 /* address_dianhua.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = address_dianhua.png; sourceTree = "<group>"; };
+		004849E82554098F00CEB429 /* address_dianhua@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "address_dianhua@2x.png"; sourceTree = "<group>"; };
+		004849EF255423E700CEB429 /* PresentDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PresentDetailViewController.h; sourceTree = "<group>"; };
+		004849F0255423E700CEB429 /* PresentDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PresentDetailViewController.m; sourceTree = "<group>"; };
+		004849F5255430C300CEB429 /* BuySuccessAndPresentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BuySuccessAndPresentViewController.h; sourceTree = "<group>"; };
+		004849F6255430C300CEB429 /* BuySuccessAndPresentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BuySuccessAndPresentViewController.m; sourceTree = "<group>"; };
+		004849FB255444B300CEB429 /* BuyCourseSendViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BuyCourseSendViewController.h; sourceTree = "<group>"; };
+		004849FC255444B300CEB429 /* BuyCourseSendViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BuyCourseSendViewController.m; sourceTree = "<group>"; };
+		00484A01255444D300CEB429 /* BuyCourseSendTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BuyCourseSendTableViewCell.h; sourceTree = "<group>"; };
+		00484A02255444D300CEB429 /* BuyCourseSendTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BuyCourseSendTableViewCell.m; sourceTree = "<group>"; };
 		004FAF16252F1721004A50E7 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		004FAF17252F1721004A50E7 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		0050D4D8255918A7008C5C22 /* TiXianViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TiXianViewController.h; sourceTree = "<group>"; };
+		0050D4D9255918A7008C5C22 /* TiXianViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TiXianViewController.m; sourceTree = "<group>"; };
+		0050D4DE2559238B008C5C22 /* tixianSubmit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tixianSubmit.png; sourceTree = "<group>"; };
 		005BC81B2522E9E500323103 /* AFSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFSecurityPolicy.h; sourceTree = "<group>"; };
 		005BC81C2522E9E500323103 /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
 		005BC81D2522E9E500323103 /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
@@ -1308,6 +1357,12 @@
 		006D427C252E02ED0009072A /* LiveGiftSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveGiftSelectView.m; sourceTree = "<group>"; };
 		006D4281252E067B0009072A /* PackageCountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageCountView.h; sourceTree = "<group>"; };
 		006D4282252E067B0009072A /* PackageCountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageCountView.m; sourceTree = "<group>"; };
+		0071D78A255149B400FCE459 /* StoreSettingOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoreSettingOperation.h; sourceTree = "<group>"; };
+		0071D78B255149B400FCE459 /* StoreSettingOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StoreSettingOperation.m; sourceTree = "<group>"; };
+		0071D7902551523700FCE459 /* BuySendTypeTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BuySendTypeTableViewCell.h; sourceTree = "<group>"; };
+		0071D7912551523700FCE459 /* BuySendTypeTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BuySendTypeTableViewCell.m; sourceTree = "<group>"; };
+		0071D7962551528100FCE459 /* BuySenfTypeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BuySenfTypeView.h; sourceTree = "<group>"; };
+		0071D7972551528100FCE459 /* BuySenfTypeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BuySenfTypeView.m; sourceTree = "<group>"; };
 		00723402254461DF005D4238 /* LivingSecretViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivingSecretViewController.h; sourceTree = "<group>"; };
 		00723403254461DF005D4238 /* LivingSecretViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivingSecretViewController.m; sourceTree = "<group>"; };
 		00796C53254FB2B70078EF5C /* StoreSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoreSecondViewController.h; sourceTree = "<group>"; };
@@ -2481,6 +2536,16 @@
 				000C19EE253E87880002DE10 /* ShoppingCarViewController.m */,
 				000C19F1253E87880002DE10 /* ConfirmOrderViewController.h */,
 				000C19EF253E87880002DE10 /* ConfirmOrderViewController.m */,
+				004849C02553A94C00CEB429 /* OrderDetailViewController.h */,
+				004849C12553A94C00CEB429 /* OrderDetailViewController.m */,
+				004849C62553AAD800CEB429 /* OrderHeaderStateTableViewCell.h */,
+				004849C72553AAD800CEB429 /* OrderHeaderStateTableViewCell.m */,
+				004849CC2553AAEB00CEB429 /* OrderCommoditysTableViewCell.h */,
+				004849CD2553AAEB00CEB429 /* OrderCommoditysTableViewCell.m */,
+				004849D22553AAFD00CEB429 /* OrderSendInfoTableViewCell.h */,
+				004849D32553AAFD00CEB429 /* OrderSendInfoTableViewCell.m */,
+				004849D82553AB1900CEB429 /* OrderPayInfoTableViewCell.h */,
+				004849D92553AB1900CEB429 /* OrderPayInfoTableViewCell.m */,
 				000C19F2253E87880002DE10 /* views */,
 			);
 			path = ShoppingCart;
@@ -2501,6 +2566,12 @@
 				000C1A2B253E8D940002DE10 /* PayModeSelectView.m */,
 				000C1A2C253E8D940002DE10 /* PayModeView.h */,
 				000C1A2D253E8D940002DE10 /* PayModeView.m */,
+				0071D7902551523700FCE459 /* BuySendTypeTableViewCell.h */,
+				0071D7912551523700FCE459 /* BuySendTypeTableViewCell.m */,
+				0071D7962551528100FCE459 /* BuySenfTypeView.h */,
+				0071D7972551528100FCE459 /* BuySenfTypeView.m */,
+				00342C7925529A4C00CE490E /* OrderBottomTableViewCell.h */,
+				00342C7A25529A4C00CE490E /* OrderBottomTableViewCell.m */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -2526,6 +2597,10 @@
 		003458F2253D75A6001F9C3F /* mdpi */ = {
 			isa = PBXGroup;
 			children = (
+				0050D4DE2559238B008C5C22 /* tixianSubmit.png */,
+				004849E72554098F00CEB429 /* address_dianhua.png */,
+				004849E82554098F00CEB429 /* address_dianhua@2x.png */,
+				004849E62554098C00CEB429 /* address_dianhua@3x.png */,
 				00353E50254D913900221F16 /* guanbi.png */,
 				00353E51254D913900221F16 /* guanbi@2x.png */,
 				00353E4F254D913800221F16 /* guanbi@3x.png */,
@@ -2786,6 +2861,8 @@
 				00427094254907B70037F258 /* MyTeamInfoMemberTableViewCell.m */,
 				00427099254907D10037F258 /* MyTeamInfoTableViewCell.h */,
 				0042709A254907D10037F258 /* MyTeamInfoTableViewCell.m */,
+				00484A01255444D300CEB429 /* BuyCourseSendTableViewCell.h */,
+				00484A02255444D300CEB429 /* BuyCourseSendTableViewCell.m */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -3434,6 +3511,8 @@
 				0079EB6B25217AF800307D71 /* RegistOperation.h */,
 				0079EBA225217AF800307D71 /* RegistOperation.m */,
 				0079EB6C25217AF800307D71 /* UserModuleProtocol.h */,
+				0071D78A255149B400FCE459 /* StoreSettingOperation.h */,
+				0071D78B255149B400FCE459 /* StoreSettingOperation.m */,
 				006D4269252D93270009072A /* LiveChatRecordOpreation.h */,
 				006D426A252D93270009072A /* LiveChatRecordOpreation.m */,
 				006D426F252DB3680009072A /* SendMessageOperation.h */,
@@ -3666,6 +3745,7 @@
 		0079EBFA25217AF900307D71 /* source */ = {
 			isa = PBXGroup;
 			children = (
+				00342C7F2552ECD600CE490E /* livingShoppingCar.png */,
 				001CDA062547F0880052B7D7 /* yuandian.png */,
 				002B163D2542D319008B2607 /* 朋友圈.png */,
 				002B163C2542D318008B2607 /* 微博.png */,
@@ -3779,6 +3859,7 @@
 		0079EC1E25217AFA00307D71 /* framework */ = {
 			isa = PBXGroup;
 			children = (
+				000A75522536A5420065A62C /* showBigImage */,
 				001CDA29254827C00052B7D7 /* chineseCountryJson.txt */,
 				001CDA0B2547F4520052B7D7 /* CountDown */,
 				00632FE325465CDE000C84FA /* commentView */,
@@ -4554,8 +4635,16 @@
 				00391B212539D57500B47668 /* VIPCourseListViewController.m */,
 				003458E3253D5DDF001F9C3F /* MyPresentRecordViewController.h */,
 				003458E4253D5DDF001F9C3F /* MyPresentRecordViewController.m */,
+				004849EF255423E700CEB429 /* PresentDetailViewController.h */,
+				004849F0255423E700CEB429 /* PresentDetailViewController.m */,
+				004849F5255430C300CEB429 /* BuySuccessAndPresentViewController.h */,
+				004849F6255430C300CEB429 /* BuySuccessAndPresentViewController.m */,
+				004849FB255444B300CEB429 /* BuyCourseSendViewController.h */,
+				004849FC255444B300CEB429 /* BuyCourseSendViewController.m */,
 				006330322546FDFB000C84FA /* MyIncomeViewController.h */,
 				006330332546FDFB000C84FA /* MyIncomeViewController.m */,
+				0050D4D8255918A7008C5C22 /* TiXianViewController.h */,
+				0050D4D9255918A7008C5C22 /* TiXianViewController.m */,
 				001CDA1225480C8F0052B7D7 /* MyPromotionViewController.h */,
 				001CDA1325480C8F0052B7D7 /* MyPromotionViewController.m */,
 				001CDA3A25486F380052B7D7 /* MyTeamViewController.h */,
@@ -4564,6 +4653,8 @@
 				001CDA41254875440052B7D7 /* PromotionCourseViewController.m */,
 				006B40B9254ABD5F005C057F /* CheackTeamMemberViewController.h */,
 				006B40BA254ABD5F005C057F /* CheackTeamMemberViewController.m */,
+				00342C732552581E00CE490E /* OrderListViewController.h */,
+				00342C742552581E00CE490E /* OrderListViewController.m */,
 				003459B4253DBDC5001F9C3F /* address */,
 			);
 			path = Main;
@@ -4628,7 +4719,6 @@
 		0079EDF825217AFD00307D71 /* Living */ = {
 			isa = PBXGroup;
 			children = (
-				000A75522536A5420065A62C /* showBigImage */,
 				000A748D253435AB0065A62C /* danmaku1 */,
 				000A7478253427590065A62C /* danmaku */,
 				0082694A2524B557007D7955 /* Util */,
@@ -5217,6 +5307,7 @@
 				00345966253D75A6001F9C3F /* 删除.png in Resources */,
 				002B161F25427D96008B2607 /* comment_点赞2@3x.png in Resources */,
 				0034595A253D75A6001F9C3F /* 礼物@2x.png in Resources */,
+				00342C802552ECD600CE490E /* livingShoppingCar.png in Resources */,
 				0034596D253D75A6001F9C3F /* 折扣专区@3x.png in Resources */,
 				00930E092530987800267B62 /* main_课程@2x.png in Resources */,
 				0040F2122531582D009446F1 /* main_优惠券.png in Resources */,
@@ -5231,6 +5322,7 @@
 				00345938253D75A6001F9C3F /* 地址勾选@2x.png in Resources */,
 				0079EF4225217AFE00307D71 /* kr-video-player-play@3x.png in Resources */,
 				0079EA18252174CB00307D71 /* LaunchScreen.storyboard in Resources */,
+				004849EA2554099000CEB429 /* address_dianhua.png in Resources */,
 				007C9C6C2524D1460040DFD4 /* 6@2x.png in Resources */,
 				00345962253D75A6001F9C3F /* fenxiang@3x.png in Resources */,
 				0034593B253D75A6001F9C3F /* 折扣专区.png in Resources */,
@@ -5291,6 +5383,7 @@
 				007C9C672524D1460040DFD4 /* 1@2x.png in Resources */,
 				00345974253D75A6001F9C3F /* 优惠券.png in Resources */,
 				00C236CF254032A800973347 /* comment_评论2.png in Resources */,
+				004849E92554099000CEB429 /* address_dianhua@3x.png in Resources */,
 				007C9C622524D1460040DFD4 /* 9@3x.png in Resources */,
 				007C9C662524D1460040DFD4 /* 3@3x.png in Resources */,
 				0034594E253D75A6001F9C3F /* 关闭@3x.png in Resources */,
@@ -5360,6 +5453,7 @@
 				007C9C6A2524D1460040DFD4 /* 4@3x.png in Resources */,
 				00930DFC2530987800267B62 /* main_地址.png in Resources */,
 				0034593C253D75A6001F9C3F /* back@2x.png in Resources */,
+				004849EB2554099000CEB429 /* address_dianhua@2x.png in Resources */,
 				00930E0B2530987800267B62 /* main_课程.png in Resources */,
 				00345976253D75A6001F9C3F /* 商城@2x.png in Resources */,
 				0079EECA25217AFE00307D71 /* iconfont.ttf in Resources */,
@@ -5396,6 +5490,7 @@
 				0079EEE425217AFE00307D71 /* MJRefresh.bundle in Resources */,
 				001CDA2525481ECB0052B7D7 /* promotionCheck.png in Resources */,
 				0092F8BF254C506700EFC21A /* dynamic_点赞2@3x.png in Resources */,
+				0050D4DF2559238B008C5C22 /* tixianSubmit.png in Resources */,
 				0079EEC525217AFE00307D71 /* home_image@3x.png in Resources */,
 				0040F20B2531582D009446F1 /* main_会员卡默认图@3x.png in Resources */,
 				00930E0F2530987800267B62 /* main_推广中心@3x.png in Resources */,
@@ -5513,6 +5608,7 @@
 				001CDA1A254815180052B7D7 /* PromotionApplyTableViewCell.m in Sources */,
 				00796C55254FB2B70078EF5C /* StoreSecondViewController.m in Sources */,
 				0079EE6A25217AFD00307D71 /* QuestionReplyModel.m in Sources */,
+				00484A03255444D300CEB429 /* BuyCourseSendTableViewCell.m in Sources */,
 				00632FF825465CDE000C84FA /* NSString+NSString_ILExtension.m in Sources */,
 				0079EFA025217AFE00307D71 /* HomeSearchCollectionViewCell.m in Sources */,
 				0079EF1225217AFE00307D71 /* SVProgressHUD.m in Sources */,
@@ -5522,6 +5618,7 @@
 				0079EEA825217AFE00307D71 /* AcquireDiscountCouponOperation.m in Sources */,
 				0079EF9125217AFE00307D71 /* WelcomeView.m in Sources */,
 				0092F8A8254C161200EFC21A /* AssociationAdminInfoTableViewCell.m in Sources */,
+				004849CE2553AAEB00CEB429 /* OrderCommoditysTableViewCell.m in Sources */,
 				0079EF1525217AFE00307D71 /* NSDictionary+Unicode.m in Sources */,
 				0079EEEF25217AFE00307D71 /* MJRefreshStateHeader.m in Sources */,
 				009692DA252EE643005AF491 /* LivingImageListTableViewCell.m in Sources */,
@@ -5578,6 +5675,7 @@
 				000C1A00253E87880002DE10 /* ConfirmOrderInfoTableViewCell.m in Sources */,
 				0079EE3925217AFD00307D71 /* EndLivingCourseOperation.m in Sources */,
 				0079EEBC25217AFE00307D71 /* NSString+MD5.m in Sources */,
+				004849DA2553AB1900CEB429 /* OrderPayInfoTableViewCell.m in Sources */,
 				0079EEA925217AFE00307D71 /* VerifyAccountOperation.m in Sources */,
 				005BC8412522E9E500323103 /* AFNetworkReachabilityManager.m in Sources */,
 				004270AA254970190037F258 /* AssoiciationListViewController.m in Sources */,
@@ -5591,6 +5689,7 @@
 				0092F896254BA28600EFC21A /* DeleteDynamicOperation.m in Sources */,
 				0079EE3025217AFD00307D71 /* PackageDetailOperation.m in Sources */,
 				0079EE6125217AFD00307D71 /* ImageManager.m in Sources */,
+				004849D42553AAFD00CEB429 /* OrderSendInfoTableViewCell.m in Sources */,
 				0079EFAD25217AFE00307D71 /* TBCityIconFont.m in Sources */,
 				0079EE8125217AFD00307D71 /* CategoryTeacherListOperation.m in Sources */,
 				0079EEF225217AFE00307D71 /* MJRefreshHeader.m in Sources */,
@@ -5610,6 +5709,7 @@
 				006B40AF254AA86E005C057F /* AssociationCommentReplayTableViewCell.m in Sources */,
 				0079EE3225217AFD00307D71 /* DetailCourseOperation.m in Sources */,
 				0079EE7725217AFD00307D71 /* TYDownLoadModel.m in Sources */,
+				004849F7255430C300CEB429 /* BuySuccessAndPresentViewController.m in Sources */,
 				0079EE5325217AFD00307D71 /* TestMyCollectionQuestionOperation.m in Sources */,
 				0079EF9C25217AFE00307D71 /* SecondListTableViewCell.m in Sources */,
 				0079EFBA25217AFE00307D71 /* CustomChatViewController.m in Sources */,
@@ -5631,6 +5731,7 @@
 				0079EE3825217AFD00307D71 /* AllCourseOperation.m in Sources */,
 				0044BF242533402C00FACCE8 /* LivingCourseDetailTableViewCell.m in Sources */,
 				00930E1D25309B7200267B62 /* MainOperationListTableViewCell.m in Sources */,
+				00342C752552581E00CE490E /* OrderListViewController.m in Sources */,
 				00C23690253FE90300973347 /* MKPPlaceholderTextView.m in Sources */,
 				0079EFC225217AFE00307D71 /* HttpRequestManager.m in Sources */,
 				00930DAD25303F7F00267B62 /* LivingRightTabbarView.m in Sources */,
@@ -5696,6 +5797,7 @@
 				0028EB99252A595B00D76BF0 /* CustomTUITextMessageCell.m in Sources */,
 				0079EF1925217AFE00307D71 /* UINavigationController+LXPlayerRotation.m in Sources */,
 				0079EEA525217AFE00307D71 /* VerifyCodeOperation.m in Sources */,
+				0071D7982551528100FCE459 /* BuySenfTypeView.m in Sources */,
 				0079EEFB25217AFE00307D71 /* NSBundle+TZImagePicker.m in Sources */,
 				0079EF1F25217AFE00307D71 /* LXPlayLoadingView.m in Sources */,
 				0079EFB025217AFE00307D71 /* UIViewController+Cloudox.m in Sources */,
@@ -5712,6 +5814,7 @@
 				0028EB93252A4A2E00D76BF0 /* CustomTUIChatController.m in Sources */,
 				00415CD4253849DC00A97AC9 /* VIPCardDetailOperation.m in Sources */,
 				003459A6253DBD73001F9C3F /* ProvinceModel.m in Sources */,
+				0071D78C255149B400FCE459 /* StoreSettingOperation.m in Sources */,
 				0044BF39253359E400FACCE8 /* LivingTeacherIntroTableViewCell.m in Sources */,
 				0079EE9025217AFD00307D71 /* NewsCategoryOperation.m in Sources */,
 				0079EE8525217AFD00307D71 /* CategoryCourseOperation.m in Sources */,
@@ -5775,6 +5878,7 @@
 				0079EFBF25217AFE00307D71 /* HttpUploaderManager.m in Sources */,
 				00C236F925417F9A00973347 /* TeacherListTableViewCell.m in Sources */,
 				0079EE2A25217AFD00307D71 /* CourseCategoryDetailModel.m in Sources */,
+				00342C7B25529A4C00CE490E /* OrderBottomTableViewCell.m in Sources */,
 				001CDA30254828360052B7D7 /* ChooseCountryPhoneNum.m in Sources */,
 				0079EEDD25217AFE00307D71 /* TFHpple.m in Sources */,
 				0079EEDF25217AFE00307D71 /* XPathQuery.m in Sources */,
@@ -5798,16 +5902,19 @@
 				00930E232530A09500267B62 /* MainOpenVIPCardTableViewCell.m in Sources */,
 				0079EF0325217AFE00307D71 /* TZImagePickerController.m in Sources */,
 				0079EE2825217AFD00307D71 /* CourseModel.m in Sources */,
+				004849C82553AAD800CEB429 /* OrderHeaderStateTableViewCell.m in Sources */,
 				0079EF6425217AFE00307D71 /* NSDate+HooDatePicker.m in Sources */,
 				005BC8432522E9E500323103 /* UIProgressView+AFNetworking.m in Sources */,
 				0079EEE925217AFE00307D71 /* MJRefreshBackStateFooter.m in Sources */,
 				0079EF8B25217AFE00307D71 /* CGXStringPickerView.m in Sources */,
 				0079EF3125217AFE00307D71 /* MJFoundation.m in Sources */,
+				0071D7922551523700FCE459 /* BuySendTypeTableViewCell.m in Sources */,
 				0079EEE325217AFE00307D71 /* MJRefreshConst.m in Sources */,
 				0079EFA925217AFE00307D71 /* LoginViewController.m in Sources */,
 				0079EF3325217AFE00307D71 /* WXApiManager.m in Sources */,
 				0079EE7525217AFD00307D71 /* DownloadOperation.m in Sources */,
 				0079EF6125217AFE00307D71 /* YGLoadingView.m in Sources */,
+				004849FD255444B300CEB429 /* BuyCourseSendViewController.m in Sources */,
 				0079EE1D25217AFD00307D71 /* CourseModuleModel.m in Sources */,
 				0079EE6625217AFD00307D71 /* QuestionManager.m in Sources */,
 				001CDA0E2547F4520052B7D7 /* CountDown.m in Sources */,
@@ -5819,6 +5926,7 @@
 				004270B62549713B0037F258 /* AssociationDetailViewController.m in Sources */,
 				004270BF254972880037F258 /* AssociationMemberListViewController.m in Sources */,
 				0079EF0725217AFE00307D71 /* MASCompositeConstraint.m in Sources */,
+				004849F1255423E700CEB429 /* PresentDetailViewController.m in Sources */,
 				0079EF7425217AFE00307D71 /* JRSwizzle.m in Sources */,
 				0079EEF325217AFE00307D71 /* MJRefreshBackFooter.m in Sources */,
 				0079EE5825217AFD00307D71 /* TestJurisdictionOperation.m in Sources */,
@@ -5907,6 +6015,7 @@
 				0079EF3725217AFE00307D71 /* UIAlertView+WX.mm in Sources */,
 				0079EF3E25217AFE00307D71 /* ZXVideoPlayerControlView.m in Sources */,
 				0079EF2525217AFE00307D71 /* UIImage+LXAVPlayer.m in Sources */,
+				004849C22553A94C00CEB429 /* OrderDetailViewController.m in Sources */,
 				0079EEB225217AFE00307D71 /* CompleteUserInfoOperation.m in Sources */,
 				0079EE5225217AFD00307D71 /* DailyPracticeQuestionOperation.m in Sources */,
 				0079EF9525217AFE00307D71 /* HomeListTypeCollectionViewCell.m in Sources */,
@@ -5941,6 +6050,7 @@
 				0079EFC125217AFE00307D71 /* HttpConfigCreator.m in Sources */,
 				0079EE6325217AFD00307D71 /* BannerModel.m in Sources */,
 				004270BC254972040037F258 /* AssociationCenterViewController.m in Sources */,
+				0050D4DA255918A7008C5C22 /* TiXianViewController.m in Sources */,
 				0079EE6525217AFD00307D71 /* BannerImageOperation.m in Sources */,
 				0079EE4F25217AFD00307D71 /* TestSimulateScoreOperation.m in Sources */,
 				001CDA36254867390052B7D7 /* MyPromotionOperation.m in Sources */,

@@ -114,7 +114,8 @@
     self.giftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.giftBtn.frame = CGRectMake(kScreenWidth - 160, self.view.hd_height -TTextView_Height - Bottom_SafeHeight - 60, 40, 40);
     self.giftBtn.backgroundColor = [UIColor orangeColor];
-    [self.giftBtn setTitle:@"礼" forState:UIControlStateNormal];
+//    [self.giftBtn setTitle:@"礼" forState:UIControlStateNormal];
+    [self.giftBtn setImage:[UIImage imageNamed:@"礼物"] forState:UIControlStateNormal];
     [self.giftBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.giftBtn.titleLabel.font = [UIFont boldSystemFontOfSize:17];
     self.giftBtn.layer.cornerRadius = self.giftBtn.hd_height / 2;

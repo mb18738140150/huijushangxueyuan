@@ -22,9 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy)void(^mainCountDownFinishBlock)();
 
 @property (nonatomic, copy)void(^cancelOrderLivingCourseBlock)(NSDictionary * info);
+@property (nonatomic, strong)NSDictionary * info;
 
 - (void)resetCellContent:(NSDictionary *)info;
-
+- (void)resetTitle;
 @end
 
 NS_ASSUME_NONNULL_END

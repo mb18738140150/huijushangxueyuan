@@ -36,6 +36,8 @@
 @property (nonatomic, strong)UIButton *aaddShoppingCarBtn;
 @property (nonatomic, strong)UIButton *applyBtn;
 
+@property (nonatomic, assign)BOOL isApply;
+
 @end
 
 @implementation CommodityDetailViewController
@@ -194,13 +196,11 @@
 - (void)storeClick:(NSNotification *)notification
 {
     NSDictionary *infoDic = notification.object;
-    [SVProgressHUD show];
     if ([[infoDic objectForKey:@"id"] intValue] == 1) {
         [self.navigationController popViewControllerAnimated:YES];
     }else
     {
         ShoppingCarViewController * vc = [[ShoppingCarViewController alloc]init];
-        
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -208,9 +208,10 @@
 - (void)applyAction
 {
     NSLog(@"购买 ");
-    ShoppingCarViewController * vc = [[ShoppingCarViewController alloc]init];
+    self.isApply = YES;
+    [SVProgressHUD show];
+    [[UserManager sharedManager] didRequestAddShoppingCarWith:@{kUrlName:@"api/shop/cart/create",@"good_id":[UIUtility judgeStr:[self.goodDetailInfo objectForKey:@"id"]]} withNotifiedObject:self];
     
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)addAction
@@ -300,8 +301,9 @@
     UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWidth / 2 - 35, 10, 70, 20)];
     label.font = [UIFont boldSystemFontOfSize:14];
     label.textColor = UIColorFromRGB(0x333333);
-    
+    label.backgroundColor = UIColorFromRGB(0xffffff);
     label.text = @"商品详情";
+    label.textAlignment = NSTextAlignmentCenter;
     
     [headView addSubview:label];
     
@@ -348,6 +350,13 @@
 
 - (void)didRequestAddShoppingCarSuccessed
 {
+    if (self.isApply) {
+        self.isApply = NO;
+        [SVProgressHUD dismiss];
+        ShoppingCarViewController * vc = [[ShoppingCarViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    }
     [SVProgressHUD showSuccessWithStatus:@"添加成功"];
     [self loadData];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

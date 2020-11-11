@@ -159,7 +159,7 @@
     }
     
     // ,@"debug":@"kingofzihua",@"author_id":@"1475865"
-    [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:@"api/user/mypay",@"type":type,@"debug":@"kingofzihua",@"author_id":@"1475865",@"requestType":@"get"} withNotifiedObject:self];
+    [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:@"api/user/mypay",@"type":type,@"requestType":@"get"} withNotifiedObject:self];
     
     [self.tableView reloadData];
 }

@@ -29,7 +29,7 @@
     self.backView.layer.shadowOffset = CGSizeMake(0, 0);
 //    self.backView.layer.shadowRadius = 3;
 
-    NSArray * dataArray = @[@{@"image":@"main_代付款",@"title":@"待付款"},@{@"image":@"main_待发货",@"title":@"待发货"},@{@"image":@"main_待收货",@"title":@"待收货"},@{@"image":@"main_订单icon",@"title":@"所有订单"},@{@"image":@"main_icon",@"title":@"购物车"}];
+    NSArray * dataArray = @[@{@"image":@"main_代付款",@"title":@"待付款"},@{@"image":@"main_待收货",@"title":@"待收货"},@{@"image":@"main_待发货",@"title":@"已完成"},@{@"image":@"main_订单icon",@"title":@"所有订单"},@{@"image":@"main_icon",@"title":@"购物车"}];
     
     for (int i = 0; i < 5; i++) {
         NSDictionary * info = dataArray[i];

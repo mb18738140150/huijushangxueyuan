@@ -29,6 +29,7 @@
 - (void)refreshUIWithInfo:(NSDictionary *)info isCanSelect:(BOOL)select;
 - (void)resetSelectState:(BOOL)select;
 - (void)refreshOrderCellWith:(NSDictionary *)info;
+- (void)refreshOrderDetailCellWith:(NSDictionary *)info;
 
 
 @end

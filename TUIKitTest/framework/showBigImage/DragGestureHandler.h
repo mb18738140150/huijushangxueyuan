@@ -14,6 +14,8 @@
 @property (nonatomic, copy) void (^completeBlock)(BOOL finish);
 //有拖拽效果的拖拽回调
 @property (nonatomic, copy) void (^dragBlock)(void);
+@property (nonatomic, copy) void (^previousBlock)(void);
+@property (nonatomic, copy) void (^nextBlock)(void);
 
 - (instancetype)initWithGestureView:(UIView *)gestureView bgView:(UIView *)bgView;
     

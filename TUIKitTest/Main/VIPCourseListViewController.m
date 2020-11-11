@@ -174,7 +174,7 @@
         }
     }
     
-    [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:urlName,@"card_id":[self.info objectForKey:@"id"],@"debug":@"kingofzihua",@"author_id":@"1475865",@"requestType":@"get"} withNotifiedObject:self];
+    [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:urlName,@"card_id":[self.info objectForKey:@"id"],@"requestType":@"get"} withNotifiedObject:self];
     
     [self.tableView reloadData];
 }
@@ -252,7 +252,6 @@
         [SVProgressHUD dismiss];
     });
 }
-
 
 
 @end

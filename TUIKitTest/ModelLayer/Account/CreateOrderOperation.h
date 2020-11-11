@@ -11,6 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CreateOrderOperation : NSObject
+
+@property (nonatomic, strong)NSDictionary * orderInfo;
 - (void)didRequestCreateOrderWithCourseInfo:(NSDictionary * )infoDic withNotifiedObject:(id<UserModule_CreateOrderProtocol>)object;
 @end
 

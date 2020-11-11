@@ -36,7 +36,7 @@
     
     NSString * str = [NSString stringWithFormat:@"%@    %@[默认]", [infoDic objectForKey:@"username"], [infoDic objectForKey:@"mobile"]];
     [backView addSubview:self.informationLB];
-    if (![[infoDic objectForKey:@"default"] boolValue]) {
+    if (![[infoDic objectForKey:@"defaulted"] boolValue]) {
         str = [NSString stringWithFormat:@"%@    %@", [infoDic objectForKey:@"username"], [infoDic objectForKey:@"mobile"]];
     }else
     {
@@ -46,7 +46,7 @@
     NSDictionary * morenAttribute = @{NSFontAttributeName:kMainFont_12,NSForegroundColorAttributeName:kCommonMainBlueColor};
     NSMutableAttributedString * mStr = [[NSMutableAttributedString alloc]initWithString:str];
     [mStr addAttributes:nameAttribute range:NSMakeRange(0, [[infoDic objectForKey:@"username"] length])];
-    if ([[infoDic objectForKey:@"default"] boolValue]) {
+    if ([[infoDic objectForKey:@"defaulted"] boolValue]) {
         [mStr addAttributes:morenAttribute range:NSMakeRange(str.length - 4, 4)];
     }
     self.informationLB.attributedText = mStr;

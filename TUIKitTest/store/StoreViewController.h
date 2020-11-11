@@ -6,11 +6,17 @@
 //
 
 #import "ViewController.h"
+typedef enum : NSUInteger {
+    FromType_nomal,
+    FromType_push,
+    FromType_present,
+} FromType;
+
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface StoreViewController : ViewController
-
+@property (nonatomic, assign)FromType fromType;
 @end
 
 NS_ASSUME_NONNULL_END

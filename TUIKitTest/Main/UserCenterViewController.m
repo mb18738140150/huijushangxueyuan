@@ -20,8 +20,8 @@
 @property (nonatomic,strong) UITableView            *infoTableView;
 
 @property (nonatomic,strong) NSDictionary           *userInfos;
-@property (nonatomic,strong) NSArray                *userDisplayKeyArray;
-@property (nonatomic,strong) NSArray                *userDisplayNameArray;
+@property (nonatomic,strong) NSMutableArray                *userDisplayKeyArray;
+@property (nonatomic,strong) NSMutableArray                *userDisplayNameArray;
 // 修改昵称
 @property (nonatomic, strong)NSMutableDictionary      * nickNameDic;
 
@@ -34,10 +34,35 @@
 @property (nonatomic, strong)UITextField * nameTf;
 @property (nonatomic, strong)UITextField * phoneTf;
 
+@property (nonatomic, strong)NSMutableArray * list;
 
 @end
 
 @implementation UserCenterViewController
+
+- (NSMutableArray *)userDisplayKeyArray
+{
+    if (!_userDisplayKeyArray) {
+        _userDisplayKeyArray = [NSMutableArray array];
+    }
+    return _userDisplayKeyArray;
+}
+
+- (NSMutableArray *)userDisplayNameArray
+{
+    if (!_userDisplayNameArray) {
+        _userDisplayNameArray = [NSMutableArray array];
+    }
+    return _userDisplayNameArray;
+}
+
+- (NSMutableArray *)list
+{
+    if (!_list) {
+        _list = [NSMutableArray array];
+    }
+    return _list;
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -56,14 +81,28 @@
     // Do any additional setup after loading the view.
     
     self.userInfos = [[UserManager sharedManager] getUserInfos];
-    self.userDisplayNameArray = @[@"编号",@"头像",@"姓名",@"手机号",@""];
-    self.userDisplayKeyArray = @[kUserId,kUserHeaderImageUrl,kUserNickName,kUserTelephone];
+    
+    self.sendImageUrl = [[[UserManager sharedManager] getUserInfos] objectForKey:kUserHeaderImageUrl];
+    
+    for (NSDictionary * info in [[[UserManager sharedManager] getUserInfo] objectForKey:@"user_info"]) {
+        NSMutableDictionary * mInfo = [[NSMutableDictionary alloc]initWithDictionary:info];
+        [self.list addObject:mInfo];
+    }
+    
+    
+    self.userDisplayNameArray = [[NSMutableArray alloc]initWithArray:@[@"编号",@"头像",@"姓名",@"手机号"]];
+    for (NSDictionary * info in self.list) {
+        [self.userDisplayNameArray addObject:[info objectForKey:@"name"]];
+    }
+    [self.userDisplayNameArray addObject:@""];
+    
+    self.userDisplayKeyArray = [[NSMutableArray alloc]initWithArray:@[kUserId,kUserHeaderImageUrl,kUserNickName,kUserTelephone]];
+    
     self.iconMsg = @"";
     self.sendImageUrl = [[[UserManager sharedManager] getUserInfos] objectForKey:kUserHeaderImageUrl];
     [self navigationViewSetup];
     [self contentSetup];
     
-
 }
 #pragma mark - ui setup
 - (void)navigationViewSetup
@@ -112,7 +151,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.userDisplayNameArray.count;
+    return self.userDisplayNameArray.count ;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -189,7 +228,25 @@
         cell.backgroundColor = UIColorFromRGB(0xf2f2f2);
     }
     else{
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",[self.userInfos objectForKey:[self.userDisplayKeyArray objectAtIndex:indexPath.row]]];
+        if (indexPath.row <= 3) {
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",[self.userInfos objectForKey:[self.userDisplayKeyArray objectAtIndex:indexPath.row]]];
+        }else
+        {
+            NSDictionary * info = [self.list objectAtIndex:indexPath.row - 4];
+            
+            UITextField * Tf = [[UITextField alloc]initWithFrame:CGRectMake(kScreenWidth - 200, 10, 185, 30)];
+            [cell addSubview:Tf];
+            Tf.delegate = self;
+            Tf.returnKeyType = UIReturnKeyDone;
+            Tf.backgroundColor = [UIColor whiteColor];
+            Tf.placeholder = [NSString stringWithFormat:@"%@",[info objectForKey:@"placeholder"]];
+            Tf.textColor = UIColorFromRGB(0x333333);
+            Tf.font = cell.detailTextLabel.font;
+            Tf.textAlignment = NSTextAlignmentRight;
+            Tf.tag = 2000 + indexPath.row - 4;
+            Tf.text = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[info objectForKey:@"value"]]];
+            
+        }
         cell.detailTextLabel.textColor = UIColorFromRGB(0x666666);
     }
     
@@ -219,27 +276,48 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    
+    
     [self.nameTf resignFirstResponder];
     [self.phoneTf resignFirstResponder];
+    [textField resignFirstResponder];
+    
     return YES;
 }
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    if (![textField isEqual:self.nameTf] && ![textField isEqual:self.phoneTf]) {
+        NSMutableDictionary * mInfo = [self.list objectAtIndex:textField.tag - 2000];
+        [mInfo setValue:textField.text forKey:@"value"];
+    }
+    return YES;
+}
+
 
 - (void)complateAction
 {
     NSLog(@"保存");
     NSDictionary * userInfo = [[UserManager sharedManager] getUserInfos];
-
+    
     NSMutableDictionary * mInfo = [NSMutableDictionary dictionary];
     [mInfo setValue:@"api/user/update" forKey:kUrlName];
-    if (![self.sendImageUrl isEqualToString:[userInfo objectForKey:kUserHeaderImageUrl]]) {
-        [mInfo setValue:self.sendImageUrl forKey:@"avatar"];
+    
+    [mInfo setValue:self.sendImageUrl forKey:@"avatar"];
+    
+    [mInfo setValue:self.nameTf.text forKey:@"nickname"];
+    
+    [mInfo setValue:self.phoneTf.text forKey:@"mobile"];
+    
+    for (int i = 0; i < self.list.count; i++) {
+        NSDictionary * info = [[[[UserManager sharedManager] getUserInfo] objectForKey:@"user_info"] objectAtIndex:i];
+        NSMutableDictionary * listImfo = [self.list objectAtIndex:i];
+        
+        if (![[info objectForKey:@"value"] isEqual:[listImfo objectForKey:@"value"]]) {
+            [mInfo setValue:[listImfo objectForKey:@"value"] forKey:[listImfo objectForKey:@"name"]];
+        }
     }
-    if (![self.nameTf.text isEqualToString:[userInfo objectForKey:kUserNickName]]) {
-        [mInfo setValue:self.nameTf.text forKey:@"nickname"];
-    }
-    if (![self.phoneTf.text isEqualToString:[userInfo objectForKey:kUserTelephone]]) {
-        [mInfo setValue:self.phoneTf.text forKey:@"mobile"];
-    }
+    
     
     [SVProgressHUD show];
     [[UserManager sharedManager] completeUserInfoWithDic:mInfo withNotifiedObject:self];

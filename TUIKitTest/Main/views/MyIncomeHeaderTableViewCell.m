@@ -197,7 +197,7 @@
 {
     if (isTeacher) {
         _promotionBtn.backgroundColor = [UIColor clearColor];
-        [_promotionBtn setTitleColor:kCommonMainBlueColor forState:UIControlStateNormal];
+        [_promotionBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
         
         _teacherBtn.backgroundColor = UIColorFromRGB(0xffffff);
         [_teacherBtn setTitleColor:kCommonMainBlueColor forState:UIControlStateNormal];

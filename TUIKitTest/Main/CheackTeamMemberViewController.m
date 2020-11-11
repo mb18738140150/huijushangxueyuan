@@ -26,7 +26,6 @@
 @property (nonatomic, strong)SearchAndCategoryView * topView;
 @property (nonatomic, strong)NSString * keyword;
 
-
 @property (nonatomic, strong)NSString * courseListUrl;
 @property (nonatomic, strong)NSString * type;
 
@@ -177,10 +176,10 @@
     
     [SVProgressHUD show];
     if (self.keyword.length > 0) {
-        [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:self.courseListUrl,@"keyword":self.keyword,@"page":@(pageNo),@"type":self.type,@"requestType":@"get",@"debug":@"kingofzihua",@"author_id":@"1475865"} withNotifiedObject:self];
+        [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:self.courseListUrl,@"keyword":self.keyword,@"page":@(pageNo),@"type":self.type,@"requestType":@"get"} withNotifiedObject:self];
     }else
     {
-        [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:self.courseListUrl,@"page":@(pageNo),@"type":self.type,@"requestType":@"get",@"debug":@"kingofzihua",@"author_id":@"1475865"} withNotifiedObject:self];
+        [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:self.courseListUrl,@"page":@(pageNo),@"type":self.type,@"requestType":@"get"} withNotifiedObject:self];
     }
     
     [self.tableView reloadData];

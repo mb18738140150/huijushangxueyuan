@@ -76,7 +76,8 @@
         @{@"name":@"VIP",@"color":UIRGBColor(249, 0, 137),@"type":@(RightTabbarOperationType_VIP)},
         @{@"name":@"合伙人",@"color":UIRGBColor(4, 123, 22),@"type":@(RightTabbarOperationType_Hehuoren)},
         @{@"name":@"公众号",@"color":UIRGBColor(214, 7, 21),@"type":@(RightTabbarOperationType_publicNumber)},
-        @{@"name":@"客服",@"color":UIRGBColor(92, 75, 195),@"type":@(RightTabbarOperationType_service)}];
+        @{@"name":@"客服",@"color":UIRGBColor(92, 75, 195),@"type":@(RightTabbarOperationType_service)},
+        @{@"name":@"客服",@"color":UIRGBColor(92, 75, 195),@"type":@(RightTabbarOperationType_store),@"image":@"livingShoppingCar"}];
     }
     
     return dataSource;
@@ -104,6 +105,16 @@
     contentLB.layer.masksToBounds = YES;
     [cell.contentView addSubview:contentLB];
     cell.backgroundColor = [UIColor clearColor];
+    
+    if([info objectForKey:@"image"])
+    {
+        UIImageView * imageVIew = [[UIImageView alloc]initWithFrame:contentLB.frame];
+        imageVIew.image = [UIImage imageNamed:[info objectForKey:@"image"]];
+        imageVIew.layer.cornerRadius = imageVIew.hd_height / 2;
+        imageVIew.layer.masksToBounds = YES;
+        [cell.contentView addSubview:imageVIew];
+    }
+    
     return cell;
 }
 

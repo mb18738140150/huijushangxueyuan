@@ -14,7 +14,7 @@
     [self.contentView removeAllSubviews];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     float cellWidth = self.contentView.hd_width;
-    
+    self.info = info;
     // 100
     
     UIView * backView = [[UIView alloc]initWithFrame:CGRectMake(5, 0, self.hd_width - 10, 80)];
@@ -64,6 +64,15 @@
     
 }
     
+
+- (void)resetTitle
+{
+    [self.groupIconImageView sd_setImageWithURL:[NSURL URLWithString:[self.info objectForKey:@"logo"]] placeholderImage:[[UIImage imageNamed:@"courseDefaultImage"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] options:SDWebImageAllowInvalidSSLCertificates];
+    self.courseNameLabel.font = kMainFont;
+    self.cancelBtn.layer.cornerRadius = self.cancelBtn.hd_height / 2;
+    self.cancelBtn.layer.masksToBounds = YES;
+}
+
 - (void)cancelOrderAction
 {
     if (self.cancelOrderLivingCourseBlock) {

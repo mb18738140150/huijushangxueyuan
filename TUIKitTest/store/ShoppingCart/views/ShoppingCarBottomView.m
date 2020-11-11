@@ -52,10 +52,10 @@
     [selectBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, -5)];
     self.selectAllBtn = selectBtn;
     [selectBtn addTarget:self action:@selector(selectAction) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:selectBtn];
+//    [self addSubview:selectBtn];
     
-    UILabel *priceLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.selectAllBtn.frame) + 15,self.selectAllBtn.hd_y , 200, 15)];
-    priceLB.textColor = kCommonMainBlueColor;
+    UILabel *priceLB = [[UILabel alloc]initWithFrame:CGRectMake( 15,self.selectAllBtn.hd_y , 200, 15)];
+    priceLB.textColor = UIColorFromRGB(0x999999);
     priceLB.font = kMainFont;
     [self addSubview:priceLB];
     self.priceLabel = priceLB;
@@ -70,7 +70,7 @@
     
     self.buyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.buyBtn.frame = CGRectMake(self.hd_width - 100, 0, 100, self.hd_height);
-    [self.buyBtn setTitle:@"立即下单" forState:UIControlStateNormal];
+    [self.buyBtn setTitle:@"去结算" forState:UIControlStateNormal];
     [self.buyBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
     self.buyBtn.backgroundColor = kCommonMainBlueColor;
     self.buyBtn.titleLabel.font = kMainFont;
@@ -83,18 +83,21 @@
 - (void)prepareBuyUI
 {
     self.backgroundColor = [UIColor whiteColor];
-    UILabel *priceLB = [[UILabel alloc]initWithFrame:CGRectMake(15,self.hd_height / 2 - 7 , 200, 15)];
-    priceLB.textColor = kCommonMainBlueColor;
-    priceLB.font = kMainFont_16;
+    UILabel *priceLB = [[UILabel alloc]initWithFrame:CGRectMake(15,self.hd_height / 2 - 10 , self.hd_width - 140, 20)];
+    priceLB.textColor = UIColorFromRGB(0x333333);
+    priceLB.font = [UIFont boldSystemFontOfSize:16];
+    priceLB.textAlignment = NSTextAlignmentRight;
     [self addSubview:priceLB];
     self.priceLabel = priceLB;
     
     self.buyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.buyBtn.frame = CGRectMake(self.hd_width - 100, 0, 100, self.hd_height);
-    [self.buyBtn setTitle:@"立即下单" forState:UIControlStateNormal];
+    self.buyBtn.frame = CGRectMake(self.hd_width - 100, 5, 90, self.hd_height - 10);
+    [self.buyBtn setTitle:@"提交订单" forState:UIControlStateNormal];
     [self.buyBtn setTitleColor:UIColorFromRGB(0xffffff) forState:UIControlStateNormal];
     self.buyBtn.backgroundColor = kCommonMainBlueColor;
     self.buyBtn.titleLabel.font = kMainFont;
+    self.buyBtn.layer.cornerRadius = 5;
+    self.buyBtn.layer.masksToBounds = YES;
     [self addSubview:self.buyBtn];
     
     [self.buyBtn addTarget:self action:@selector(buyAction) forControlEvents:UIControlEventTouchUpInside];
@@ -186,11 +189,17 @@
 - (void)refreshPrice:(NSDictionary *)infoDic
 {
     NSLog(@"refreshPrice");
-    self.priceLabel.text = [NSString stringWithFormat:@"合计：%@", [infoDic objectForKey:@"price"]];
+    NSString * str  = [NSString stringWithFormat:@"共%@件 合计：%@元",[infoDic objectForKey:@"count"], [infoDic objectForKey:@"price"]];
+    NSMutableAttributedString * mStr = [[NSMutableAttributedString alloc]initWithString:str];
+    NSDictionary * attribute = @{NSFontAttributeName:[UIFont systemFontOfSize:20],NSForegroundColorAttributeName:kCommonMainBlueColor};
+    [mStr setAttributes:attribute range:NSMakeRange(str.length - [[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"price"]] length] - 1, [[NSString stringWithFormat:@"%@", [infoDic objectForKey:@"price"]] length])];
+    self.priceLabel.attributedText = mStr;
+    
 }
+
 - (void)refreshGoodPrice:(NSDictionary *)infoDic
 {
-    self.priceLabel.text = [NSString stringWithFormat:@"￥ %@", [infoDic objectForKey:@"price"]];
+    self.priceLabel.text = [NSString stringWithFormat:@"合计：￥ %@", [infoDic objectForKey:@"price"]];
 }
 - (void)refreshTotalCount
 {

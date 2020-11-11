@@ -53,6 +53,11 @@
 
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)payClick:(NSNotification *)notification
 {
     

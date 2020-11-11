@@ -120,7 +120,7 @@
             [joinBtn addTarget:self action:@selector(joinAction) forControlEvents:UIControlEventTouchUpInside];
             [courseBtn addTarget:self action:@selector(burCourseAction) forControlEvents:UIControlEventTouchUpInside];
             
-        }else if ([[self.associationInfo objectForKey:@"is_join"] intValue] == 0 && [[self.associationInfo objectForKey:@"pay_money"] floatValue] == 0.00)
+        }else if ([[self.associationInfo objectForKey:@"is_join"] intValue] == 0 && [[self.associationInfo objectForKey:@"is_pay"] intValue] == 1)
         {
             UIButton * courseBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             courseBtn.frame = CGRectMake(0, 0, kScreenWidth, 50);
@@ -130,7 +130,7 @@
             [_bottomView addSubview:courseBtn];
             [courseBtn setTitle:@"购买" forState:UIControlStateNormal];
             [courseBtn addTarget:self action:@selector(burCourseAction) forControlEvents:UIControlEventTouchUpInside];
-
+            
             
         }else
         {
@@ -166,7 +166,7 @@
         [_bottomView addSubview:joinBtn];
         
         
-        if ([[self.associationInfo objectForKey:@"is_join"] intValue] == 1  || ([[self.associationInfo objectForKey:@"is_join"] intValue] == 0 && [[self.associationInfo objectForKey:@"pay_money"] floatValue] == 0.00)) {
+        if ([[self.associationInfo objectForKey:@"is_join"] intValue] == 1) {
             [joinBtn setTitle:@"进入社群" forState:UIControlStateNormal];
             [joinBtn addTarget:self action:@selector(joinAction) forControlEvents:UIControlEventTouchUpInside];
         }else
@@ -208,6 +208,15 @@
     if (indexPath.section == 1) {
         AssociationCommentTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kAssociationCommentTableViewCell forIndexPath:indexPath];
         [cell refreshUIWith:self.itemArray[indexPath.row] andIsCanOperation:NO];
+        
+        UIWindow * window=[[[UIApplication sharedApplication] delegate] window];
+        CGRect rect = [cell convertRect:cell.bounds toView:window];
+        cell.imageClickBlock = ^(NSArray * _Nonnull urlArray, int index) {
+            TestImageView *showView = [[TestImageView alloc] initWithFrame:weakSelf.view.frame andImageList:urlArray andCurrentIndex:index];
+            showView.outsideFrame = rect;
+            showView.insideFrame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+            [showView show];
+        };
         return cell;
     }
     
@@ -476,22 +485,22 @@
 - (void)kkk
 {
     
-    if ([[self.associationInfo objectForKey:@"is_relation"] intValue] == 2) { //********** 有关联课程
+    if ([[self.associationInfo objectForKey:@"is_relation"] intValue] == 2) { //################### 有关联课程
         
         if ([[self.associationInfo objectForKey:@"is_join"] boolValue] == true) { //********** is_join= true
             // 左边进入社群    右边购买课程
-        }else if ([[self.associationInfo objectForKey:@"is_join"] boolValue] == false && [[self.associationInfo objectForKey:@"pay_money"] floatValue] == 0.00) //********** is_join = false   && 付费价格 = 0
+        }else if ([[self.associationInfo objectForKey:@"is_join"] boolValue] == false && [[self.associationInfo objectForKey:@"is_pay"] intValue] == 1) //********** is_join = false   && is_pay = 1
         {
              // 购买课程
-        }else //********** is_join = false   && 付费价格 > 0
+        }else //********** is_join = false   && is_pay = 2
         {
             // 左边付费***元进入社群    右边购买课程
         }
         
     }else
-    {
+    { //  ################### 未关联课程
         UIButton * joinBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        if ([[self.associationInfo objectForKey:@"is_join"] intValue] == 1  || ([[self.associationInfo objectForKey:@"is_join"] intValue] == 0 && [[self.associationInfo objectForKey:@"pay_money"] floatValue] == 0.00)) { // ********** is_join = true  && (is_join = false && 付费价格 = 0)
+        if ([[self.associationInfo objectForKey:@"is_join"] intValue] == 1  ) { // ********** is_join = true
             // 进入社群
         }else
         {

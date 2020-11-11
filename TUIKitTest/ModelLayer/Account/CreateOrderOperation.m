@@ -27,6 +27,7 @@
 
 - (void)didRequestSuccessed:(NSDictionary *)successInfo
 {
+    self.orderInfo = [successInfo objectForKey:@"data"];
     if (isObjectNotNil(self.notifiedObject)) {
         [self.notifiedObject didRequestCreateOrderSuccessed];
     }

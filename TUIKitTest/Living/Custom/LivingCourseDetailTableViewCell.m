@@ -60,24 +60,46 @@
     
     UILabel * subscribLB = [[UILabel alloc]initWithFrame:CGRectMake(self.hd_width - 75, CGRectGetMaxY(separateView.frame) + 10, 60, 25)];
     subscribLB.text =  @"立即预约";
-    subscribLB.textColor = UIColorFromRGB(0x666666);
+    subscribLB.textColor = kCommonMainBlueColor;
     subscribLB.font = kMainFont_12;
     subscribLB.textAlignment = NSTextAlignmentCenter;
     subscribLB.layer.cornerRadius = subscribLB.hd_height / 2;
     subscribLB.layer.masksToBounds = YES;
-    subscribLB.layer.borderColor = UIColorFromRGB(0xdddddd).CGColor;
+    subscribLB.layer.borderColor = kCommonMainBlueColor.CGColor;
     subscribLB.layer.borderWidth = 1;
     [self.contentView addSubview:subscribLB];
     subscribLB.hidden = YES;
     self.subscribLB = subscribLB;
+    subscribLB.userInteractionEnabled = YES;
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(suscribAction)];
+    [self.subscribLB addGestureRecognizer:tap];
     
     if ([[info objectForKey:@"topic_status"] intValue] == 2) {
+        subscribLB.hidden = NO;
         NSDictionary * subscribInfo = [[UserManager sharedManager] getVIPBuyInfo];
         if (![[subscribInfo objectForKey:@"reserve"] boolValue]) {
-            subscribLB.hidden = NO;
+            subscribLB.text =  @"立即预约";
+        }else
+        {
+            subscribLB.text =  @"取消预约";
         }
     }
     
+}
+
+- (void)suscribAction
+{
+    BOOL isSubscrib = NO;
+    
+    if ([self.subscribLB.text isEqualToString:@"立即预约"]) {
+        isSubscrib = NO;
+    }else
+    {
+        isSubscrib = YES;
+    }
+    if (self.subscribBlock) {
+        self.subscribBlock(isSubscrib);
+    }
 }
 
 - (void)showSubscribLB

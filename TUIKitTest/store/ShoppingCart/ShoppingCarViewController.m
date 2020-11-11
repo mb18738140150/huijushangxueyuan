@@ -12,7 +12,7 @@
 #import "ShoppingCarBottomView.h"
 #import "ConfirmOrderViewController.h"
 
-@interface ShoppingCarViewController ()<UITableViewDelegate,UITableViewDataSource,UserModule_ShoppingCarListProtocol,UserModule_DeleteShoppingCarProtocol,UserModule_AddShoppingCarProtocol>
+@interface ShoppingCarViewController ()<UITableViewDelegate,UITableViewDataSource,UserModule_ShoppingCarListProtocol,UserModule_DeleteShoppingCarProtocol,UserModule_AddShoppingCarProtocol,UserModule_MockVIPBuy>
 
 @property (nonatomic, strong)UITableView * tableview;
 @property (nonatomic, strong)NSMutableArray * dataSource;
@@ -103,7 +103,7 @@
 
 - (void)refreshUI_iPhone
 {
-    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - 64) style:UITableViewStylePlain];
+    self.tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - kNavigationBarHeight - kStatusBarHeight  - 50) style:UITableViewStylePlain];
     self.tableview.delegate = self;
     self.tableview.dataSource = self;
     [self.tableview registerClass:[ShoppingCarListTableViewCell class] forCellReuseIdentifier:kShoppingCarListTableViewCellID];
@@ -159,13 +159,6 @@
         [SVProgressHUD show];
         [[UserManager sharedManager] didRequestAddShoppingCarWith:@{kUrlName:@"api/shop/cart/updateNum",@"cart_id":[dic objectForKey:@"id"],@"num":@(count)} withNotifiedObject:self];
         
-//        NSInteger index = [weakSelf.dataSource indexOfObject:dic];
-//        NSMutableDictionary * mInfo = [[NSMutableDictionary alloc]initWithDictionary:dic];
-//        [weakSelf.dataSource removeObject:dic];
-//        [mInfo setObject:[NSString stringWithFormat:@"%d", count] forKey:@"count"];
-//        [weakSelf.dataSource insertObject:mInfo atIndex:index];
-//        [weakSelf.tableview reloadData];
-//        [weakSelf refreshAllPrice:mInfo];
     };
     
     cell.selectBtnClickBlock = ^(NSDictionary *info,BOOL select) {
@@ -191,42 +184,34 @@
 #pragma mark - refreshShoppingCar
 - (void)refreshShoppingCar:(NSDictionary *)info andSelect:(BOOL)select
 {
-    BOOL isContain = [self isContain:info];
-    
-    if (isContain) {
-        [self deleteSelectInfo:info];
-    }else{
-        [self.selectArray addObject:info];
+    NSString * type = @"active";
+    if ([[info objectForKey:@"active"] boolValue]) {
+        type = @" unactive";
     }
-    
-    float allPrice = [self getAllPrice:self.selectArray];
-    [self.shoppingCarBottomView refreshPrice:@{@"price":@(allPrice)}];
-    
-    [self.tableview reloadData];
+    [[UserManager sharedManager] didRequestMockVIPBuyWithInfo:@{kUrlName:@"api/shop/cart/activeSwitch",@"cart_id":[info objectForKey:@"id"],@"type":type} withNotifiedObject:self];
+
+}
+
+- (void)didRequestMockVIPBuySuccessed
+{
+    [SVProgressHUD dismiss];
+    [self loadData];
+}
+
+- (void)didRequestMockVIPBuyFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
 }
 
 
 - (void)refreshAllPrice:(NSDictionary *)infoDic
 {
-    if (infoDic == nil) {
-        float allPrice = [self getAllPrice:self.selectArray];
-        [self.shoppingCarBottomView refreshPrice:@{@"price":@(allPrice)}];
-        return;
-    }
-    
-    NSDictionary * deleteInfo = infoDic;
-    for (NSDictionary * selectInfo in self.selectArray) {
-        if ([self isEqual:selectInfo withISelectInfo:infoDic]) {
-            deleteInfo = selectInfo;
-            break;
-        }
-    }
-    [self.selectArray removeObject:deleteInfo];
-    [self.selectArray addObject:infoDic];
-    
-    
     float allPrice = [[SoftManager shareSoftManager] getAllPrice:self.selectArray];
-    [self.shoppingCarBottomView refreshPrice:@{@"price":@(allPrice)}];
+    [self.shoppingCarBottomView refreshPrice:@{@"price":[NSString stringWithFormat:@"%.2f", allPrice],@"count":[NSString stringWithFormat:@"%d", self.selectArray.count]}];
 }
 
 - (BOOL)isContain:(NSDictionary *)info
@@ -280,8 +265,7 @@
         
     }
     [self.tableview reloadData];
-    float allPrice = [[SoftManager shareSoftManager] getAllPrice:self.selectArray];
-    [self.shoppingCarBottomView refreshPrice:@{@"price":@(allPrice)}];
+    [self refreshAllPrice:@{}];
 }
 
 - (float)getAllPrice:(NSArray *)selectArray
@@ -342,28 +326,21 @@
     [self.tableview.mj_header endRefreshing];
     [SVProgressHUD dismiss];
     [self.dataSource removeAllObjects];
+    [self.selectArray removeAllObjects];
     NSArray * list = [[UserManager sharedManager] getShoppingCarList];
     for (NSDictionary * info in list) {
         NSMutableDictionary * mInfo = [[NSMutableDictionary alloc]initWithDictionary:info];
         [mInfo setObject:[info objectForKey:@"pay_money"] forKey:@"price"];
         [mInfo setObject:[info objectForKey:@"num"] forKey:@"count"];
         [mInfo setObject:[info objectForKey:@"id"] forKey:@"goods_id"];
+        
+        if ([[info objectForKey:@"active"] boolValue]) {
+            [self.selectArray addObject:mInfo];
+        }
+        
         [self.dataSource addObject:mInfo];
     }
     
-    // 更新已选中购物车商品为新数据源
-    NSMutableArray * selectArray = [NSMutableArray array];
-    for (NSDictionary * selectInfo in self.selectArray) {
-        for (NSDictionary * info in self.dataSource) {
-            if ([self isEqual:selectInfo withISelectInfo:info]) {
-                [selectArray addObject:info];
-            }
-        }
-    }
-    [self.selectArray removeAllObjects];
-    for (NSDictionary * info in selectArray) {
-        [self.selectArray addObject:info];
-    }
      // 更新已编辑商品数据源
     for (NSDictionary * info in self.dataSource) {
         if ([self isEqual:self.currentEditInfo withISelectInfo:info]) {

@@ -50,6 +50,7 @@
 
 - (void)didLoginWithUserCode:(NSDictionary *)code withNotifiedObject:(id<UserModule_LoginProtocol>)object
 {
+    self.loginNotifiedObject = object;
     [[HttpRequestManager sharedManager] requestLeadTypeWithInfo:code andDelegate:self];
 }
 

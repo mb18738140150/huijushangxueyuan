@@ -59,7 +59,7 @@
 - (void)loadData
 {
     if (self.infoDic) {
-        self.isMoren = [[self.infoDic objectForKey:@"default"] intValue];
+        self.isMoren = [[self.infoDic objectForKey:@"defaulted"] intValue];
         self.nameStr = [self.infoDic objectForKey:@"username"];
         NSDictionary * nameInfo = @{@"title":@"姓名",@"content":[self.infoDic objectForKey:@"username"],@"placeholder":@(0)};
         NSDictionary  * phoneNumberInfo = @{@"title":@"手机号",@"content":[self.infoDic objectForKey:@"mobile"],@"placeholder":@(0)};
@@ -98,7 +98,7 @@
     NSDictionary  * morenInfo = @{@"title":@"设置默认地址",@"content":@""};
     NSDictionary  * deleteInfo = @{@"title":@"删除此收货地址",@"content":@""};
     [self.dataSource_moren addObject:morenInfo];
-    [self.dataSource_moren addObject:deleteInfo];
+//    [self.dataSource_moren addObject:deleteInfo];
 }
 
 
@@ -293,10 +293,10 @@
     [SVProgressHUD show];
     if (self.infoDic) {
         
-        [[UserManager sharedManager] editAddressWithDic:@{kUrlName:@"api/shop/address/update",@"username":self.nameStr,@"default":@(is_default),@"mobile":self.phoneStr,@"area":self.areaStr,@"address":self.addressStr,@"address_id":[self.infoDic objectForKey:@"id"]} withNotifiedObject:self];
+        [[UserManager sharedManager] editAddressWithDic:@{kUrlName:@"api/shop/address/update",@"username":self.nameStr,@"defaulted":@(is_default),@"mobile":self.phoneStr,@"area":self.areaStr,@"address":self.addressStr,@"address_id":[self.infoDic objectForKey:@"id"]} withNotifiedObject:self];
     }else
     {
-        [[UserManager sharedManager] editAddressWithDic:@{kUrlName:@"api/shop/address/create",@"username":self.nameStr,@"default":@(is_default),@"mobile":self.phoneStr,@"area":self.areaStr,@"address":self.addressStr} withNotifiedObject:self];
+        [[UserManager sharedManager] editAddressWithDic:@{kUrlName:@"api/shop/address/create",@"username":self.nameStr,@"defaulted":@(is_default),@"mobile":self.phoneStr,@"area":self.areaStr,@"address":self.addressStr} withNotifiedObject:self];
     }
     
 }

@@ -72,6 +72,8 @@
 #import "NSString+HTML.h"
 #import <AlipaySDK/AlipaySDK.h>
 #import "GTMNSString+HTML.h"
+#import "TestImageView.h"
+#import "CategoryView.h"
 
 //#import <KSYMediaPlayer/KSYMediaPlayer.h>
 
@@ -168,8 +170,8 @@ typedef enum : NSUInteger {
     CategoryType_myNotification = 10000,
     CategoryType_myBuyCourse,
     CategoryType_daiFuKuan,
-    CategoryType_daiFaHuo,
     CategoryType_daiShouHuo,
+    CategoryType_daiFaHuo,
     CategoryType_allOrder,
     CategoryType_ShoppingCar,
     CategoryType_shareFriend,
@@ -202,5 +204,12 @@ typedef enum : NSUInteger {
     PromotionType_check,
     PromotionType_complate,
 } PromotionType;
+
+typedef enum : NSUInteger {
+    OrderState_noPay,
+    OrderState_noRecive,
+    OrderState_complate,
+} OrderState;
+
 
 #endif /* PrefixHeader_pch */

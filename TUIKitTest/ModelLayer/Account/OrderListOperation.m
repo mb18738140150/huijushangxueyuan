@@ -37,7 +37,7 @@
     for (NSDictionary *infoDic in dataList) {
         [self.orderList addObject:infoDic];
     }
-    self.orderTotalCount = [[successInfo objectForKey:@"totalCount"] intValue];
+    
     if (isObjectNotNil(self.notifiedObject)) {
         [self.notifiedObject didRequestOrderListSuccessed];
     }
