@@ -29,7 +29,8 @@
 #import "ShoppingCarViewController.h"
 #import "OrderListViewController.h"
 #import "BuySuccessAndPresentViewController.h"
-
+#import "SettingDetailViewController.h"
+#import "AppIconViewController.h"
 
 @interface MainViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_GetUserInfo,UserModule_MockVIPBuy>
 
@@ -54,7 +55,12 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orderState:) name:kNotificationOfMainMyCategory object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orderState:) name:kNotificationOfMainMyOrderState object:nil];
+}
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self loadData];
 }
 
 
@@ -92,11 +98,21 @@
     self.shop_open = [[[[UserManager sharedManager] getVIPBuyInfo] objectForKey:@"shop_open"] boolValue];
     if (divide_open) {
         // 开启推广
-        self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_推广中心",@"title":@"推广中心"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"}];
+        if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+            self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_推广中心",@"title":@"推广中心"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"}];
+        }else
+        {
+            self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_推广中心",@"title":@"推广中心"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"},@{@"image":@"ApplePayjinbi",@"title":@"金币"}];
+        }
     }else
     {
         // 关闭推广
-        self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"}];
+        if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+            self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"}];
+        }else
+        {
+            self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"},@{@"image":@"ApplePayjinbi",@"title":@"金币"}];
+        }
     }
     [self.tableView reloadData];
 }
@@ -190,7 +206,10 @@
 
 - (void)prepareUI
 {
-    self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_推广中心",@"title":@"推广中心"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"}];
+    self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_推广中心",@"title":@"推广中心"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"},@{@"image":@"ApplePayjinbi",@"title":@"金币"}];
+//    if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+//        self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_推广中心",@"title":@"推广中心"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"}];
+//    }
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - kNavigationBarHeight - kStatusBarHeight - kTabBarHeight) style:UITableViewStylePlain];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.delegate = self;
@@ -249,7 +268,11 @@
         }else if (indexPath.row == 1)
         {
             MainOpenVIPCardTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kMainOpenVIPCardTableViewCell forIndexPath:indexPath];
-            [cell resetUIWithInfo:@{}];
+            if([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue])
+            {
+                [cell resetUIWithInfo:@{}];
+                [cell resetContent:@{@"title":@"会员",@"btn":@"会员中心"}];
+            }
             return cell;
         }else if (indexPath.row == 2)
         {
@@ -282,8 +305,11 @@
             return 100;
         }else if (indexPath.row == 1)
         {
-            
-            return 60;
+            if([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue])
+            {
+                return 60;
+            }
+            return 0;
         }else if (indexPath.row == 2)
         {
            
@@ -360,6 +386,21 @@
             setVC.hidesBottomBarWhenPushed = YES;
             setVC.promotionType = promotionType;
             [self.navigationController pushViewController:setVC animated:YES];
+        }else if ([title containsString:@"清理缓存"])
+        {
+            __weak typeof( self)weakSelf = self;
+            SettingDetailViewController * vc = [[SettingDetailViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.quitBlock = ^{
+                [weakSelf.tabBarController setSelectedIndex:0];
+            };
+            [self.navigationController pushViewController:vc animated:YES];
+        }else if ([title containsString:@"金币"])
+        {
+            __weak typeof( self)weakSelf = self;
+            AppIconViewController * iconVC = [[AppIconViewController alloc]init];
+            iconVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:iconVC animated:YES];
         }
         
     }

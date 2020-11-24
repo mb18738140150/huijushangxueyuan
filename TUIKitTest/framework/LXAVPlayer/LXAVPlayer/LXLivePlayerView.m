@@ -187,7 +187,14 @@ typedef NS_ENUM(NSInteger, LXLivePlayerState) {
 
 - (void)startPlay
 {
+    NSMutableDictionary * headers = [NSMutableDictionary dictionary];
+    [headers setObject:@"https://h5.luezhi.com" forKey:@"Referer"];
+    TXLivePlayConfig * config = [[TXLivePlayConfig alloc]init];
+    config.headers = headers;
+    
+    
     self.livePlayer = [[TXLivePlayer alloc] init];
+    self.livePlayer.config = config;
     self.livePlayer.delegate = self;
     [self.livePlayer setupVideoWidget:self.bounds containView:self insertIndex:0];
     [self.livePlayer startPlay:self.playURL type:[self livePlayerType]];

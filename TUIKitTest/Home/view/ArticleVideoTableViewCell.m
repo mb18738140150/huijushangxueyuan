@@ -33,9 +33,9 @@
     self.playBtn.hd_centerX = self.backImageView.hd_centerX;
     self.playBtn.hd_centerY = self.backImageView.hd_centerY;
     [self.contentView addSubview:self.playBtn];
-    [self.playBtn setImage:[UIImage imageNamed:@"时间"] forState:UIControlStateNormal];
+    [self.playBtn setImage:[UIImage imageNamed:@"videoPause"] forState:UIControlStateNormal];
     [self.playBtn addTarget:self action:@selector(playAction) forControlEvents:UIControlEventTouchUpInside];
-    self.playBtn.backgroundColor = UIColorFromRGB(0xff0000);
+//    self.playBtn.backgroundColor = UIColorFromRGB(0xff0000);
 }
 
 - (void)hideAllView

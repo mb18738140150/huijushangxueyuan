@@ -305,9 +305,10 @@
 +(HttpConfigModel *)getMyGolgCoin
 {
     HttpConfigModel *c = [[HttpConfigModel alloc] init];
-    NSDictionary *dic = @{
-                          kUrlName:@"Account/GetIosCoinInfo"
-                          };
+    NSDictionary *dic = @{kUrlName:@"api/home/user",
+                          @"include":@"apple_wallet",
+                          kRequestType:@"get"
+    };
     [self setConfigModel:c withInfo:dic];
     return c;
 }

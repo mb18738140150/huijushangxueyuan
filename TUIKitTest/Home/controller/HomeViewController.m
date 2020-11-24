@@ -658,7 +658,14 @@
 - (void)didLeadtypeSuccessed
 {
     [SVProgressHUD dismiss];
-    self.dataArray = [[UserManager sharedManager] getLeadTypeArray];
+    NSArray * dataArray = [[UserManager sharedManager] getLeadTypeArray];
+    
+    if ([dataArray isKindOfClass:[NSDictionary class]]) {
+        NSDictionary * info = dataArray;
+        self.dataArray = [info allValues];
+    }else
+    {self.dataArray = dataArray;}
+    
     [self.collectionView reloadData];
     [self.collectionView.mj_header endRefreshing];
 }
@@ -725,7 +732,6 @@
         }
         else if ([innerType isEqualToString:@"zb_topics"])
         {
-            
             NSString * pid = @"";
             if (![[info objectForKey:@"need_redirect"] isKindOfClass:[NSNull class]]) {
                 pid = [[info objectForKey:@"need_redirect"] objectForKey:@"tags"];

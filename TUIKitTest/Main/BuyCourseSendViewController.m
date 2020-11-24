@@ -10,7 +10,7 @@
 #import "BuyCourseSendTableViewCell.h"
 #define kBuyCourseSendTableViewCell @"BuyCourseSendTableViewCell"
 
-@interface BuyCourseSendViewController()<UITableViewDelegate, UITableViewDataSource,UserModule_SecondCategoryProtocol,UserModule_CategoryCourseProtocol,UserModule_MockVIPBuy,UserModule_CreateOrderProtocol>
+@interface BuyCourseSendViewController()<UITableViewDelegate, UITableViewDataSource,UserModule_SecondCategoryProtocol,UserModule_CategoryCourseProtocol,UserModule_MockVIPBuy,UserModule_CreateOrderProtocol,UserModule_PayOrderByCoinProtocol>
 
 @property (nonatomic, strong)UITableView * tableView;
 @property (nonatomic, assign)int count;
@@ -122,7 +122,7 @@
     
     
     UILabel * label1 = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, backView.hd_width - 20, 20)];
-    label1.text = [NSString stringWithFormat:@"费用明细：使用原价：￥%.2fx%d=￥%.2f", [[self.info objectForKey:@"pay_money"] floatValue], self.count, [[self.info objectForKey:@"pay_money"] floatValue] * self.count];
+    label1.text = [NSString stringWithFormat:@"费用明细：使用原价：%@%.2fx%d=%@%.2f", [SoftManager shareSoftManager].coinName,[[self.info objectForKey:@"pay_money"] floatValue], self.count,[SoftManager shareSoftManager].coinName, [[self.info objectForKey:@"pay_money"] floatValue] * self.count];
     label1.textColor = UIColorFromRGB(0x666666);
     label1.font = kMainFont_12;
     [backView addSubview:label1];
@@ -169,6 +169,29 @@
 
 #pragma mark - request
 
+
+- (void)coinBuyAction
+{
+    [SVProgressHUD show];
+    [[UserManager sharedManager]payOrderByCoinWith:@{kUrlName:@"api/applePay/topic",@"topic_id":[NSString stringWithFormat:@"%@", [self.info objectForKey:@"id"]]} withNotifiedObject:self];
+}
+
+- (void)didRequestPayOrderByCoinSuccessed
+{
+    [SVProgressHUD dismiss];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfBuyCourseSuccess object:nil];
+}
+
+- (void)didRequestPayOrderByCoinFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
+
 - (void)paySuccedsss:(NSNotification *)notification
 {
     BuySuccessAndPresentViewController * vc = [[BuySuccessAndPresentViewController alloc]init];
@@ -178,10 +201,20 @@
 
 - (void)shareAction
 {
-    ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
-    UIWindow * window = [UIApplication sharedApplication].delegate.window;
-    [window addSubview:payView];
-    self.payView = payView;
+//    ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
+//    UIWindow * window = [UIApplication sharedApplication].delegate.window;
+//    [window addSubview:payView];
+//    self.payView = payView;
+    if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+        ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
+        UIWindow * window = [UIApplication sharedApplication].delegate.window;
+        [window addSubview:payView];
+        self.payView = payView;
+    }else
+    {
+        [self coinBuyAction];
+    }
+    
 }
 - (void)payClick:(NSNotification *)notification
 {

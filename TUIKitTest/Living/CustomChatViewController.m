@@ -26,6 +26,7 @@
 #import "TUISystemMessageCellData.h"
 #import "UIView+RCDDanmaku.h"
 #import "RCDDanmaku.h"
+#import "LXVodPlayerView.h"
 
 #import "BarrageView.h"
 #import "BarrageModel.h"
@@ -33,6 +34,7 @@
 #import "TestImageView.h"
 #import "ShareAndPaySelectView.h"
 #import "StoreViewController.h"
+#import "LiveBackTipView.h"
 
 @interface CustomChatViewController ()<TInputControllerDelegate,CustomTMessageControllerDelegate,CustomTUIChatControllerDelegate,UserModule_LiveChatRecord,UserModule_SendMessage,HttpUploadProtocol,UserModule_GiftList,UserModule_ShareList,BarrageViewDataSouce, BarrageViewDelegate,UserModule_Shutup,UserModule_MockVIPBuy, UserModule_MockPartnerBuy,UserModule_PayOrderProtocol,UserModule_MyVIPCardInfo>
 
@@ -43,6 +45,7 @@
 @property (nonatomic,strong) ZXVideo                            *playingVideo;
 @property (nonatomic, strong)LXLivePlayerView * livePlayer;
 @property (nonatomic, strong)TXLivePlayer * livePlayer1;
+@property (nonatomic, strong)LXVodPlayerView * vodPlayer;
 
 @property (nonatomic, strong)UIScrollView * scrollView;
 @property (nonatomic, strong)HYSegmentedControl * segmentC;
@@ -81,6 +84,9 @@
 @property (nonatomic, strong)NSDictionary * currentBuyVIPInfo;
 @property (nonatomic, strong)NSDictionary * VIPPayOrderInfo;// vip购买成功dingdanxi孽息
 @property (nonatomic, strong)NSDictionary * VIPPaySeccessDanMuInfo;// vip购买成功弹幕
+
+@property (nonatomic, strong)UIView * coverView;// 背景图
+
 
 @end
 
@@ -308,7 +314,25 @@
 
 - (void)backAction:(UIButton *)button
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.livePlayer) {
+        [self.livePlayer destroyPlayer];
+        self.livePlayer = nil;
+    }
+    if (self.vodPlayer) {
+        [self.vodPlayer destroyPlayer];
+        self.vodPlayer = nil;
+    }
+    if (self.playerview) {
+        [self.playerview destroyPlayer];
+        self.playerview = nil;
+    }
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self quitChatRoom];
+    [self dismissViewControllerAnimated:YES completion:^(void){
+        if (self.quitChatRoomBlock) {
+            self.quitChatRoomBlock();
+        }
+    }];
 }
 
 - (void)getLivaChatRecord
@@ -366,6 +390,9 @@
         }
         
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+        
+        
+        [weakSelf quitChatRoom];
         [weakSelf dismissViewControllerAnimated:YES completion:^(void){
             if (weakSelf.quitChatRoomBlock) {
                 weakSelf.quitChatRoomBlock();
@@ -384,7 +411,7 @@
             [weakSelf.livePlayer destroyPlayer];
             weakSelf.livePlayer = nil;
         }
-        
+        [weakSelf quitChatRoom];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
         [weakSelf dismissViewControllerAnimated:YES completion:^(void){
             if (weakSelf.quitChatRoomBlock) {
@@ -393,12 +420,71 @@
         }];
     };
     
-    if ([self.playingVideo.playUrl containsString:@"rtmp"] || [self.playingVideo.playUrl containsString:@"flv"]) {
-        [self playLiving:@{}];
-    }else
+    self.vodPlayer =[[LXVodPlayerView alloc]init];
+   self.vodPlayer.isLandScape = YES;
+    self.vodPlayer.isAutoReplay = NO;
+    self.vodPlayer.backBlock = ^(NSDictionary *info) {
+        NSLog(@"***** \n%@", info);
+        
+        if (weakSelf.vodPlayer) {
+            [weakSelf.vodPlayer destroyPlayer];
+            weakSelf.vodPlayer = nil;
+        }
+        [weakSelf quitChatRoom];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+        [weakSelf dismissViewControllerAnimated:YES completion:^(void){
+            if (weakSelf.quitChatRoomBlock) {
+                weakSelf.quitChatRoomBlock();
+            }
+        }];
+    };
+    
+    
+    UIView * coverBackView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenWidth *9 / 16)];
+    [self.view addSubview:coverBackView];
+    
+    UIImageView * coverImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenWidth * 9 / 16)];
+    [coverBackView addSubview:coverImageView];
+    [coverImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", [self.videoInfo objectForKey:@"thumb"]]] placeholderImage:[UIImage imageNamed:@"courseDefaultImage"] options:SDWebImageAllowInvalidSSLCertificates];
+    
+    
+    
+    UIButton * playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    playBtn.frame = CGRectMake(coverBackView.hd_width / 2 - 25, coverBackView.hd_height / 2 - 25, 50, 50);
+    [playBtn setImage:[UIImage imageNamed:@"videoPause"] forState:UIControlStateNormal];
+    [coverBackView addSubview:playBtn];
+    
+    UIButton * backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    backBtn.frame = CGRectMake(20, 20, 20, 30);
+    [backBtn setImage:[UIImage imageNamed:@"public-返回"] forState:UIControlStateNormal];
+    [coverBackView addSubview:backBtn];
+    self.coverView = coverBackView;
+    
+    
+    NSDictionary * playBackInfo = [self.videoInfo objectForKey:@"play_back"];
+    
+    if ([[self.videoInfo objectForKey:@"status"] intValue] == 3)
     {
-        [self playVideo:@{}];
+        if (playBackInfo == nil || [playBackInfo isKindOfClass:[NSNull class]]) {
+            coverImageView.image = [UIImage imageNamed:@"playBackReady"];
+            playBtn.hidden = YES;
+        }else
+        {
+            LiveBackTipView * liveView = [[LiveBackTipView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+            UIWindow * window = [UIApplication sharedApplication].delegate.window;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [window addSubview:liveView];
+            });
+            
+            
+        }
     }
+    
+    [backBtn addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
+    [playBtn addTarget:self action:@selector(playAction) forControlEvents:UIControlEventTouchUpInside];
+
+    
+    
     
     self.segmentC = [[HYSegmentedControl alloc] initWithOriginY:kZXVideoPlayerOriginalHeight Titles:@[@"互动",@"图片直播",@"分享榜"] delegate:self];
     [self.segmentC resetColor:UIRGBColor(255, 102, 10)];
@@ -434,20 +520,6 @@
     
     self.giftView = [[LiveGiftSelectView alloc]initWithFrame:self.view.bounds];
     self.giftView.payBlock = ^(NSDictionary * _Nonnull info) {
-        
-        
-//        NSDictionary *contentInfo = @{@"to_avatar":[weakSelf.teacherInfo objectForKey:@"avatar"],@"from_avatar":[[[UserManager sharedManager] getUserInfos] objectForKey:kUserHeaderImageUrl],@"money":[NSString stringWithFormat:@"%.2f", [[info objectForKey:@"price"] floatValue] * [[info objectForKey:@"count"] intValue]]};
-//        NSString * jsonStr = [contentInfo JSONString];
-//        [[UserManager sharedManager] didRequestSendMessageWithWithDic:@{kUrlName:@"api/topiclivechat/create",
-//                                                                        @"topic_id":[weakSelf.videoInfo objectForKey:@"id"],
-//                                                                        @"type":@"reward",
-//                                                                        @"content":jsonStr,
-//                                                                        @"ask":@"0",
-//                                                                        @"content_ext":[NSString stringWithFormat:@"%@ 打赏了 %@ %@ * %@",[[[UserManager sharedManager] getUserInfos] objectForKey:kUserName],[weakSelf.teacherInfo objectForKey:@"nickname"], [info objectForKey:@"name"], [info objectForKey:@"count"]]} WithNotifedObject:weakSelf];
-//
-//        TUISystemMessageCellData *system = [[TUISystemMessageCellData alloc] initWithDirection:MsgDirectionOutgoing];
-//        system.content = [NSString stringWithFormat:@"%@ 打赏了 %@ %@ * %@",[[[UserManager sharedManager] getUserInfos] objectForKey:kUserName],[weakSelf.teacherInfo objectForKey:@"nickname"], [info objectForKey:@"name"], [info objectForKey:@"count"]];
-//        weakSelf.currentSendData = system;
         
         
         weakSelf.currentSendGiftInfo = info;
@@ -495,7 +567,7 @@
     [self.barrageView addGestureRecognizer:tap];
     [self.chat.messageController.view addSubview:self.barrageView];
     
-    self.rightBarView = [[LivingRightTabbarView alloc]initWithFrame:CGRectMake(kScreenWidth - 50, self.scrollView.hd_y + 10, 40, 360) andIsTeacher:self.is_author];
+    self.rightBarView = [[LivingRightTabbarView alloc]initWithFrame:CGRectMake(kScreenWidth - 50, self.scrollView.hd_y + 10, 40, 360) andIsTeacher:self.is_author andInfo:self.videoInfo];
     [self.view addSubview:self.rightBarView];
     self.rightBarView.rightTabbarActionBlock = ^(NSDictionary * _Nonnull info) {
         NSLog(@"%@", [info objectForKey:@"type"]);
@@ -552,6 +624,9 @@
                 if (weakSelf.livePlayer) {
                     [weakSelf.livePlayer pause];
                 }
+                if (weakSelf.vodPlayer) {
+                    [weakSelf.vodPlayer pause];
+                }
                 StoreViewController * vc = [[StoreViewController alloc]init];
                 vc.fromType = FromType_present;
                 UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:vc];
@@ -576,6 +651,18 @@
         [weakSelf requestShareList:isFirst];
     };
 }
+
+- (void)quitChatRoom
+{
+    // [roomIdInfo objectForKey:@"room_id"]
+    [[V2TIMManager sharedInstance] quitGroup:self.groupId succ:^{
+        
+    } fail:^(int code, NSString *desc) {
+        
+    }];
+    
+}
+
 
 - (void)didTapViewController
 {
@@ -621,6 +708,17 @@
 }
 
 
+- (void)playAction
+{
+    self.coverView.hidden = YES;
+    if ([self.playingVideo.playUrl containsString:@"rtmp"] || [self.playingVideo.playUrl containsString:@"flv"]) {
+        [self playLiving:@{}];
+    }else
+    {
+        [self playVideo:@{}];
+    }
+}
+
 - (void)playLiving:(NSDictionary *)videoInfo
 {
     self.livePlayer.hidden = NO;
@@ -637,12 +735,26 @@
 
 - (void)playVideo:(NSDictionary *)videoInfo;
 {
-    self.playerview.hidden = NO;
-    LXPlayModel *model =[[LXPlayModel alloc]init];
-       model.playUrl = self.playingVideo.playUrl;
-       model.videoTitle = self.playingVideo.title;
-       model.fatherView = self.playFatherView;
-       self.playerview.currentModel = model;
+    if(self.tencentPlayID)
+    {
+        self.vodPlayer.hidden = NO;
+        LXPlayModel *model =[[LXPlayModel alloc]init];
+           model.playUrl = self.playingVideo.playUrl;
+           model.videoTitle = self.playingVideo.title;
+           model.fatherView = self.playFatherView;
+           self.vodPlayer.currentModel = model;
+        
+        self.vodPlayer.playURL = self.tencentPlayID;
+        [self.vodPlayer startPlay];
+    }else
+    {
+        self.playerview.hidden = NO;
+        LXPlayModel *model =[[LXPlayModel alloc]init];
+        model.playUrl = self.playingVideo.playUrl;
+        model.videoTitle = self.playingVideo.title;
+        model.fatherView = self.playFatherView;
+        self.playerview.currentModel = model;
+    }
 }
 
 - (void)dealloc
@@ -655,6 +767,11 @@
         [self.livePlayer destroyPlayer];
         self.livePlayer = nil;
     }
+    if (self.vodPlayer) {
+        [self.vodPlayer destroyPlayer];
+        self.vodPlayer = nil;
+    }
+    
     NSLog(@"界面释放了");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

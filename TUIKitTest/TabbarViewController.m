@@ -16,7 +16,7 @@
 #import "MainViewController.h"
 #import "StoreViewController.h"
 
-@interface TabbarViewController ()<UITabBarControllerDelegate,UserModule_CourseDetailProtocol>
+@interface TabbarViewController ()<UITabBarControllerDelegate,UserModule_CourseDetailProtocol,UserModule_TabbarList>
 
 
 @property (nonatomic, strong)NSString * chatRoomID;
@@ -30,7 +30,14 @@
     self.tabBar.barTintColor = [UIColor whiteColor];
     self.tabbarList = [[UserManager sharedManager] getTabarList];
     self.delegate = self;
-    [self setupChildViewControllers];
+    
+    if (self.tabbarList.count > 0) {
+        [self setupChildViewControllers];
+    }else
+    {
+        [[UserManager sharedManager] didRequestTabbarWithWithDic:@{kUrlName:@"api/index/navigation"} WithNotifedObject:self];
+    }
+    
     
     
     
@@ -44,7 +51,22 @@
     
 }
 
+- (void)didTabbarListSuccessed
+{
+    [SVProgressHUD dismiss];
+    self.tabbarList = [[UserManager sharedManager] getTabarList];
+    [self setupChildViewControllers];
+}
 
+- (void)didTabbarListFailed:(NSString *)failedInfo
+{
+//    [SVProgressHUD dismiss];
+//    [SVProgressHUD showErrorWithStatus:failedInfo];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [SVProgressHUD dismiss];
+//    });
+    [[UserManager sharedManager] didRequestTabbarWithWithDic:@{kUrlName:@"api/index/navigation"} WithNotifedObject:self];
+}
 
 - (void)courseClick:(NSNotification *)notification
 {
@@ -149,10 +171,26 @@
             [navArray addObject:mainNavigation];
         }
         
-        
     }
     
-    [navArray addObject:mainNavigation];
+    if(navArray.count == 0)
+    {
+        UIViewController * vc = [[UIViewController alloc]init];
+        vc = [[HomeViewController alloc]init];
+        UINavigationController *mainNavigation = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navArray addObject:mainNavigation];
+        
+        UIViewController * vc1 = [[UIViewController alloc]init];
+        vc1 = [[MainViewController alloc]init];
+        UINavigationController *mainNavigation1 = [[UINavigationController alloc] initWithRootViewController:vc1];
+        [navArray addObject:mainNavigation1];
+        
+        UIViewController * vc2 = [[UIViewController alloc]init];
+        vc2 = [[StoreViewController alloc]init];
+        UINavigationController *mainNavigation2 = [[UINavigationController alloc] initWithRootViewController:vc2];
+        [navArray addObject:mainNavigation2];
+        
+    }
     
     self.viewControllers = navArray;
     

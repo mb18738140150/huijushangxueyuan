@@ -118,7 +118,7 @@
         return;
     }else
     {
-        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+        [self.tableView.mj_footer endRefreshing];
     }
     if (self.page == 1) {
         [self.itemArray removeAllObjects];

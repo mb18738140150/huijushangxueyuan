@@ -49,6 +49,13 @@
     [hzuanshuLB.layer setMask:layer];
     [self.courseImageView addSubview:hzuanshuLB];
     
+    if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled])
+    {
+        
+    }else
+    {
+        hzuanshuLB.hidden = YES;
+    }
     
     // 直播状态
     self.livingStateView = [[LivingStateView alloc]initWithFrame:CGRectMake(0, self.courseImageView.hd_height - 20, 100, 20)];
@@ -190,6 +197,13 @@
     [hzuanshuLB.layer setMask:layer];
 //    [self.courseImageView addSubview:hzuanshuLB];
     
+    if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled])
+    {
+        
+    }else
+    {
+        hzuanshuLB.hidden = YES;
+    }
     
     // 直播状态
     self.livingStateView = [[LivingStateView alloc]initWithFrame:CGRectMake(0, self.courseImageView.hd_height - 20, 100, 20)];
@@ -354,10 +368,10 @@
 - (NSString *)getOldStrWithSource1:(NSString *)str1 andSource2:(NSString *)str2
 {
     if (str2.length == 0) {
-        return [NSString stringWithFormat:@"￥%@", str1];
+        return [NSString stringWithFormat:@"%@%@",[SoftManager shareSoftManager].coinName, str1];
     }else
     {
-        return [NSString stringWithFormat:@"￥%@ ￥%@", str1,str2];
+        return [NSString stringWithFormat:@"%@%@ %@%@",[SoftManager shareSoftManager].coinName, str1,[SoftManager shareSoftManager].coinName,str2];
     }
 }
 

@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy)void (^openVIPBlock)(NSDictionary * info);
 
 - (void)resetUIWithInfo:(NSDictionary *)info;
+- (void)resetContent:(NSDictionary *)info;
 
 @end
 

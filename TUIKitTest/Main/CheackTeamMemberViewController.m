@@ -192,7 +192,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     MyTeamInfoTableViewCell *titleCell = [tableView dequeueReusableCellWithIdentifier:kSecondListTableViewCell forIndexPath:indexPath];
     
     [titleCell refreshUIWithInfo:self.itemArray[indexPath.row]];

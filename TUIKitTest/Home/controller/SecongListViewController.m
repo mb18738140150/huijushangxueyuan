@@ -230,8 +230,7 @@
     [self.tableView.mj_header endRefreshing];
     
     NSDictionary * pageNoInfo = [self.pageIndexArray objectAtIndex:self.courseSegment.index];
-//    NSDictionary * dataInfo = [[UserManager sharedManager] getCategoryCourseArray];
-//    [pageNoInfo setValue:[[dataInfo objectForKey:@"page"] objectForKey:@"recordCount"] forKey:@"recordCount"];
+
     int pageNo = [[pageNoInfo objectForKey:kPageNo] intValue];
     NSMutableArray * mArray = [pageNoInfo objectForKey:kDataArray];
     if(pageNo == 1)
@@ -272,6 +271,21 @@
     [self.tableView.mj_footer endRefreshing];
     
     self.categoryArray = [[UserManager sharedManager]getSecondCategoryeArray];
+    if (self.pid != 0) {
+        NSMutableArray * array = [NSMutableArray array];
+        for (NSDictionary * info in [[UserManager sharedManager]getSecondCategoryeArray]) {
+            if ([[info objectForKey:@"id"] intValue] == 0) {
+                [array addObject:info];
+            }else if ([[info objectForKey:@"id"] intValue] == self.pid)
+            {
+                [array addObject:info];
+            }
+        }
+        
+        self.categoryArray = array;
+    }
+    
+    
     self.pageIndexArray = [NSMutableArray array];
        for (int i = 0; i< self.categoryArray.count; i++) {
            NSMutableDictionary * info = [NSMutableDictionary dictionary];

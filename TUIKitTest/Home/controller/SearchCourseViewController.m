@@ -158,14 +158,16 @@
     [self.articleArray removeAllObjects];
     [self.topicArray removeAllObjects];
     
-    [SVProgressHUD show];
     if (self.keyword.length > 0) {
+        [SVProgressHUD show];
         [[UserManager sharedManager] getCategoryCourseWith:@{kUrlName:@"api/topic/lists",@"cid":@0,@"keyword":self.keyword,@"page":@1,@"requestType":@"get"} withNotifiedObject:self];
         
         [[UserManager sharedManager] didRequestGiftListWithInfo:@{kUrlName:@"api/article/lists",@"cid":@0,@"keyword":self.keyword,@"page":@1,@"requestType":@"get"} withNotifiedObject:self];
         
     }else
     {
+        [SVProgressHUD dismiss];
+        [self.tableView.mj_header endRefreshing];
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"搜索内容不能为空" preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         }]];

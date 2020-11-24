@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)resetUIWithInfo:(NSDictionary *)info;
 
+- (void)resetContent:(NSDictionary *)info;
+
 @end
 
 NS_ASSUME_NONNULL_END

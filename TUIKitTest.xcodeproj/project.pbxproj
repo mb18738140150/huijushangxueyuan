@@ -70,6 +70,7 @@
 		001CDA36254867390052B7D7 /* MyPromotionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 001CDA35254867390052B7D7 /* MyPromotionOperation.m */; };
 		001CDA3C25486F380052B7D7 /* MyTeamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 001CDA3B25486F380052B7D7 /* MyTeamViewController.m */; };
 		001CDA42254875440052B7D7 /* PromotionCourseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 001CDA41254875440052B7D7 /* PromotionCourseViewController.m */; };
+		002343A425627C4100B78F17 /* SettingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 002343A325627C4100B78F17 /* SettingDetailViewController.m */; };
 		0028EB8D252A47A000D76BF0 /* CustomTUIMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0028EB8C252A47A000D76BF0 /* CustomTUIMessageController.m */; };
 		0028EB93252A4A2E00D76BF0 /* CustomTUIChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0028EB92252A4A2E00D76BF0 /* CustomTUIChatController.m */; };
 		0028EB99252A595B00D76BF0 /* CustomTUITextMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0028EB98252A595B00D76BF0 /* CustomTUITextMessageCell.m */; };
@@ -191,10 +192,29 @@
 		003459FD253DDA95001F9C3F /* CommodityDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 003459FC253DDA95001F9C3F /* CommodityDetailViewController.m */; };
 		00345A03253DDAC6001F9C3F /* CommodityBannerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00345A02253DDAC6001F9C3F /* CommodityBannerTableViewCell.m */; };
 		00345A09253DDAD9001F9C3F /* CommodityInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00345A08253DDAD9001F9C3F /* CommodityInfoTableViewCell.m */; };
+		003465532562BC0C00ED350F /* ApplePayjinbi.png in Resources */ = {isa = PBXBuildFile; fileRef = 003465522562BC0C00ED350F /* ApplePayjinbi.png */; };
+		003465592562BD3100ED350F /* AppIconViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 003465582562BD3100ED350F /* AppIconViewController.m */; };
+		003465672562BDC100ED350F /* BuyCoinTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0034655E2562BDBF00ED350F /* BuyCoinTableViewCell.xib */; };
+		003465682562BDC100ED350F /* BuyCoinHeadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 003465602562BDC000ED350F /* BuyCoinHeadTableViewCell.m */; };
+		003465692562BDC100ED350F /* BuyCoinHeadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 003465612562BDC000ED350F /* BuyCoinHeadTableViewCell.xib */; };
+		0034656A2562BDC100ED350F /* BuyCoinFootTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 003465622562BDC000ED350F /* BuyCoinFootTableViewCell.xib */; };
+		0034656B2562BDC100ED350F /* BuyCoinTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 003465642562BDC100ED350F /* BuyCoinTableViewCell.m */; };
+		0034656C2562BDC100ED350F /* BuyCoinFootTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 003465652562BDC100ED350F /* BuyCoinFootTableViewCell.m */; };
+		003465732562BE2B00ED350F /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 003465712562BE2B00ED350F /* MBProgressHUD.m */; };
 		00353E4B254D74F000221F16 /* DynamicChangeImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00353E4A254D74F000221F16 /* DynamicChangeImageCollectionViewCell.m */; };
 		00353E52254D913900221F16 /* guanbi@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 00353E4F254D913800221F16 /* guanbi@3x.png */; };
 		00353E53254D913900221F16 /* guanbi.png in Resources */ = {isa = PBXBuildFile; fileRef = 00353E50254D913900221F16 /* guanbi.png */; };
 		00353E54254D913900221F16 /* guanbi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 00353E51254D913900221F16 /* guanbi@2x.png */; };
+		00381699255BCAC8001FAA72 /* videoPlay@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 00381695255BCAC5001FAA72 /* videoPlay@3x.png */; };
+		0038169A255BCAC8001FAA72 /* videoPause@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 00381696255BCAC7001FAA72 /* videoPause@2x.png */; };
+		0038169B255BCAC8001FAA72 /* videoPlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 00381697255BCAC8001FAA72 /* videoPlay@2x.png */; };
+		0038169C255BCAC8001FAA72 /* videoPause@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 00381698255BCAC8001FAA72 /* videoPause@3x.png */; };
+		003816DF255BE484001FAA72 /* playBackReady.png in Resources */ = {isa = PBXBuildFile; fileRef = 003816DE255BE484001FAA72 /* playBackReady.png */; };
+		003816E5255BE747001FAA72 /* LXVodPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 003816E4255BE747001FAA72 /* LXVodPlayerView.m */; };
+		003816EA255C3166001FAA72 /* loginImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 003816E9255C3166001FAA72 /* loginImage.png */; };
+		003816F1255C3506001FAA72 /* weixinlogin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 003816EE255C3504001FAA72 /* weixinlogin@2x.png */; };
+		003816F2255C3506001FAA72 /* weixinlogin@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 003816EF255C3505001FAA72 /* weixinlogin@3x.png */; };
+		003816F3255C3506001FAA72 /* weixinlogin.png in Resources */ = {isa = PBXBuildFile; fileRef = 003816F0255C3506001FAA72 /* weixinlogin.png */; };
 		00391B042539704400B47668 /* MyNotificationOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 00391B032539704400B47668 /* MyNotificationOperation.m */; };
 		00391B0A2539713700B47668 /* MyNotificationListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00391B092539713700B47668 /* MyNotificationListViewController.m */; };
 		00391B102539743E00B47668 /* MyNotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00391B0F2539743E00B47668 /* MyNotificationTableViewCell.m */; };
@@ -292,6 +312,8 @@
 		006330342546FDFB000C84FA /* MyIncomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 006330332546FDFB000C84FA /* MyIncomeViewController.m */; };
 		0063303A2546FE9B000C84FA /* MyIncomeHeaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 006330392546FE9B000C84FA /* MyIncomeHeaderTableViewCell.m */; };
 		0063304025470EEF000C84FA /* MyIncomeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0063303F25470EEF000C84FA /* MyIncomeOperation.m */; };
+		00664EFC255D6F18007C0F2E /* alive_count_down.png in Resources */ = {isa = PBXBuildFile; fileRef = 00664EFB255D6F18007C0F2E /* alive_count_down.png */; };
+		00664F02255D6FF9007C0F2E /* LiveBackTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 00664F01255D6FF9007C0F2E /* LiveBackTipView.m */; };
 		006761C4253FCE7600B6FBB9 /* ArticleCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 006761C3253FCE7600B6FBB9 /* ArticleCommentTableViewCell.m */; };
 		006761CA253FDD8D00B6FBB9 /* CommentZanOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 006761C9253FDD8D00B6FBB9 /* CommentZanOperation.m */; };
 		006761D3253FDD9E00B6FBB9 /* AddCommentOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 006761D2253FDD9E00B6FBB9 /* AddCommentOperation.m */; };
@@ -1010,6 +1032,8 @@
 		001CDA3B25486F380052B7D7 /* MyTeamViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTeamViewController.m; sourceTree = "<group>"; };
 		001CDA40254875440052B7D7 /* PromotionCourseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PromotionCourseViewController.h; sourceTree = "<group>"; };
 		001CDA41254875440052B7D7 /* PromotionCourseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PromotionCourseViewController.m; sourceTree = "<group>"; };
+		002343A225627C3F00B78F17 /* SettingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingDetailViewController.h; sourceTree = "<group>"; };
+		002343A325627C4100B78F17 /* SettingDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingDetailViewController.m; sourceTree = "<group>"; };
 		0028EB8B252A47A000D76BF0 /* CustomTUIMessageController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomTUIMessageController.h; sourceTree = "<group>"; };
 		0028EB8C252A47A000D76BF0 /* CustomTUIMessageController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomTUIMessageController.m; sourceTree = "<group>"; };
 		0028EB91252A4A2E00D76BF0 /* CustomTUIChatController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomTUIChatController.h; sourceTree = "<group>"; };
@@ -1161,11 +1185,36 @@
 		00345A02253DDAC6001F9C3F /* CommodityBannerTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommodityBannerTableViewCell.m; sourceTree = "<group>"; };
 		00345A07253DDAD9001F9C3F /* CommodityInfoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommodityInfoTableViewCell.h; sourceTree = "<group>"; };
 		00345A08253DDAD9001F9C3F /* CommodityInfoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommodityInfoTableViewCell.m; sourceTree = "<group>"; };
+		003465522562BC0C00ED350F /* ApplePayjinbi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ApplePayjinbi.png; sourceTree = "<group>"; };
+		003465572562BD3100ED350F /* AppIconViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppIconViewController.h; sourceTree = "<group>"; };
+		003465582562BD3100ED350F /* AppIconViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppIconViewController.m; sourceTree = "<group>"; };
+		0034655E2562BDBF00ED350F /* BuyCoinTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BuyCoinTableViewCell.xib; sourceTree = "<group>"; };
+		0034655F2562BDC000ED350F /* BuyCoinHeadTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyCoinHeadTableViewCell.h; sourceTree = "<group>"; };
+		003465602562BDC000ED350F /* BuyCoinHeadTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyCoinHeadTableViewCell.m; sourceTree = "<group>"; };
+		003465612562BDC000ED350F /* BuyCoinHeadTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BuyCoinHeadTableViewCell.xib; sourceTree = "<group>"; };
+		003465622562BDC000ED350F /* BuyCoinFootTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BuyCoinFootTableViewCell.xib; sourceTree = "<group>"; };
+		003465632562BDC100ED350F /* BuyCoinTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyCoinTableViewCell.h; sourceTree = "<group>"; };
+		003465642562BDC100ED350F /* BuyCoinTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyCoinTableViewCell.m; sourceTree = "<group>"; };
+		003465652562BDC100ED350F /* BuyCoinFootTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyCoinFootTableViewCell.m; sourceTree = "<group>"; };
+		003465662562BDC100ED350F /* BuyCoinFootTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyCoinFootTableViewCell.h; sourceTree = "<group>"; };
+		003465712562BE2B00ED350F /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		003465722562BE2B00ED350F /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		00353E49254D74F000221F16 /* DynamicChangeImageCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicChangeImageCollectionViewCell.h; sourceTree = "<group>"; };
 		00353E4A254D74F000221F16 /* DynamicChangeImageCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DynamicChangeImageCollectionViewCell.m; sourceTree = "<group>"; };
 		00353E4F254D913800221F16 /* guanbi@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guanbi@3x.png"; sourceTree = "<group>"; };
 		00353E50254D913900221F16 /* guanbi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guanbi.png; sourceTree = "<group>"; };
 		00353E51254D913900221F16 /* guanbi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guanbi@2x.png"; sourceTree = "<group>"; };
+		00381695255BCAC5001FAA72 /* videoPlay@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "videoPlay@3x.png"; sourceTree = "<group>"; };
+		00381696255BCAC7001FAA72 /* videoPause@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "videoPause@2x.png"; sourceTree = "<group>"; };
+		00381697255BCAC8001FAA72 /* videoPlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "videoPlay@2x.png"; sourceTree = "<group>"; };
+		00381698255BCAC8001FAA72 /* videoPause@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "videoPause@3x.png"; sourceTree = "<group>"; };
+		003816DE255BE484001FAA72 /* playBackReady.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playBackReady.png; sourceTree = "<group>"; };
+		003816E3255BE747001FAA72 /* LXVodPlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LXVodPlayerView.h; sourceTree = "<group>"; };
+		003816E4255BE747001FAA72 /* LXVodPlayerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LXVodPlayerView.m; sourceTree = "<group>"; };
+		003816E9255C3166001FAA72 /* loginImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginImage.png; sourceTree = "<group>"; };
+		003816EE255C3504001FAA72 /* weixinlogin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixinlogin@2x.png"; sourceTree = "<group>"; };
+		003816EF255C3505001FAA72 /* weixinlogin@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixinlogin@3x.png"; sourceTree = "<group>"; };
+		003816F0255C3506001FAA72 /* weixinlogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weixinlogin.png; sourceTree = "<group>"; };
 		00391B022539704400B47668 /* MyNotificationOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyNotificationOperation.h; sourceTree = "<group>"; };
 		00391B032539704400B47668 /* MyNotificationOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyNotificationOperation.m; sourceTree = "<group>"; };
 		00391B082539713700B47668 /* MyNotificationListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyNotificationListViewController.h; sourceTree = "<group>"; };
@@ -1333,6 +1382,9 @@
 		006330392546FE9B000C84FA /* MyIncomeHeaderTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyIncomeHeaderTableViewCell.m; sourceTree = "<group>"; };
 		0063303E25470EEF000C84FA /* MyIncomeOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyIncomeOperation.h; sourceTree = "<group>"; };
 		0063303F25470EEF000C84FA /* MyIncomeOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyIncomeOperation.m; sourceTree = "<group>"; };
+		00664EFB255D6F18007C0F2E /* alive_count_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alive_count_down.png; sourceTree = "<group>"; };
+		00664F00255D6FF9007C0F2E /* LiveBackTipView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveBackTipView.h; sourceTree = "<group>"; };
+		00664F01255D6FF9007C0F2E /* LiveBackTipView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveBackTipView.m; sourceTree = "<group>"; };
 		006761C2253FCE7600B6FBB9 /* ArticleCommentTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArticleCommentTableViewCell.h; sourceTree = "<group>"; };
 		006761C3253FCE7600B6FBB9 /* ArticleCommentTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArticleCommentTableViewCell.m; sourceTree = "<group>"; };
 		006761C8253FDD8D00B6FBB9 /* CommentZanOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommentZanOperation.h; sourceTree = "<group>"; };
@@ -2597,6 +2649,17 @@
 		003458F2253D75A6001F9C3F /* mdpi */ = {
 			isa = PBXGroup;
 			children = (
+				003465522562BC0C00ED350F /* ApplePayjinbi.png */,
+				00664EFB255D6F18007C0F2E /* alive_count_down.png */,
+				003816F0255C3506001FAA72 /* weixinlogin.png */,
+				003816EE255C3504001FAA72 /* weixinlogin@2x.png */,
+				003816EF255C3505001FAA72 /* weixinlogin@3x.png */,
+				003816E9255C3166001FAA72 /* loginImage.png */,
+				003816DE255BE484001FAA72 /* playBackReady.png */,
+				00381696255BCAC7001FAA72 /* videoPause@2x.png */,
+				00381698255BCAC8001FAA72 /* videoPause@3x.png */,
+				00381697255BCAC8001FAA72 /* videoPlay@2x.png */,
+				00381695255BCAC5001FAA72 /* videoPlay@3x.png */,
 				0050D4DE2559238B008C5C22 /* tixianSubmit.png */,
 				004849E72554098F00CEB429 /* address_dianhua.png */,
 				004849E82554098F00CEB429 /* address_dianhua@2x.png */,
@@ -2820,9 +2883,35 @@
 			path = view;
 			sourceTree = "<group>";
 		};
+		0034655D2562BDB100ED350F /* appcoinView */ = {
+			isa = PBXGroup;
+			children = (
+				003465662562BDC100ED350F /* BuyCoinFootTableViewCell.h */,
+				003465652562BDC100ED350F /* BuyCoinFootTableViewCell.m */,
+				003465622562BDC000ED350F /* BuyCoinFootTableViewCell.xib */,
+				0034655F2562BDC000ED350F /* BuyCoinHeadTableViewCell.h */,
+				003465602562BDC000ED350F /* BuyCoinHeadTableViewCell.m */,
+				003465612562BDC000ED350F /* BuyCoinHeadTableViewCell.xib */,
+				003465632562BDC100ED350F /* BuyCoinTableViewCell.h */,
+				003465642562BDC100ED350F /* BuyCoinTableViewCell.m */,
+				0034655E2562BDBF00ED350F /* BuyCoinTableViewCell.xib */,
+			);
+			path = appcoinView;
+			sourceTree = "<group>";
+		};
+		003465702562BE2B00ED350F /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				003465712562BE2B00ED350F /* MBProgressHUD.m */,
+				003465722562BE2B00ED350F /* MBProgressHUD.h */,
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
 		003E6CCF252F3EEA00314535 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				0034655D2562BDB100ED350F /* appcoinView */,
 				003E6CD0252F417500314535 /* MainUserInfoTableViewCell.h */,
 				003E6CD1252F417500314535 /* MainUserInfoTableViewCell.m */,
 				00930DB72530930000267B62 /* MyCategoryTableViewCell.h */,
@@ -3859,6 +3948,7 @@
 		0079EC1E25217AFA00307D71 /* framework */ = {
 			isa = PBXGroup;
 			children = (
+				003465702562BE2B00ED350F /* MBProgressHUD */,
 				000A75522536A5420065A62C /* showBigImage */,
 				001CDA29254827C00052B7D7 /* chineseCountryJson.txt */,
 				001CDA0B2547F4520052B7D7 /* CountDown */,
@@ -4142,6 +4232,8 @@
 				0079ECB625217AFA00307D71 /* LXAVPlayView.m */,
 				0079F05225218A1C00307D71 /* LXLivePlayerView.h */,
 				0079F05325218A1C00307D71 /* LXLivePlayerView.m */,
+				003816E3255BE747001FAA72 /* LXVodPlayerView.h */,
+				003816E4255BE747001FAA72 /* LXVodPlayerView.m */,
 				0079ECB825217AFA00307D71 /* UIImage+LXAVPlayer.h */,
 				0079ECC425217AFA00307D71 /* UIImage+LXAVPlayer.m */,
 				0079ECC825217AFA00307D71 /* LXPlayModel.h */,
@@ -4623,6 +4715,8 @@
 				004FAF17252F1721004A50E7 /* MainViewController.m */,
 				00415CC925381C6900A97AC9 /* UserCenterViewController.h */,
 				00415CCA25381C6A00A97AC9 /* UserCenterViewController.m */,
+				002343A225627C3F00B78F17 /* SettingDetailViewController.h */,
+				002343A325627C4100B78F17 /* SettingDetailViewController.m */,
 				0040F1DB2531492E009446F1 /* MainVipCardListViewController.h */,
 				0040F1DC2531492E009446F1 /* MainVipCardListViewController.m */,
 				0040F21D2531F0AF009446F1 /* VIPCardDetailViewController.h */,
@@ -4655,6 +4749,8 @@
 				006B40BA254ABD5F005C057F /* CheackTeamMemberViewController.m */,
 				00342C732552581E00CE490E /* OrderListViewController.h */,
 				00342C742552581E00CE490E /* OrderListViewController.m */,
+				003465572562BD3100ED350F /* AppIconViewController.h */,
+				003465582562BD3100ED350F /* AppIconViewController.m */,
 				003459B4253DBDC5001F9C3F /* address */,
 			);
 			path = Main;
@@ -4822,6 +4918,8 @@
 			children = (
 				008269422524B0E8007D7955 /* MyCustomCell.h */,
 				008269442524B0E9007D7955 /* MyCustomCell.m */,
+				00664F00255D6FF9007C0F2E /* LiveBackTipView.h */,
+				00664F01255D6FF9007C0F2E /* LiveBackTipView.m */,
 				0028EB97252A595B00D76BF0 /* CustomTUITextMessageCell.h */,
 				0028EB98252A595B00D76BF0 /* CustomTUITextMessageCell.m */,
 				0028EB9D252A62A800D76BF0 /* CustomTUIImageMessageCell.h */,
@@ -5232,6 +5330,7 @@
 				0079EF1425217AFE00307D71 /* SVProgressHUD.bundle in Resources */,
 				0034596A253D75A6001F9C3F /* 优惠券@2x.png in Resources */,
 				0079EED525217AFE00307D71 /* huiyuan-2@3x.png in Resources */,
+				003465692562BDC100ED350F /* BuyCoinHeadTableViewCell.xib in Resources */,
 				0079EED425217AFE00307D71 /* huiyuan-2.png in Resources */,
 				003459DC253DC487001F9C3F /* ic_unselected_address.png in Resources */,
 				00930E112530987800267B62 /* main_推广中心@2x.png in Resources */,
@@ -5270,6 +5369,7 @@
 				0079EEDC25217AFE00307D71 /* home_audio@2x.png in Resources */,
 				0079EF4B25217AFE00307D71 /* zx-video-player-fastForward@3x.png in Resources */,
 				0079EECC25217AFE00307D71 /* 箭头@2x.png in Resources */,
+				003816F2255C3506001FAA72 /* weixinlogin@3x.png in Resources */,
 				00345978253D75A6001F9C3F /* back.png in Resources */,
 				00930E0D2530987800267B62 /* main_代付款@3x.png in Resources */,
 				00930DEF2530987800267B62 /* main_订单icon@3x.png in Resources */,
@@ -5277,6 +5377,7 @@
 				0079EF2625217AFE00307D71 /* LXAVPlayer.bundle in Resources */,
 				0079EF4425217AFE00307D71 /* kr-video-player-close@3x.png in Resources */,
 				00C236B025402A5C00973347 /* comment_评论1.png in Resources */,
+				0038169B255BCAC8001FAA72 /* videoPlay@2x.png in Resources */,
 				00930DFA2530987800267B62 /* main_地址@2x.png in Resources */,
 				0079EEDA25217AFE00307D71 /* home_audio.png in Resources */,
 				00930E072530987800267B62 /* main_icon@2x.png in Resources */,
@@ -5285,6 +5386,7 @@
 				00345958253D75A6001F9C3F /* 位图@2x.png in Resources */,
 				000A7499253435AB0065A62C /* CustomCell.xib in Resources */,
 				00345941253D75A6001F9C3F /* 底图@2x.png in Resources */,
+				0038169A255BCAC8001FAA72 /* videoPause@2x.png in Resources */,
 				001CD9EE2547D4AA0052B7D7 /* 白色Sort@2x.png in Resources */,
 				0040F2102531582D009446F1 /* main_折扣专区@3x.png in Resources */,
 				00345947253D75A6001F9C3F /* 位图.png in Resources */,
@@ -5300,10 +5402,12 @@
 				0044BF322533530A00FACCE8 /* living_编组3@2x.png in Resources */,
 				0079EF5B25217AFE00307D71 /* kr-video-player-pause@2x.png in Resources */,
 				0034598E253D764D001F9C3F /* down箭头@3x.png in Resources */,
+				003816EA255C3166001FAA72 /* loginImage.png in Resources */,
 				00345975253D75A6001F9C3F /* 商城@3x.png in Resources */,
 				00930E032530987800267B62 /* main_待发货@3x.png in Resources */,
 				0079EF4C25217AFE00307D71 /* zx-video-player-fastForward@2x.png in Resources */,
 				000C1A5A253E96A60002DE10 /* shoppingCar_unselected@2x.png in Resources */,
+				00381699255BCAC8001FAA72 /* videoPlay@3x.png in Resources */,
 				00345966253D75A6001F9C3F /* 删除.png in Resources */,
 				002B161F25427D96008B2607 /* comment_点赞2@3x.png in Resources */,
 				0034595A253D75A6001F9C3F /* 礼物@2x.png in Resources */,
@@ -5320,6 +5424,7 @@
 				00345948253D75A6001F9C3F /* 地址勾选@3x.png in Resources */,
 				0079EEC325217AFE00307D71 /* home_image.png in Resources */,
 				00345938253D75A6001F9C3F /* 地址勾选@2x.png in Resources */,
+				0034656A2562BDC100ED350F /* BuyCoinFootTableViewCell.xib in Resources */,
 				0079EF4225217AFE00307D71 /* kr-video-player-play@3x.png in Resources */,
 				0079EA18252174CB00307D71 /* LaunchScreen.storyboard in Resources */,
 				004849EA2554099000CEB429 /* address_dianhua.png in Resources */,
@@ -5342,9 +5447,11 @@
 				0079EED825217AFE00307D71 /* home_imageAndText@2x.png in Resources */,
 				003459E0253DC487001F9C3F /* ic_selected@2x.png in Resources */,
 				00930E022530987800267B62 /* main_我的收益@3x.png in Resources */,
+				0038169C255BCAC8001FAA72 /* videoPause@3x.png in Resources */,
 				0092F8BE254C506700EFC21A /* dynamic_评论.png in Resources */,
 				0079EF5725217AFE00307D71 /* kr-video-player-pause@3x.png in Resources */,
 				003459E1253DC487001F9C3F /* ic_selected.png in Resources */,
+				003465532562BC0C00ED350F /* ApplePayjinbi.png in Resources */,
 				00930E082530987800267B62 /* main_icon@3x.png in Resources */,
 				000C1A64253EB2B50002DE10 /* ic_place_border@2x.png in Resources */,
 				0040F20E2531582D009446F1 /* main_折扣专区.png in Resources */,
@@ -5366,6 +5473,7 @@
 				002B161C25427D96008B2607 /* comment_评论2@2x.png in Resources */,
 				00345957253D75A6001F9C3F /* 折扣专区@2x.png in Resources */,
 				000C1A65253EB2B50002DE10 /* ic_place_border@3x.png in Resources */,
+				003816F1255C3506001FAA72 /* weixinlogin@2x.png in Resources */,
 				00930E042530987800267B62 /* main_待发货.png in Resources */,
 				0092F8BC254C506700EFC21A /* dynamic_点赞2@2x.png in Resources */,
 				00930DF22530987800267B62 /* main_我的消息@2x.png in Resources */,
@@ -5393,6 +5501,7 @@
 				000C1A5B253E96A60002DE10 /* shoppingCar_unselected@3x.png in Resources */,
 				003459DE253DC487001F9C3F /* ic_unselected_address@3x.png in Resources */,
 				0034597C253D75A6001F9C3F /* 等级2@3x.png in Resources */,
+				003816F3255C3506001FAA72 /* weixinlogin.png in Resources */,
 				00345945253D75A6001F9C3F /* 等级2.png in Resources */,
 				00345972253D75A6001F9C3F /* 删除@2x.png in Resources */,
 				0079EEC425217AFE00307D71 /* home_image@2x.png in Resources */,
@@ -5413,6 +5522,7 @@
 				00345940253D75A6001F9C3F /* 等级3.png in Resources */,
 				0079EF5625217AFE00307D71 /* zx-video-player-unlock@3x.png in Resources */,
 				00345950253D75A6001F9C3F /* 等级3@3x.png in Resources */,
+				00664EFC255D6F18007C0F2E /* alive_count_down.png in Resources */,
 				0034595D253D75A6001F9C3F /* 减@3x.png in Resources */,
 				0079EF4E25217AFE00307D71 /* zx-video-player-brightness@3x.png in Resources */,
 				0079EF4925217AFE00307D71 /* zx-video-player-brightness@2x.png in Resources */,
@@ -5423,6 +5533,7 @@
 				00930DF12530987800267B62 /* main_我的消息.png in Resources */,
 				00930DF92530987800267B62 /* main_待收货.png in Resources */,
 				0040F2092531582D009446F1 /* main_会员中心头部卡片@3x.png in Resources */,
+				003816DF255BE484001FAA72 /* playBackReady.png in Resources */,
 				00345951253D75A6001F9C3F /* 关闭@2x.png in Resources */,
 				0034598C253D764D001F9C3F /* down箭头.png in Resources */,
 				00345968253D75A6001F9C3F /* 头像加载失败.png in Resources */,
@@ -5453,6 +5564,7 @@
 				007C9C6A2524D1460040DFD4 /* 4@3x.png in Resources */,
 				00930DFC2530987800267B62 /* main_地址.png in Resources */,
 				0034593C253D75A6001F9C3F /* back@2x.png in Resources */,
+				003465672562BDC100ED350F /* BuyCoinTableViewCell.xib in Resources */,
 				004849EB2554099000CEB429 /* address_dianhua@2x.png in Resources */,
 				00930E0B2530987800267B62 /* main_课程.png in Resources */,
 				00345976253D75A6001F9C3F /* 商城@2x.png in Resources */,
@@ -5615,6 +5727,7 @@
 				0079EE9A25217AFD00307D71 /* GiftListOperation.m in Sources */,
 				00632FF425465CDE000C84FA /* NSArray+NSArray_ILExtension.m in Sources */,
 				006761C4253FCE7600B6FBB9 /* ArticleCommentTableViewCell.m in Sources */,
+				003465592562BD3100ED350F /* AppIconViewController.m in Sources */,
 				0079EEA825217AFE00307D71 /* AcquireDiscountCouponOperation.m in Sources */,
 				0079EF9125217AFE00307D71 /* WelcomeView.m in Sources */,
 				0092F8A8254C161200EFC21A /* AssociationAdminInfoTableViewCell.m in Sources */,
@@ -5762,6 +5875,7 @@
 				0079EF3D25217AFE00307D71 /* ZXVideoPlayerBrightnessView.m in Sources */,
 				006D4271252DB3680009072A /* SendMessageOperation.m in Sources */,
 				008269512524B557007D7955 /* TCUtil.m in Sources */,
+				00664F02255D6FF9007C0F2E /* LiveBackTipView.m in Sources */,
 				00C236F025417A6C00973347 /* TeacherDetailOperation.m in Sources */,
 				000C1A02253E87880002DE10 /* ShoppingCarBottomView.m in Sources */,
 				0079EEFC25217AFE00307D71 /* UIView+Layout.m in Sources */,
@@ -5814,6 +5928,7 @@
 				0028EB93252A4A2E00D76BF0 /* CustomTUIChatController.m in Sources */,
 				00415CD4253849DC00A97AC9 /* VIPCardDetailOperation.m in Sources */,
 				003459A6253DBD73001F9C3F /* ProvinceModel.m in Sources */,
+				002343A425627C4100B78F17 /* SettingDetailViewController.m in Sources */,
 				0071D78C255149B400FCE459 /* StoreSettingOperation.m in Sources */,
 				0044BF39253359E400FACCE8 /* LivingTeacherIntroTableViewCell.m in Sources */,
 				0079EE9025217AFD00307D71 /* NewsCategoryOperation.m in Sources */,
@@ -5865,6 +5980,7 @@
 				0079EE7D25217AFD00307D71 /* UserManager.m in Sources */,
 				0079EE9925217AFD00307D71 /* MyCoinOperation.m in Sources */,
 				005BC83D2522E9E500323103 /* AFURLResponseSerialization.m in Sources */,
+				0034656C2562BDC100ED350F /* BuyCoinFootTableViewCell.m in Sources */,
 				0079EFAF25217AFE00307D71 /* UIImage+TBCityIconFont.m in Sources */,
 				0079EF2925217AFE00307D71 /* MJProperty.m in Sources */,
 				0040F1E325314AE1009446F1 /* MainVipCardHeadCollectionViewCell.m in Sources */,
@@ -5932,6 +6048,7 @@
 				0079EE5825217AFD00307D71 /* TestJurisdictionOperation.m in Sources */,
 				003459C0253DBDC5001F9C3F /* AddressListTableViewCell.m in Sources */,
 				0079EE6D25217AFD00307D71 /* QuestionOperation.m in Sources */,
+				0034656B2562BDC100ED350F /* BuyCoinTableViewCell.m in Sources */,
 				0079EEAF25217AFE00307D71 /* PayOrderByCoinOperation.m in Sources */,
 				00843E80253F0B1F00022C6E /* ArticleDetailViewController.m in Sources */,
 				000A750325357B220065A62C /* MockVIPBuyOperation.m in Sources */,
@@ -6031,6 +6148,7 @@
 				003459A7253DBD73001F9C3F /* BTAreaPickViewModel.m in Sources */,
 				0079EA10252174AD00307D71 /* ViewController.m in Sources */,
 				0079EE6B25217AFD00307D71 /* QuestionModel.m in Sources */,
+				003465682562BDC100ED350F /* BuyCoinHeadTableViewCell.m in Sources */,
 				0079EF3525217AFE00307D71 /* SendMessageToWXReq+requestWithTextOrMediaMessage.mm in Sources */,
 				00930DB92530930000267B62 /* MyCategoryTableViewCell.m in Sources */,
 				0040F1DD2531492E009446F1 /* MainVipCardListViewController.m in Sources */,
@@ -6047,6 +6165,7 @@
 				0079EE1525217AFD00307D71 /* VideoNoteModel.m in Sources */,
 				0079EFA325217AFE00307D71 /* HomeVIPCardCollectionViewCell.m in Sources */,
 				0079EE1E25217AFD00307D71 /* CourseraManager.m in Sources */,
+				003465732562BE2B00ED350F /* MBProgressHUD.m in Sources */,
 				0079EFC125217AFE00307D71 /* HttpConfigCreator.m in Sources */,
 				0079EE6325217AFD00307D71 /* BannerModel.m in Sources */,
 				004270BC254972040037F258 /* AssociationCenterViewController.m in Sources */,
@@ -6102,6 +6221,7 @@
 				0079EE3425217AFD00307D71 /* VideoCoueseOperation.m in Sources */,
 				0079EEE825217AFE00307D71 /* MJRefreshBackGifFooter.m in Sources */,
 				005BC8422522E9E500323103 /* AFSecurityPolicy.m in Sources */,
+				003816E5255BE747001FAA72 /* LXVodPlayerView.m in Sources */,
 				0079EF0C25217AFE00307D71 /* MASConstraint.m in Sources */,
 				003459ED253DD046001F9C3F /* StoreViewController.m in Sources */,
 				0079EF0225217AFE00307D71 /* TZPhotoPreviewCell.m in Sources */,

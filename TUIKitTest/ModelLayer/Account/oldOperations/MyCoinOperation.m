@@ -26,7 +26,7 @@
 
 - (void)didRequestSuccessed:(NSDictionary *)successInfo
 {
-    NSNumber *count = [[successInfo objectForKey:@"result"] objectForKey:@"iosCoinCount"];
+    NSNumber *count = [[[successInfo objectForKey:@"data"] objectForKey:@"apple_wallet"] objectForKey:@"amount"];
     int a = count.intValue;
     self.bills = [[successInfo objectForKey:@"result"] objectForKey:@"bills"];
     [[UserManager sharedManager] resetGoldCoinCount:a];

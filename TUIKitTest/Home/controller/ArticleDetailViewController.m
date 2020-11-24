@@ -40,7 +40,7 @@ typedef enum : NSUInteger {
     ArticleType_video,
 } ArticleType;
 
-@interface ArticleDetailViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_CourseDetailProtocol,UserModule_CommentZanProtocol, UserModule_AddCommentProtocol,ChangeMusicProtocol,WKUIDelegate,WKNavigationDelegate,UserModule_PayOrderProtocol>
+@interface ArticleDetailViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_CourseDetailProtocol,UserModule_CommentZanProtocol, UserModule_AddCommentProtocol,ChangeMusicProtocol,WKUIDelegate,WKNavigationDelegate,UserModule_PayOrderProtocol,UserModule_PayOrderByCoinProtocol>
 
 @property (nonatomic, strong)UITableView * tableView;
 @property (nonatomic, strong)NSArray * dataSource;
@@ -130,6 +130,30 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccedsss:) name:kNotificationOfBuyCourseSuccess object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(giveAction) name:kNotificationOfSendCourse object:nil];
 
+}
+
+#pragma mark - pay
+
+- (void)coinBuyAction
+{
+    [SVProgressHUD show];
+    [[UserManager sharedManager]payOrderByCoinWith:@{kUrlName:@"api/applePay/article",@"article_id":[NSString stringWithFormat:@"%@", [self.infoDic objectForKey:@"id"]]} withNotifiedObject:self];
+}
+
+- (void)didRequestPayOrderByCoinSuccessed
+{
+    [SVProgressHUD dismiss];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfBuyCourseSuccess object:nil];
+}
+
+- (void)didRequestPayOrderByCoinFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
 }
 
 - (void)paySuccedsss:(NSNotification *)notification
@@ -380,6 +404,9 @@ typedef enum : NSUInteger {
     self.storeView = cateView;
     self.storeView.hidden = YES;
     
+    
+    
+    
     // webview
     self.webView = [[WKWebView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 10)];
     
@@ -448,8 +475,14 @@ typedef enum : NSUInteger {
     }
     
     if ([[self.courseDetailInfo objectForKey:@"give"] boolValue]) {
-        self.storeView.hidden = NO;
-        self.payStateBtn.frame = CGRectMake(CGRectGetMaxX(_storeView.frame), kScreenHeight - kNavigationBarHeight - kStatusBarHeight - 45, kScreenWidth - 15 - 60, 40);
+        
+        if([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue])
+        {
+            NSLog(@"storeView hidden");
+            self.storeView.hidden = NO;
+            
+            self.payStateBtn.frame = CGRectMake(CGRectGetMaxX(_storeView.frame), kScreenHeight - kNavigationBarHeight - kStatusBarHeight - 45, kScreenWidth - 15 - 60, 40);
+        }
     }
     
     
@@ -887,15 +920,29 @@ typedef enum : NSUInteger {
 - (void)playStateAction
 {
     if (self.payStateType == PayStateType_Vip) {
-        MainVipCardListViewController * vc = [[MainVipCardListViewController alloc]init];
-        [self.navigationController pushViewController:vc animated:YES];
+        
+        if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+            
+            MainVipCardListViewController * vc = [[MainVipCardListViewController alloc]init];
+            [self.navigationController pushViewController:vc animated:YES];
+        }else
+        {
+            
+        }
     }else if (self.payStateType == PayStateType_buy)
     {
         NSLog(@"buy");
-        ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
-        UIWindow * window = [UIApplication sharedApplication].delegate.window;
-        [window addSubview:payView];
-        self.payView = payView;
+        
+        if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+            ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
+            UIWindow * window = [UIApplication sharedApplication].delegate.window;
+            [window addSubview:payView];
+            self.payView = payView;
+        }else
+        {
+            [self coinBuyAction];
+        }
+        
     }
 }
 

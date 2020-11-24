@@ -138,7 +138,7 @@
 //    goImageView.image = [UIImage imageNamed:@"goImage"];
 //    [self.contentView addSubview:goImageView];
     
-    if (infoDic == nil) {
+    if (infoDic == nil || [[infoDic allKeys] count] == 0) {
         UILabel * noAddressLB = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 200, self.hd_height - 2)];
         noAddressLB.text = @"请先选择地址";
         noAddressLB.font = kMainFont;

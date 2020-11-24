@@ -53,6 +53,20 @@
     
 }
 
+- (void)resetContent:(NSDictionary *)info
+{
+    self.vipTitleView.text = [info objectForKey:@"title"];
+    
+    
+    NSString * btnStr = [info objectForKey:@"btn"];
+    CGFloat width = [btnStr boundingRectWithSize:CGSizeMake(MAXFLOAT, 20) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kMainFont_12} context:nil].size.width;
+    [self.openBtn setTitle:[info objectForKey:@"btn"] forState:UIControlStateNormal];
+    [self.openBtn setImage:[UIImage imageNamed:@"箭头"] forState:UIControlStateNormal];
+    self.openBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+    self.openBtn.imageEdgeInsets = UIEdgeInsetsMake(0, width + 5, 0, -width - 5);
+    self.openBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 10);
+}
+
 - (void)openVipAction
 {
     if (self.openVIPBlock) {

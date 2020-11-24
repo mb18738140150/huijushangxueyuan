@@ -16,7 +16,7 @@
 @property (nonatomic, assign)BOOL isTeacher;
 @property (nonatomic, assign)int  news_num;
 @property (nonatomic, assign)BOOL  is_admin;
-
+@property (nonatomic, strong)NSString *  tencentID;
 + (instancetype)sharedManager;
 
 /**

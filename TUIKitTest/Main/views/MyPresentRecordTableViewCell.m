@@ -108,10 +108,10 @@
 - (NSString *)getOldStrWithSource1:(NSString *)str1 andSource2:(NSString *)str2
 {
     if (str2.length == 0) {
-        return [NSString stringWithFormat:@"￥%@", str1];
+        return [NSString stringWithFormat:@"%@%@",[SoftManager shareSoftManager].coinName, str1];
     }else
     {
-        return [NSString stringWithFormat:@"￥%@ ￥%@", str1,str2];
+        return [NSString stringWithFormat:@"%@%@ %@%@",[SoftManager shareSoftManager].coinName, str1,[SoftManager shareSoftManager].coinName,str2];
     }
 }
 

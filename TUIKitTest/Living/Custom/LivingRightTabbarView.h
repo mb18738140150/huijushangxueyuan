@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LivingRightTabbarView : UIView
 
 
-- (instancetype)initWithFrame:(CGRect)frame andIsTeacher:(BOOL)isTeacher;
+- (instancetype)initWithFrame:(CGRect)frame andIsTeacher:(BOOL)isTeacher andInfo:(NSDictionary *)info;
 
 @property (nonatomic, copy)void (^rightTabbarActionBlock)(NSDictionary *info);
 

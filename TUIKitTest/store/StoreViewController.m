@@ -149,6 +149,11 @@
     if (section == 4) {
         return self.dataArray.count;
     }
+    if (section == 3) {
+        if (self.fromType == FromType_present) {
+            return 0;
+        }
+    }
     return 1;
 }
 
@@ -206,6 +211,7 @@
         {
             HomeOpenVIPCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeOpenVIPCollectionViewCell forIndexPath:indexPath];
             [cell resetUIWithInfo:@{}];
+            [cell resetContent:@{@"title":@"汇聚播商商学院testing的课堂",@"btn":@"去学习"}];
             return cell;
         }
             break;
@@ -231,6 +237,14 @@
         vc.info = self.dataArray[indexPath.row];
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
+    }else if (indexPath.section == 3)
+    {
+        if (self.fromType == FromType_nomal) {
+            [self.tabBarController setSelectedIndex:0];
+        }else
+        {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
     }
 }
 

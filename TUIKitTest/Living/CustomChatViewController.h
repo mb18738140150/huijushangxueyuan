@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) TUIConversationCellData *conversationData;
 @property (nonatomic, copy)NSString * groupId;
 @property (nonatomic, copy)NSString * playUrl;
+@property (nonatomic, copy)NSString * tencentPlayID;
+@property (nonatomic, assign)BOOL isPlayBack;
 @property (nonatomic, strong)NSDictionary * videoInfo;
 @property (nonatomic, copy)void (^quitChatRoomBlock)();
 

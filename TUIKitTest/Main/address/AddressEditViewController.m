@@ -177,6 +177,7 @@
                 weakSelf.nameStr = str;
             };
         }else if (indexPath.row == 1){
+            cell.contentTF.keyboardType = UIKeyboardTypeNumberPad;
             cell.contentTF.text = self.phoneStr;
             cell.textBlock = ^(NSString *str) {
                 weakSelf.phoneStr = str;

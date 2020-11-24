@@ -14,15 +14,17 @@
 @property (nonatomic, strong)NSArray * dataSource;
 @property (nonatomic, assign)BOOL isTeacher;
 
+@property (nonatomic, strong)NSDictionary * info;
 
 @end
 
 @implementation LivingRightTabbarView
 
-- (instancetype)initWithFrame:(CGRect)frame andIsTeacher:(BOOL)isTeacher
+- (instancetype)initWithFrame:(CGRect)frame andIsTeacher:(BOOL)isTeacher andInfo:(NSDictionary *)info
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.info = [[info objectForKey:@"setting"] objectForKey:@"shop"];
         self.isTeacher = isTeacher;
         [self prepareUI];
     }
@@ -50,34 +52,70 @@
     NSArray * dataSource ;
     
     if (isTeacher) {
-//        dataSource = @[@{@"name":@"操作",@"color":UIRGBColor(248, 145, 48),@"type":@(RightTabbarOperationType_shutUp)},
-//        @{@"name":@"模拟V",@"color":UIRGBColor(60, 186, 191),@"type":@(RightTabbarOperationType_moniV)},
-//        @{@"name":@"模拟P",@"color":UIRGBColor(65, 78, 176),@"type":@(RightTabbarOperationType_moniP)},
-//        @{@"name":@"邀请",@"color":UIRGBColor(35, 0, 238),@"type":@(RightTabbarOperationType_invite)},
-//        @{@"name":@"VIP",@"color":UIRGBColor(249, 0, 137),@"type":@(RightTabbarOperationType_VIP)},
-//        @{@"name":@"合伙人",@"color":UIRGBColor(4, 123, 22),@"type":@(RightTabbarOperationType_Hehuoren)},
-//        @{@"name":@"公众号",@"color":UIRGBColor(214, 7, 21),@"type":@(RightTabbarOperationType_publicNumber)},
-//        @{@"name":@"客服",@"color":UIRGBColor(92, 75, 195),@"type":@(RightTabbarOperationType_service)}];
-        dataSource = @[@{@"name":@"操作",@"color":UIRGBColor(248, 145, 48),@"type":@(RightTabbarOperationType_shutUp)},
-        @{@"name":@"模拟V",@"color":UIRGBColor(60, 186, 191),@"type":@(RightTabbarOperationType_moniV)},
-        @{@"name":@"模拟P",@"color":UIRGBColor(65, 78, 176),@"type":@(RightTabbarOperationType_moniP)},
-        @{@"name":@"VIP",@"color":UIRGBColor(249, 0, 137),@"type":@(RightTabbarOperationType_VIP)},
-        @{@"name":@"合伙人",@"color":UIRGBColor(4, 123, 22),@"type":@(RightTabbarOperationType_Hehuoren)},
-        @{@"name":@"公众号",@"color":UIRGBColor(214, 7, 21),@"type":@(RightTabbarOperationType_publicNumber)},
-        @{@"name":@"客服",@"color":UIRGBColor(92, 75, 195),@"type":@(RightTabbarOperationType_service)}];
+        if ([[self.info objectForKey:@"open"] boolValue]) {
+            
+            if([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue])
+            {
+                dataSource = @[@{@"name":@"操作",@"color":UIRGBColor(248, 145, 48),@"type":@(RightTabbarOperationType_shutUp)},
+                               @{@"name":@"模拟V",@"color":UIRGBColor(60, 186, 191),@"type":@(RightTabbarOperationType_moniV)},
+                               @{@"name":@"模拟P",@"color":UIRGBColor(65, 78, 176),@"type":@(RightTabbarOperationType_moniP)},
+                               @{@"name":@"VIP",@"color":UIRGBColor(249, 0, 137),@"type":@(RightTabbarOperationType_VIP)},
+                               @{@"name":@"合伙人",@"color":UIRGBColor(4, 123, 22),@"type":@(RightTabbarOperationType_Hehuoren)},
+                               @{@"name":@"客服",@"color":UIRGBColor(92, 75, 195),@"type":@(RightTabbarOperationType_store),@"image":@"livingShoppingCar"}];
+                
+            }else
+            {
+                dataSource = @[@{@"name":@"操作",@"color":UIRGBColor(248, 145, 48),@"type":@(RightTabbarOperationType_shutUp)},
+                               @{@"name":@"模拟V",@"color":UIRGBColor(60, 186, 191),@"type":@(RightTabbarOperationType_moniV)},
+                               @{@"name":@"模拟P",@"color":UIRGBColor(65, 78, 176),@"type":@(RightTabbarOperationType_moniP)},
+                               @{@"name":@"客服",@"color":UIRGBColor(92, 75, 195),@"type":@(RightTabbarOperationType_store),@"image":@"livingShoppingCar"}];
+            }
+            
+        }else
+        {
+            if([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue])
+            {
+                
+                dataSource = @[@{@"name":@"操作",@"color":UIRGBColor(248, 145, 48),@"type":@(RightTabbarOperationType_shutUp)},
+                               @{@"name":@"模拟V",@"color":UIRGBColor(60, 186, 191),@"type":@(RightTabbarOperationType_moniV)},
+                               @{@"name":@"模拟P",@"color":UIRGBColor(65, 78, 176),@"type":@(RightTabbarOperationType_moniP)},
+                               @{@"name":@"VIP",@"color":UIRGBColor(249, 0, 137),@"type":@(RightTabbarOperationType_VIP)},
+                               @{@"name":@"合伙人",@"color":UIRGBColor(4, 123, 22),@"type":@(RightTabbarOperationType_Hehuoren)}];
+            }else
+            {
+                dataSource = @[@{@"name":@"操作",@"color":UIRGBColor(248, 145, 48),@"type":@(RightTabbarOperationType_shutUp)},
+                               @{@"name":@"模拟V",@"color":UIRGBColor(60, 186, 191),@"type":@(RightTabbarOperationType_moniV)},
+                               @{@"name":@"模拟P",@"color":UIRGBColor(65, 78, 176),@"type":@(RightTabbarOperationType_moniP)}];
+            }
+        }
     }else
     {
-//        dataSource = @[@{@"name":@"邀请",@"color":UIRGBColor(35, 0, 238),@"type":@(RightTabbarOperationType_invite)},
-//        @{@"name":@"VIP",@"color":UIRGBColor(249, 0, 137),@"type":@(RightTabbarOperationType_VIP)},
-//        @{@"name":@"合伙人",@"color":UIRGBColor(4, 123, 22),@"type":@(RightTabbarOperationType_Hehuoren)},
-//        @{@"name":@"公众号",@"color":UIRGBColor(214, 7, 21),@"type":@(RightTabbarOperationType_publicNumber)},
-//        @{@"name":@"客服",@"color":UIRGBColor(92, 75, 195),@"type":@(RightTabbarOperationType_service)}];
-        dataSource = @[
-        @{@"name":@"VIP",@"color":UIRGBColor(249, 0, 137),@"type":@(RightTabbarOperationType_VIP)},
-        @{@"name":@"合伙人",@"color":UIRGBColor(4, 123, 22),@"type":@(RightTabbarOperationType_Hehuoren)},
-        @{@"name":@"公众号",@"color":UIRGBColor(214, 7, 21),@"type":@(RightTabbarOperationType_publicNumber)},
-        @{@"name":@"客服",@"color":UIRGBColor(92, 75, 195),@"type":@(RightTabbarOperationType_service)},
-        @{@"name":@"客服",@"color":UIRGBColor(92, 75, 195),@"type":@(RightTabbarOperationType_store),@"image":@"livingShoppingCar"}];
+        if ([[self.info objectForKey:@"open"] boolValue]) {
+            if([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue])
+            {
+                dataSource = @[
+                    @{@"name":@"VIP",@"color":UIRGBColor(249, 0, 137),@"type":@(RightTabbarOperationType_VIP)},
+                    @{@"name":@"合伙人",@"color":UIRGBColor(4, 123, 22),@"type":@(RightTabbarOperationType_Hehuoren)},
+                    @{@"name":@"客服",@"color":UIRGBColor(92, 75, 195),@"type":@(RightTabbarOperationType_store),@"image":@"livingShoppingCar"}];
+            }else
+            {
+                dataSource = @[
+                    @{@"name":@"客服",@"color":UIRGBColor(92, 75, 195),@"type":@(RightTabbarOperationType_store),@"image":@"livingShoppingCar"}];
+            }
+            
+        }else
+        {
+            if([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue])
+            {
+                dataSource = @[
+                    @{@"name":@"VIP",@"color":UIRGBColor(249, 0, 137),@"type":@(RightTabbarOperationType_VIP)},
+                    @{@"name":@"合伙人",@"color":UIRGBColor(4, 123, 22),@"type":@(RightTabbarOperationType_Hehuoren)}];
+            }else
+            {
+                dataSource = @[];
+            }
+            
+        }
     }
     
     return dataSource;

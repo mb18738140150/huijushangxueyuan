@@ -38,7 +38,7 @@ typedef enum : NSUInteger {
     Topic_style_sanfang,
 } Topic_style;
 
-@interface LivingCourseDetailViewController ()<UserModule_CourseDetailProtocol,UITableViewDelegate, UITableViewDataSource,UserModule_PayOrderProtocol,WKUIDelegate,WKNavigationDelegate,UserModule_MockVIPBuy,UserModule_MockPartnerBuy>
+@interface LivingCourseDetailViewController ()<UserModule_CourseDetailProtocol,UITableViewDelegate, UITableViewDataSource,UserModule_PayOrderProtocol,WKUIDelegate,WKNavigationDelegate,UserModule_MockVIPBuy,UserModule_MockPartnerBuy,UserModule_PayOrderByCoinProtocol>
 
 @property (nonatomic, strong)UITableView * tableView;
 
@@ -88,6 +88,43 @@ typedef enum : NSUInteger {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(giveAction) name:kNotificationOfSendCourse object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccedsss:) name:kNotificationOfBuyCourseSuccess object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payClick:) name:kNotificationOfShareAndPay object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(giveAction) name:kNotificationOfSendCourse object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(paySuccedsss:) name:kNotificationOfBuyCourseSuccess object:nil];
+}
+
+#pragma mark - pay
+
+- (void)coinBuyAction
+{
+    [SVProgressHUD show];
+    [[UserManager sharedManager]payOrderByCoinWith:@{kUrlName:@"api/applePay/topic",@"topic_id":[NSString stringWithFormat:@"%@", [self.info objectForKey:@"id"]]} withNotifiedObject:self];
+}
+
+- (void)didRequestPayOrderByCoinSuccessed
+{
+    [SVProgressHUD dismiss];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfBuyCourseSuccess object:nil];
+}
+
+- (void)didRequestPayOrderByCoinFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
 }
 
 - (void)paySuccedsss:(NSNotification *)notification
@@ -348,7 +385,7 @@ typedef enum : NSUInteger {
     _payStateType = _topic_type;
     
     if (_topic_type != 1) {
-        [_playBackBtn setTitle:[NSString stringWithFormat:@"￥%@购买", [self.courseDetailInfo objectForKey:@"pay_paymoney"]] forState:UIControlStateNormal];
+        [_playBackBtn setTitle:[NSString stringWithFormat:@"%@%@购买",[SoftManager shareSoftManager].coinName, [self.courseDetailInfo objectForKey:@"pay_paymoney"]] forState:UIControlStateNormal];
     }else
     {
         [_playBackBtn setTitle:@"进入观看" forState:UIControlStateNormal];
@@ -376,16 +413,29 @@ typedef enum : NSUInteger {
         case PayStateType_buy:
         {
             NSLog(@"购买");
-            ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
-            UIWindow * window = [UIApplication sharedApplication].delegate.window;
-            [window addSubview:payView];
-            self.payView = payView;
+            
+            
+            if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+                ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
+                UIWindow * window = [UIApplication sharedApplication].delegate.window;
+                [window addSubview:payView];
+                self.payView = payView;
+            }else
+            {
+                [self coinBuyAction];
+            }
         }
             break;
         case PayStateType_Vip:
         {
-            MainVipCardListViewController * vc = [[MainVipCardListViewController alloc]init];
-            [self.navigationController pushViewController:vc animated:YES];
+            if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+                
+                MainVipCardListViewController * vc = [[MainVipCardListViewController alloc]init];
+                [self.navigationController pushViewController:vc animated:YES];
+            }else
+            {
+                
+            }
         }
             break;
         case PayStateType_Secret:
@@ -458,12 +508,19 @@ typedef enum : NSUInteger {
     {
         return self.communities.count;
     }
+    
+    
+    
     if (self.courseDetailInfo) {
         if ([[self.courseDetailInfo objectForKey:@"topic_type"] intValue] == 1) {
             return 1;
         }
     }
-    return 2;
+    if([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue])
+    {
+        return 2;
+    }
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -836,12 +893,33 @@ typedef enum : NSUInteger {
                         CustomChatViewController *chatRoomVC = [[CustomChatViewController alloc]init];
                         chatRoomVC.conversationData = data;
                         chatRoomVC.videoInfo = roomDetailInfo;
-                        if (self.index % 2 == 0) {
-                            chatRoomVC.playUrl = @"http://liteavapp.qcloud.com/live/liteavdemoplayerstreamid.flv";
-                        }else
-                        {
-                            chatRoomVC.playUrl = @"http://200024424.vod.myqcloud.com/200024424_709ae516bdf811e6ad39991f76a4df69.f20.mp4";
+                        
+                        NSDictionary * videoInfo = [[roomDetailInfo objectForKey:@"video"] objectForKey:@"data"];
+                        NSDictionary * playBackInfo = [roomDetailInfo objectForKey:@"play_back"];
+                        NSDictionary * chatInfo = [[roomDetailInfo objectForKey:@"setting"] objectForKey:@"chat"];
+                        if ([UserManager sharedManager].tencentID.length == 0) {
+                            [UserManager sharedManager].tencentID = [NSString stringWithFormat:@"%@", [chatInfo objectForKey:@"app_id"]];
                         }
+                        
+                        if ([[roomDetailInfo objectForKey:@"status"] intValue] == 1) {
+                            chatRoomVC.playUrl = [NSString stringWithFormat:@"%@", [videoInfo objectForKey:@"url_flv"]];
+                        }else if ([[roomDetailInfo objectForKey:@"status"] intValue] == 3)
+                        {
+                            chatRoomVC.isPlayBack = [[roomDetailInfo objectForKey:@"is_play_back"] boolValue];
+                            
+                            if (playBackInfo == nil || [playBackInfo isKindOfClass:[NSNull class]]) {
+                                chatRoomVC.playUrl = @"";
+                            }else
+                            {
+                                if ([[playBackInfo objectForKey:@"file_type"] isEqualToString:@"url"]) {
+                                    chatRoomVC.playUrl = [NSString stringWithFormat:@"%@", [playBackInfo objectForKey:@"file_id"]];
+                                }else
+                                {
+                                    chatRoomVC.tencentPlayID = [NSString stringWithFormat:@"%@", [playBackInfo objectForKey:@"file_id"]];
+                                }
+                            }
+                        }
+                        
                         chatRoomVC.groupId = [roomIdInfo objectForKey:@"room_id"];
                         chatRoomVC.modalPresentationStyle = UIModalPresentationFullScreen;
                         [self presentViewController:chatRoomVC animated:YES completion:nil];
@@ -850,7 +928,6 @@ typedef enum : NSUInteger {
                         [SVProgressHUD dismiss];
                         NSLog(@"joinchatroom setSelfInfo fail %d  %@", code, desc);
                     }];
-                    
                     
                 } fail:^(int code, NSString *desc) {
                     [SVProgressHUD dismiss];

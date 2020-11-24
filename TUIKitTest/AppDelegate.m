@@ -25,6 +25,7 @@
 #import "WXApi.h"
 #import "WXApiManager.h"
 #import "WelcomeViewController.h"
+#import "LivingCourseDetailViewController.h"
 
 @interface AppDelegate ()<WXApiDelegate,WXApiManagerDelegate,JPUSHRegisterDelegate,UserModule_TabbarList,UserModule_LoginProtocol>
 
@@ -122,7 +123,7 @@
     
     [[UserManager sharedManager] didLoginWithUserCode:@{@"code":response.code,kUrlName:@"api/wechat/getUserInfo"} withNotifiedObject:self];
     
-    [UIAlertView showWithTitle:strTitle message:strMsg sure:nil];
+//    [UIAlertView showWithTitle:strTitle message:strMsg sure:nil];
 }
 
 - (void)didUserLoginSuccessed
@@ -174,6 +175,8 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [SVProgressHUD dismiss];
     });
+    self.tabbarViewController = [[TabbarViewController alloc] init];
+    self.window.rootViewController = self.tabbarViewController;
 }
 
 - (void)getToken
@@ -239,7 +242,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
       UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"iOS10 前台收到远程通知:%@", [self logDic:userInfo]] preferredStyle:UIAlertControllerStyleAlert];
       [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
       }]];
-      [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+//      [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+      
+      [self pushLivingCourseDetailVC:userInfo];
   }
   else {
     // 判断为本地通知
@@ -267,11 +272,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
       UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"iOS10 收到远程通知:%@", [self logDic:userInfo]] preferredStyle:UIAlertControllerStyleAlert];
       [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
       }]];
-      [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+//      [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
       
       
-      [SVProgressHUD showSuccessWithStatus:[NSString stringWithFormat:@"iOS10 收到远程通知:%@", [self logDic:userInfo]]];
-      
+      [self pushLivingCourseDetailVC:userInfo];
   }
   else {
     // 判断为本地通知
@@ -280,6 +284,20 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
   
   completionHandler();  // 系统要求执行这个方法
 }
+
+- (void)pushLivingCourseDetailVC:(NSDictionary *)info
+{
+    NSDictionary * infoDic = @{@"id":[[info objectForKey:@"need_redirect"] objectForKey:@"topic_id"]};
+    
+    LivingCourseDetailViewController * vc = [[LivingCourseDetailViewController alloc]init];
+    
+    vc.info = infoDic;
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.window.rootViewController.navigationController pushViewController:vc animated:YES];
+    });
+}
+
 
 - (NSString *)logDic:(NSDictionary *)dic {
   if (![dic count]) {

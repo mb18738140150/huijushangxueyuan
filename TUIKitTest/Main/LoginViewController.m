@@ -60,22 +60,16 @@
     // 设置导航栏标题和返回按钮颜色
     self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : kCommonMainTextColor_50}];
-    
 }
+
 - (void)navigationViewSetup
 {
-    
-    //    self.edgesForExtendedLayout = UIRectEdgeNone;
-    //    self.automaticallyAdjustsScrollViewInsets = NO;
-    //    self.navigationController.navigationBar.translucent = NO;
-    
     UINavigationBar * bar = self.navigationController.navigationBar;
     [bar setShadowImage:[UIImage imageNamed:@"tm"]];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"tm"] forBarMetrics:UIBarMetricsDefault];
     
     self.navigationController.navigationBar.tintColor = kCommonNavigationBarColor;
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
-    
 }
 
 - (void)viewInit
@@ -86,103 +80,24 @@
     [resignControl addTarget:self action:@selector(resignTextFiled) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:resignControl];
     
-    self.view.backgroundColor = [UIColor whiteColor];
-//    [self setTopGradientLayer];
+    UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+    imageView.image = [UIImage imageNamed:@"loginImage"];
+    [self.view addSubview:imageView];
     
-    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, kScreenHeight / 2 - 120 - 90, kScreenWidth, 30)];
-    self.titleLabel.text = @"WELCOME";
-    self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.titleLabel.font = [UIFont systemFontOfSize:25];
-    self.titleLabel.textColor = [UIColor whiteColor];
-//    [self.view addSubview:self.titleLabel];
+    UIButton * weichatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    weichatBtn.frame = CGRectMake(20, kScreenHeight - 280, kScreenWidth - 40, 70);
+    weichatBtn.backgroundColor = UIColorFromRGB(0xffffff);
+    weichatBtn.layer.cornerRadius = weichatBtn.hd_height / 2;
+    weichatBtn.layer.masksToBounds = YES;
+    [weichatBtn setImage:[UIImage imageNamed:@"weixinlogin"] forState:UIControlStateNormal];
+    [weichatBtn setTitle:@"微信登录" forState:UIControlStateNormal];
+    [weichatBtn setTitleColor:UIColorFromRGB(0x333333) forState:UIControlStateNormal];
     
-    [self prepareUI];
-    return;
+    weichatBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 15);
+    [self.view addSubview:weichatBtn];
+    [weichatBtn addTarget:self action:@selector(touristAction) forControlEvents:UIControlEventTouchUpInside];
     
-    self.logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreenWidth / 2 - 40, 60, 80, 80)];
-    self.logoImageView.image = [UIImage imageNamed:@"logo"];
-    [self.view addSubview:self.logoImageView];
-    
-    _background=[[LoginBackgroundView alloc] initWithFrame:CGRectMake(20, kScreenHeight/2 - 120, kScreenWidth-40, 300)];
-    [_background setBackgroundColor:[UIColor whiteColor]];
-    [[_background layer] setCornerRadius:10];
-
-    _background.layer.shadowColor = kCommonMainTextColor_200.CGColor;
-    _background.layer.shadowOffset = CGSizeMake(5, 5);
-    _background.layer.shadowOpacity = 0.5;
-    _background.layer.shadowRadius = 10;
-
-    _background.clipsToBounds = NO;
-    _background.userInteractionEnabled = YES;
-    [self.view addSubview:_background];
-    
-    UIView * accountView = [[UIView alloc]initWithFrame:CGRectMake(20, 40, kScreenWidth - 80, 40)];
-    accountView.layer.cornerRadius = accountView.hd_height / 2;
-    accountView.layer.masksToBounds = YES;
-    accountView.backgroundColor = kBackgroundGrayColor;
-    [_background addSubview:accountView];
-    
-    UIImageView * accountImageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 5, kImageWidth, kImageWidth)];
-    accountImageView.image = [UIImage imageNamed:@"手机(1)"];
-    [accountView addSubview:accountImageView];
-    
-    _account=[[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(accountImageView.frame) + 10, 10, accountView.hd_width - 70, 20)];
-    [_account setBackgroundColor:[UIColor clearColor]];
-    _account.placeholder=[NSString stringWithFormat:@"请输入账号"];
-    _account.delegate = self;
-    _account.font = kMainFont;
-    _account.textColor = kCommonMainTextColor_50;
-    [accountView addSubview:_account];
-    
-    UIView * passwordView = [[UIView alloc]initWithFrame:CGRectMake(20, CGRectGetMaxY(accountView.frame) + 20, kScreenWidth - 80, 40)];
-    passwordView.layer.cornerRadius = passwordView.hd_height / 2;
-    passwordView.layer.masksToBounds = YES;
-    passwordView.backgroundColor = kBackgroundGrayColor;
-    [_background addSubview:passwordView];
-    
-    UIImageView * passwordImageView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 5, kImageWidth, kImageWidth)];
-    passwordImageView.image = [UIImage imageNamed:@"密码"];
-    [passwordView addSubview:passwordImageView];
-    
-    _password=[[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(passwordImageView.frame) + 10, 10, kScreenWidth-40, 20)];
-    [_password setBackgroundColor:[UIColor clearColor]];
-    _password.secureTextEntry = YES;
-    _password.placeholder=[NSString stringWithFormat:@"请输入密码"];
-    _password.layer.cornerRadius=5.0;
-    _password.delegate = self;
-    _password.font = kMainFont;
-    _password.textColor = kCommonMainTextColor_50;
-    [passwordView addSubview:_password];
-    
-    self.closeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 50, 30, 30)];
-    self.closeImageView.image = [UIImage imageNamed:@"close.png"];
-    self.closeImageView.userInteractionEnabled = YES;
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissSelf)];
-    
-    [self.closeImageView addGestureRecognizer:tap];
-    [self.view addSubview:self.closeImageView];
-    
-    _loginButton=[UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [_loginButton setFrame:CGRectMake(20, CGRectGetMaxY(passwordView.frame) + 60, kScreenWidth - 80, 40)];
-    CAGradientLayer *paylayer = [[CAGradientLayer alloc]init];
-    paylayer.frame = self.loginButton.bounds;
-    paylayer.colors = [NSArray arrayWithObjects:(id)[UIRGBColor(28, 144, 247) CGColor],(id)[UIRGBColor(9, 68, 255) CGColor], nil];
-    paylayer.startPoint = CGPointMake(0, 0.5);
-    paylayer.endPoint = CGPointMake(1, 0.5);
-    [self.loginButton.layer addSublayer:paylayer];
-    _loginButton.titleLabel.font = [UIFont systemFontOfSize:20];
-    [_loginButton setTitle:@"立即登录" forState:UIControlStateNormal];
-    _loginButton.layer.cornerRadius = _loginButton.hd_height / 2;
-    _loginButton.layer.masksToBounds = YES;
-    [_loginButton addTarget:self action:@selector(doLogin) forControlEvents:UIControlEventTouchUpInside];
-    [_loginButton setBackgroundColor:[UIColor colorWithRed:51/255.0 green:102/255.0 blue:255/255.0 alpha:1]];
-    [_loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_background addSubview:_loginButton];
-    
-    UIImageView * bottomImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, kScreenHeight - 70, kScreenWidth, 70)];
-    bottomImageView.image = [UIImage imageNamed:@"login-bgbgbg"];
-    [self.view addSubview:bottomImageView];
+//    [self prepareUI];
 }
 
 - (void)prepareUI

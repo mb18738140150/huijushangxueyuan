@@ -176,6 +176,7 @@
         self.phoneTf.textColor = UIColorFromRGB(0x333333);
         self.phoneTf.font = cell.detailTextLabel.font;
         self.phoneTf.textAlignment = NSTextAlignmentRight;
+        self.phoneTf.keyboardType = UIKeyboardTypeNumberPad;
         NSString *tele = [self.userInfos objectForKey:@"userTelephone"];
         if (tele == nil) {
             if ([tele isEqualToString:@""]) {

@@ -225,7 +225,7 @@
     [allBtn setTitleColor:UIColorFromRGB(0x333333) forState:UIControlStateNormal];
     allBtn.titleLabel.font = kMainFont;
     [allBtn addTarget:self action:@selector(allAction) forControlEvents:UIControlEventTouchUpInside];
-    [cell.contentView addSubview:allBtn];
+    [backView addSubview:allBtn];
     
     return cell;
 }

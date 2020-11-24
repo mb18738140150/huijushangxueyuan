@@ -9,6 +9,11 @@
 #import "MyNotificationTableViewCell.h"
 #define kMyNotificationTableViewCell @"MyNotificationTableViewCell"
 #import "ScanSuccessJumpVC.h"
+#import "MainVipCardListViewController.h"
+#import "MyBuyCourseViewController.h"
+#import "StoreViewController.h"
+#import "ArticleDetailViewController.h"
+#import "SecongListViewController.h"
 
 @interface MyNotificationListViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_NotificationList>
 
@@ -174,6 +179,8 @@
          mypay    我的已购
          yx_extension_recruit    推广中心
          yd_detail    图文音视频详情
+         vip_center    会员中心
+         zb_topic_info    直播详情页
          
          */
         if ([innerType isEqualToString:@"index"]) {
@@ -184,26 +191,41 @@
             NSLog(@"个人中心");
             [self.navigationController popViewControllerAnimated:YES];
         }
+        else if ([innerType isEqualToString:@"vip_center"])
+        {
+            MainVipCardListViewController * vc = [[MainVipCardListViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
         else if ([innerType isEqualToString:@"zb_topics"])
         {
-//            [self pushSecondVC:SecondListType_living];
+            
+            NSString * pid = @"";
+            if (![[info objectForKey:@"need_redirect"] isKindOfClass:[NSNull class]]) {
+                pid = [[info objectForKey:@"need_redirect"] objectForKey:@"tags"];
+            }
+            [self pushSecondVC:SecondListType_living andInfo:pid];
         }
         else if ([innerType isEqualToString:@"mypay"])
         {
-//            MyBuyCourseViewController * vc = [[MyBuyCourseViewController alloc]init];
-//            vc.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:vc animated:YES];
+            MyBuyCourseViewController * vc = [[MyBuyCourseViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
         }else if([innerType isEqualToString:@"shop_index"])
         {
-//            StoreViewController * vc = [[StoreViewController alloc]init];
-//            vc.hidesBottomBarWhenPushed = YES;
-//            [self.navigationController pushViewController:vc animated:YES];
+            StoreViewController * vc = [[StoreViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
         }else if ([innerType isEqualToString:@"yd_payred_index"])
         {
-//            [self pushSecondVC:SecondListType_artical];
+            NSString * pid = @"";
+            if (![[info objectForKey:@"need_redirect"] isKindOfClass:[NSNull class]]) {
+                pid = [[info objectForKey:@"need_redirect"] objectForKey:@"pid"];
+            }
+            [self pushSecondVC:SecondListType_artical andInfo:pid];
         }else if ([innerType isEqualToString:@"yd_detail"])
         {
-//            [self pushArticleDetailVC:[info objectForKey:@"need_redirect"]];
+            [self pushArticleDetailVC:[info objectForKey:@"need_redirect"]];
         }
         
     }else if ([juge_type isEqualToString:@"none"])
@@ -217,6 +239,24 @@
         WebVC.jump_URL = juge_url;
         [self.navigationController pushViewController:WebVC animated:YES];
     }
+}
+
+- (void)pushArticleDetailVC:(NSDictionary *)info
+{
+    ArticleDetailViewController * vc = [[ArticleDetailViewController alloc]init];
+    
+    vc.infoDic = info;
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)pushSecondVC:(SecondListType)type andInfo:(NSString *)pid
+{
+    SecongListViewController * vc = [[SecongListViewController alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.secondType = type;
+    vc.pid = pid.intValue;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

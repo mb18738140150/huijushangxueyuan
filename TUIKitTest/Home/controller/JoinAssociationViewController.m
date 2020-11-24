@@ -16,7 +16,7 @@
 #import "LivingCourseDetailViewController.h"
 #import "ArticleDetailViewController.h"
 
-@interface JoinAssociationViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_JoinAssociation,UserModule_PayOrderProtocol,CourseModule_LearningCourseProtocol>
+@interface JoinAssociationViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_JoinAssociation,UserModule_PayOrderProtocol,CourseModule_LearningCourseProtocol,UserModule_PayOrderByCoinProtocol>
 @property (nonatomic, strong)UITableView * tableView;
 @property (nonatomic, strong) NSMutableArray *itemArray;
 
@@ -360,12 +360,43 @@
 
 
 #pragma mark - 支付入群费用
+
+#pragma mark - pay
+
+- (void)coinBuyAction
+{
+    [SVProgressHUD show];
+    [[UserManager sharedManager]payOrderByCoinWith:@{kUrlName:@"api/applePay/community",@"c_id":[NSString stringWithFormat:@"%@", [self.associationInfo objectForKey:@"id"]]} withNotifiedObject:self];
+}
+
+- (void)didRequestPayOrderByCoinSuccessed
+{
+    [SVProgressHUD dismiss];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfBuyCourseSuccess object:nil];
+}
+
+- (void)didRequestPayOrderByCoinFailed:(NSString *)failedInfo
+{
+    [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
+    [SVProgressHUD showErrorWithStatus:failedInfo];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+    });
+}
+
 - (void)payAction
 {
-    ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
-    UIWindow * window = [UIApplication sharedApplication].delegate.window;
-    [window addSubview:payView];
-    self.payView = payView;
+    if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+        ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
+        UIWindow * window = [UIApplication sharedApplication].delegate.window;
+        [window addSubview:payView];
+        self.payView = payView;
+    }else
+    {
+        [SVProgressHUD show];
+        [self coinBuyAction];
+    }
 }
 
 - (void)paySuccedsss:(NSNotification *)notification

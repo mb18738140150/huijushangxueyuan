@@ -31,7 +31,8 @@
     self.userModel.sex = @"";
     self.userModel.goldCoins = 0;
     self.userModel.codeview = 1;
-    [self encodeUserInfo];
+    [self encodeUserInfo];//
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"session_id"];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"userName"];
     [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"password"];
 }
@@ -102,6 +103,7 @@
     }
     
     self.userModel.userID = [[successInfo objectForKey:@"uid"] intValue];
+    
     if ([[successInfo objectForKey:@"openid"] class] == [NSNull class] || [successInfo objectForKey:@"openid"] == nil || [[successInfo objectForKey:@"openid"] isEqualToString:@""]) {
         self.userModel.openId = @"";
     }else{

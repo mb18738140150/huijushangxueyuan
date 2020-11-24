@@ -313,6 +313,8 @@
         self.orderList_NoPayOperation = [[OrderList_NoPayOperation alloc]init];
         self.addCourseStudyRecordOperation = [[AddCourseStudyRecordOperation alloc]init];
         self.getExamCountDown = [[GetExamCountDown alloc]init];
+        
+        self.tencentID = @"";
 
     }
     return self;
