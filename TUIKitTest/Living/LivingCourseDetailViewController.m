@@ -777,7 +777,7 @@ typedef enum : NSUInteger {
         [session GET:urlString parameters:nil headers:headDic progress:^(NSProgress * _Nonnull downloadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSLog(@"responseObject = %@", responseObject);
+//            NSLog(@"responseObject = %@", responseObject);
             int result = [[responseObject objectForKey:@"code"] intValue];
                 if (result == 0) {
                     // 请求成功
@@ -840,7 +840,7 @@ typedef enum : NSUInteger {
         [session GET:urlString parameters:nil headers:headDic progress:^(NSProgress * _Nonnull downloadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSLog(@"responseObject = %@", responseObject);
+//            NSLog(@"responseObject = %@", responseObject);
             int result = [[responseObject objectForKey:@"code"] intValue];
                 if (result == 0) {
                     // 请求成功
@@ -870,8 +870,8 @@ typedef enum : NSUInteger {
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         // 请求完毕
         if (roomDetailInfo && roomIdInfo) {
-            NSLog(@"roomDetailInfo = %@", roomDetailInfo);
-            NSLog(@"roomIdInfo = %@", roomIdInfo);
+//            NSLog(@"roomDetailInfo = %@", roomDetailInfo);
+//            NSLog(@"roomIdInfo = %@", roomIdInfo);
             V2TIMUserFullInfo * profile = [[V2TIMUserFullInfo alloc]init];
             profile.selfSignature = [roomIdInfo objectForKey:@"user_sig"];
             profile.nickName = [roomIdInfo objectForKey:@"identifier_nickname"];
@@ -919,7 +919,7 @@ typedef enum : NSUInteger {
                                 }
                             }
                         }
-                        
+                        NSLog(@"******** jiazaizhong ****** 2");
                         chatRoomVC.groupId = [roomIdInfo objectForKey:@"room_id"];
                         chatRoomVC.modalPresentationStyle = UIModalPresentationFullScreen;
                         [self presentViewController:chatRoomVC animated:YES completion:nil];
@@ -944,6 +944,10 @@ typedef enum : NSUInteger {
         }
         
     });
+    
+    
+    NSLog(@"******** jiazaizhong ****** 1");
+    
 }
 
 

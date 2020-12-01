@@ -68,6 +68,7 @@
 
 #define kNotificationOfCreateOrderSuccess                 @"NotificationOfCreateOrderSuccess"
 #define kNotificationOfPresentSuccess                 @"PresentSuccess"
+#define kNotificationOfneedVipCard                 @"needVipCard"
 
 
 #endif /* NotificaitonMacro_h */

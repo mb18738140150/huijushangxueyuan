@@ -57,6 +57,10 @@
 {
     self.vipTitleView.text = [info objectForKey:@"title"];
     
+    if([info objectForKey:@"image"])
+    {
+        self.vipImageView.image = [UIImage imageNamed:@"image"];
+    }
     
     NSString * btnStr = [info objectForKey:@"btn"];
     CGFloat width = [btnStr boundingRectWithSize:CGSizeMake(MAXFLOAT, 20) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kMainFont_12} context:nil].size.width;

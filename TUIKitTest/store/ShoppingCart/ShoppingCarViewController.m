@@ -107,6 +107,8 @@
     self.tableview.delegate = self;
     self.tableview.dataSource = self;
     [self.tableview registerClass:[ShoppingCarListTableViewCell class] forCellReuseIdentifier:kShoppingCarListTableViewCellID];
+    [self.tableview registerClass:[LoadFailedTableViewCell class] forCellReuseIdentifier:kFailedCellID];
+
     self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableview.backgroundColor = UIColorFromRGB(0xf5f5f5);
     [self.view addSubview:self.tableview];
@@ -137,12 +139,17 @@
 #pragma mark - tableview delegate & datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.dataSource.count;
+    return self.dataSource.count == 0 ? 1 : self.dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    if (self.dataSource.count == 0) {
+        LoadFailedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kFailedCellID forIndexPath:indexPath];
+        [cell refreshUIWith:@{}];
+        
+        return cell;
+    }
     ShoppingCarListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kShoppingCarListTableViewCellID forIndexPath:indexPath];
     
     
@@ -172,11 +179,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.dataSource.count == 0) {
+        return tableView.hd_height;
+    }
     return 80;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.dataSource.count == 0) {
+        return;
+    }
     NSDictionary * info = [self.dataSource objectAtIndex:indexPath.row];
     [self refreshShoppingCar:info andSelect:NO];
 }

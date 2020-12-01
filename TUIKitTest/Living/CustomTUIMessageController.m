@@ -426,7 +426,8 @@
             
             TUIImageItem * item = [[TUIImageItem alloc]init];
             item.url = [infoDic objectForKey:@"content"];
-            item.size = CGSizeMake(100, 100);
+            item.size = [self getImageSize:item.url];
+            
             imageData.items = [[NSMutableArray alloc]initWithArray:@[item]];
             
             data = imageData;
@@ -815,7 +816,7 @@
         
         TUIImageItem * item = [[TUIImageItem alloc]init];
         item.url = [infoDic objectForKey:@"content"];
-        item.size = CGSizeMake(100, 100);
+        item.size = [self getImageSize:item.url];;
         imageData.items = [[NSMutableArray alloc]initWithArray:@[item]];
         
         data = imageData;
@@ -1269,6 +1270,49 @@
             }
         }
     }
+}
+
+
+- (CGSize)getImageSize:(NSString *)imageUrl
+{
+    return CGSizeMake(100, 100);
+    __block CGSize size;
+    
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    
+    NSLog(@"*** 创建信号量 %@", [NSThread currentThread]);
+    
+    UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(120, 120, 130, 130)];
+    NSString * imageStr = [[NSString stringWithFormat:@"%@",[UIUtility judgeStr:imageUrl]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    imageView.hidden = YES;
+    UIWindow * window = [UIApplication sharedApplication].delegate.window;
+    [window addSubview:imageView];
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSLog(@"**** 开始加载图片 %@", [NSThread currentThread]);
+        [imageView sd_setImageWithURL:[NSURL URLWithString:imageStr] placeholderImage:[UIImage imageNamed:@""] options:SDWebImageAllowInvalidSSLCertificates completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                NSLog(@"**** 加载图片完成%@", [NSThread currentThread]);
+                size = CGSizeMake(image.size.width, image.size.height);
+
+                if (size.width > kScreenWidth - 100) {
+                    size = CGSizeMake(kScreenWidth - 100, (kScreenWidth - 100) * image.size.height / image.size.width);
+                }
+                NSLog(@"**** 开始释放信号量 %@", [NSThread currentThread]);
+                dispatch_semaphore_signal(semaphore);
+                NSLog(@"**** 完成释放信号量 %@", [NSThread currentThread]);
+            });
+
+        }];
+    });
+
+    
+    NSLog(@"***** 等待信号量 %@", [NSThread currentThread]);
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    NSLog(@"***** 执行return操作 %@", [NSThread currentThread]);
+    
+    return size;
 }
 
 @end

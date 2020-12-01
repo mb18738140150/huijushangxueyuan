@@ -13,10 +13,10 @@
 // http://192.168.1.10:9020/api/
 //  http://api.caigua5.com/api/
 
-#define kRootUrl @"http://bxapi.iluezhi.com/"
+#define kRootUrl @"http://bxapi.luezhi.com/"
 //http://doc.luezhi.com/server/index.php?g=Web&c=Mock&o=simple&projectID=22&uri=api/index/navigation
 // 分享地址
-#define kShareUrl @"http://bxapi.iluezhi.com/home/load"
+#define kShareUrl @"http://bxapi.luezhi.com/home/load"
 #define kDescription @"菜瓜网校是一家中国领先的移动互联网职业教育企业,致力于建工行业资格考试培训的相关服务,我公司以“学员第一,质量至上”为教学理念,专注于为中国建筑行业提供优质的教育资源、科学的课程体系和合理的学习方式,为学员量身制定培训方案和课程。"
 
 // 题库
@@ -24,7 +24,7 @@
 #define kMD5String @"tianmingkeji"
 
 // 上传文件
-#define kUploadRootUrl @"http://bxapi.iluezhi.com/api/upload/image"
+#define kUploadRootUrl @"http://bxapi.luezhi.com/api/upload/image"
 
 #define kNetError @"请检查网络连接"
 #define kInternalServerError @"内部服务错误"

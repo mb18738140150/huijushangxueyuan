@@ -769,6 +769,10 @@
             {
                 [delegate didRequestFailed:@"token已过期，请重新登录"];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfLoginClick object:nil];
+            }else if (result == 10004)
+            {
+                [delegate didRequestFailed:@"需要购买vip"];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfneedVipCard object:responseObject];
             }
             else{
                 

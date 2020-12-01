@@ -63,6 +63,12 @@
         _dailingquLB.textAlignment = NSTextAlignmentCenter;
         _dailingquLB.numberOfLines = 0;
         [contentView addSubview:_dailingquLB];
+        self.dailingquLB.userInteractionEnabled = YES;
+        
+        UITapGestureRecognizer * tap= [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dailingquAction)];
+        [self.dailingquLB addGestureRecognizer:tap];
+        
+        
         
         self.totalLB = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_keyongLB.frame), kScreenWidth / 2, (contentHeight - 2 * separateHeight) / 2)];
         
@@ -152,6 +158,7 @@
         [_sortBtn addTarget:self action:@selector(promisionAction:) forControlEvents:UIControlEventTouchUpInside];
         
     }
+    self.info = infoDic;
     
     NSString * keyongStr = [NSString stringWithFormat:@"可用额度(元)\n\n%@", [infoDic objectForKey:@"balance"]];
     NSMutableAttributedString * mKeyongStr = [[NSMutableAttributedString alloc]initWithString:keyongStr];
@@ -190,6 +197,16 @@
     }else
     {
         self.sortBtn.selected = NO;
+    }
+}
+
+- (void)dailingquAction
+{
+    if([[self.info objectForKey:@"unclaimed"] floatValue] > 0)
+    {
+        if (self.dailingquBlock) {
+            self.dailingquBlock(YES);
+        }
     }
 }
 

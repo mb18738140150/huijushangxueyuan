@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)hideSearchView;
 - (void)hideCategoryView;
 - (void)hideSeparateView;
-
+- (void)resignFirstResponder;
 - (instancetype)initWithFrame:(CGRect)frame withImageName:(NSString *)imageName;
 
 - (void)setSegmentColor:(UIColor *)color;

@@ -14,6 +14,8 @@
 #import "StoreViewController.h"
 #import "ArticleDetailViewController.h"
 #import "SecongListViewController.h"
+#import "LivingCourseDetailViewController.h"
+#import "MyPromotionViewController.h"
 
 @interface MyNotificationListViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_NotificationList>
 
@@ -72,6 +74,8 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerClass:[MyNotificationTableViewCell class] forCellReuseIdentifier:kMyNotificationTableViewCell];
+    [self.tableView registerClass:[LoadFailedTableViewCell class] forCellReuseIdentifier:kFailedCellID];
+
     [self.view addSubview:self.tableView];
     self.tableView.backgroundColor = UIColorFromRGB(0xf2f2f2);
     [self.tableView reloadData];
@@ -134,11 +138,19 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.dataSource.count;
+    return self.dataSource.count == 0 ? 1 : self.dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    if (self.dataSource.count == 0) {
+        LoadFailedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kFailedCellID forIndexPath:indexPath];
+        [cell refreshUIWith:@{}];
+        
+        return cell;
+    }
+    
     __weak typeof(self)weakSelf = self;
     MyNotificationTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kMyNotificationTableViewCell forIndexPath:indexPath];
     [cell refreshUIWith:self.dataSource[indexPath.row]];
@@ -150,6 +162,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.dataSource.count == 0) {
+        return tableView.hd_height;
+    }
+    
     NSDictionary * info = self.dataSource[indexPath.row];
     NSString * titleStr = [info objectForKey:@"content"];
     CGFloat titleHeight = [titleStr boundingRectWithSize:CGSizeMake(tableView.hd_width - 30 - 30 - 140, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kMainFont} context:nil].size.height;
@@ -165,22 +181,22 @@
     if ([juge_type isEqualToString:@"inner"]) {
         NSString * innerType = [UIUtility judgeStr:[info objectForKey:@"jump_url"]];
         /*
-         index    首页
-         center    个人中心
-         yd_payred_index    图文音视频
+         index    首页      1
+         center    个人中心  1
+         yd_payred_index    图文音视频  1
          ask_expert    问答
-         zb_topics    直播
+         zb_topics    直播  1
          yx_activiy    优惠券
          zb_series    直播专栏
          yd_serialize    普通专栏
          saas_bargain    砍价
          vip_introduce    会员
-         shop_index    商城
-         mypay    我的已购
-         yx_extension_recruit    推广中心
-         yd_detail    图文音视频详情
-         vip_center    会员中心
-         zb_topic_info    直播详情页
+         shop_index    商城  1
+         mypay    我的已购    1
+         yx_extension_recruit    推广中心   1
+         yd_detail    图文音视频详情   1
+         vip_center    会员中心       1
+         zb_topic_info    直播详情页   1
          
          */
         if ([innerType isEqualToString:@"index"]) {
@@ -197,15 +213,7 @@
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
         }
-        else if ([innerType isEqualToString:@"zb_topics"])
-        {
-            
-            NSString * pid = @"";
-            if (![[info objectForKey:@"need_redirect"] isKindOfClass:[NSNull class]]) {
-                pid = [[info objectForKey:@"need_redirect"] objectForKey:@"tags"];
-            }
-            [self pushSecondVC:SecondListType_living andInfo:pid];
-        }
+        
         else if ([innerType isEqualToString:@"mypay"])
         {
             MyBuyCourseViewController * vc = [[MyBuyCourseViewController alloc]init];
@@ -216,7 +224,17 @@
             StoreViewController * vc = [[StoreViewController alloc]init];
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
-        }else if ([innerType isEqualToString:@"yd_payred_index"])
+        }
+        else if ([innerType isEqualToString:@"zb_topics"])
+        {
+            
+            NSString * pid = @"";
+            if (![[info objectForKey:@"need_redirect"] isKindOfClass:[NSNull class]]) {
+                pid = [[info objectForKey:@"need_redirect"] objectForKey:@"tags"];
+            }
+            [self pushSecondVC:SecondListType_living andInfo:pid];
+        }
+        else if ([innerType isEqualToString:@"yd_payred_index"])
         {
             NSString * pid = @"";
             if (![[info objectForKey:@"need_redirect"] isKindOfClass:[NSNull class]]) {
@@ -226,6 +244,33 @@
         }else if ([innerType isEqualToString:@"yd_detail"])
         {
             [self pushArticleDetailVC:[info objectForKey:@"need_redirect"]];
+        }
+        else if ([innerType isEqualToString:@"zb_topic_info"])
+        {
+            [self pushLivingDetailVC:[info objectForKey:@"need_redirect"]];
+        }
+        else if ([innerType isEqualToString:@"yx_extension_recruit"])
+        {
+            MyPromotionViewController * vc = [[MyPromotionViewController alloc]init];
+            NSDictionary *  promotionInfo = [[[UserManager sharedManager] getUserInfo] objectForKey:@"promoter"];
+            PromotionType promotionType;
+            if (![promotionInfo isKindOfClass:[NSNull class]]) {
+                if ([[promotionInfo objectForKey:@"status"] intValue] == 1) {
+                    promotionType = PromotionType_check;
+                }else if ([[promotionInfo objectForKey:@"status"] intValue] == 2)
+                {
+                    promotionType = PromotionType_complate;
+                }else
+                {
+                    promotionType = PromotionType_apply;
+                }
+            }else
+            {
+                promotionType  = PromotionType_apply;
+            }
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.promotionType = promotionType;
+            [self.navigationController pushViewController:vc animated:YES];
         }
         
     }else if ([juge_type isEqualToString:@"none"])
@@ -241,6 +286,8 @@
     }
 }
 
+
+
 - (void)pushArticleDetailVC:(NSDictionary *)info
 {
     ArticleDetailViewController * vc = [[ArticleDetailViewController alloc]init];
@@ -249,6 +296,17 @@
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+- (void)pushLivingDetailVC:(NSDictionary *)info
+{
+    LivingCourseDetailViewController * vc = [[LivingCourseDetailViewController alloc]init];
+    NSMutableDictionary * mInfo = [[NSMutableDictionary alloc]initWithDictionary:info];
+    
+    vc.info = mInfo;
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 - (void)pushSecondVC:(SecondListType)type andInfo:(NSString *)pid
 {

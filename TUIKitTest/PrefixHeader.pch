@@ -74,6 +74,7 @@
 #import "GTMNSString+HTML.h"
 #import "TestImageView.h"
 #import "CategoryView.h"
+#import "LoadFailedTableViewCell.h"
 
 //#import <KSYMediaPlayer/KSYMediaPlayer.h>
 
@@ -100,6 +101,8 @@
 
 #define scrnW [UIScreen mainScreen].bounds.size.width
 #define scrnH [UIScreen mainScreen].bounds.size.height
+
+#define kFailedCellID @"failedID"
 
 #define TableHeader 43
 #define PlaceHolder @" "

@@ -109,6 +109,7 @@
     [self.tableView registerClass:[ShoppingCarListTableViewCell class] forCellReuseIdentifier:kShoppingCarListTableViewCellID];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellID"];
     [self.tableView registerClass:[OrderBottomTableViewCell class] forCellReuseIdentifier:kOrderBottomTableViewCell];
+    [self.tableView registerClass:[LoadFailedTableViewCell class] forCellReuseIdentifier:kFailedCellID];
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(doResetQuestionRequest)];
     self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(doNextPageQuestionRequest)];
     
@@ -216,11 +217,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.itemArray.count;
+    return self.itemArray.count == 0 ? 1 : self.itemArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (self.itemArray.count == 0) {
+        return 1;
+    }
     NSDictionary * orderInfo = [self.itemArray objectAtIndex:section];
     NSArray * commodityArray = [[orderInfo objectForKey:@"commodities"] objectForKey:@"data"];
     return commodityArray.count + 2;
@@ -228,6 +232,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.itemArray.count == 0) {
+        LoadFailedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kFailedCellID forIndexPath:indexPath];
+        [cell refreshUIWith:@{}];
+        
+        return cell;
+    }
+    
     NSDictionary * orderInfo = [self.itemArray objectAtIndex:indexPath.section];
     NSArray * commodityArray = [[orderInfo objectForKey:@"commodities"] objectForKey:@"data"];
     __weak typeof(self)weakSelf = self;
@@ -297,6 +308,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.itemArray.count == 0) {
+        return tableView.hd_height;
+    }
+    
     NSDictionary * orderInfo = [self.itemArray objectAtIndex:indexPath.section];
     NSArray * commodityArray = [[orderInfo objectForKey:@"commodities"] objectForKey:@"data"];
     
@@ -312,6 +327,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.itemArray.count == 0) {
+        return;
+    }
     NSDictionary * orderInfo = [self.itemArray objectAtIndex:indexPath.section];
     NSArray * commodityArray = [[orderInfo objectForKey:@"commodities"] objectForKey:@"data"];
     if (indexPath.row == 0) {

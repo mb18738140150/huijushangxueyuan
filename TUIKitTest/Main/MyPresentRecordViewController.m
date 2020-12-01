@@ -122,6 +122,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
     [self.tableView registerClass:[MyPresentRecordTableViewCell class] forCellReuseIdentifier:kMyPresentRecordTableViewCell];
+    [self.tableView registerClass:[LoadFailedTableViewCell class] forCellReuseIdentifier:kFailedCellID];
     self.tableView.backgroundColor = UIColorFromRGB(0xf2f2f2);
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(doResetQuestionRequest)];
     [self.tableView reloadData];
@@ -175,11 +176,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.itemArray.count;
+    return self.itemArray.count == 0 ? 1 : self.itemArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.itemArray.count == 0) {
+        LoadFailedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kFailedCellID forIndexPath:indexPath];
+        [cell refreshUIWith:@{}];
+        
+        return cell;
+    }
     __weak typeof(self)weakSelf = self;
     MyPresentRecordTableViewCell *titleCell = [tableView dequeueReusableCellWithIdentifier:kMyPresentRecordTableViewCell forIndexPath:indexPath];
     
@@ -194,11 +201,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.itemArray.count == 0) {
+        return tableView.hd_height;
+    }
     return 90 + 55;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.itemArray.count == 0) {
+        return;
+    }
     NSDictionary * info = [self.itemArray objectAtIndex:indexPath.row];
 }
 

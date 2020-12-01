@@ -6,7 +6,7 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:bxapi.iluezhi.com</string>
+		<string>applinks:bxapi.luezhi.com</string>
 	</array>
 	<key>com.apple.developer.networking.wifi-info</key>
 	<true/>

@@ -9,6 +9,7 @@
 #import "TiXianViewController.h"
 #import "MyIncomeHeaderTableViewCell.h"
 #define kMyIncomeHeaderTableViewCell @"MyIncomeHeaderTableViewCell"
+#import "DailingquViewController.h"
 
 @interface MyIncomeViewController ()<UITableViewDelegate, UITableViewDataSource,UserModule_IncomeInfo,UserModule_GiftList>
 @property (nonatomic, assign)int page;
@@ -208,6 +209,11 @@
             [weakSelf resetcategoryArray];
             [weakSelf requestDataWith:index];
         }];
+        
+        cell.dailingquBlock = ^(BOOL isAsc) {
+            DailingquViewController * vc = [[DailingquViewController alloc]init];
+            [weakSelf.navigationController pushViewController:vc animated:YES];
+        };
         
         cell.sortBlock = ^(BOOL isAsc) {
             if (isAsc) {

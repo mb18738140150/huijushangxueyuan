@@ -46,17 +46,25 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerClass:[LivingImageListTableViewCell class] forCellReuseIdentifier:kLivingImageListTableViewCell];
+    [self.tableView registerClass:[LoadFailedTableViewCell class] forCellReuseIdentifier:kFailedCellID];
     [self addSubview:self.tableView];
 
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.dataSource.count;
+    return self.dataSource.count == 0 ? 1 : self.dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.dataSource.count == 0) {
+        LoadFailedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kFailedCellID forIndexPath:indexPath];
+        [cell refreshUIWith:@{}];
+        
+        return cell;
+    }
+    
     LivingImageListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kLivingImageListTableViewCell forIndexPath:indexPath];
     [cell resetUIWithInfo:self.dataSource[indexPath.row]];
     __weak typeof(self)weakSelf = self;
@@ -73,6 +81,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.dataSource.count == 0) {
+        return tableView.hd_height;
+    }
     NSMutableDictionary * mInfo = [self.dataSource objectAtIndex:indexPath.row];
     float width = [[mInfo objectForKey:@"width"] floatValue];
     float height = [[mInfo objectForKey:@"height"] floatValue];

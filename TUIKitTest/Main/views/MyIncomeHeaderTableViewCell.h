@@ -15,7 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy)void(^teacherBlock)(NSDictionary * info);
 @property (nonatomic, copy)void(^tixianBlock)(NSDictionary * info);
 @property (nonatomic, copy)void(^sortBlock)(BOOL isAsc);
+@property (nonatomic, copy)void(^dailingquBlock)(BOOL isAsc);
 
+
+@property (nonatomic, strong)NSDictionary * info;
 
 @property (nonatomic, strong)ZWMSegmentView * zixunSegment;
 - (void)refreshUIWithInfo:(NSDictionary *)infoDic;

@@ -43,6 +43,8 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerClass:[LivingShareListTableViewCell class] forCellReuseIdentifier:kLivingShareListTableViewCell];
+    [self.tableView registerClass:[LoadFailedTableViewCell class] forCellReuseIdentifier:kFailedCellID];
+
     [self addSubview:self.tableView];
     
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
@@ -65,11 +67,18 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.dataSource.count;
+    return self.dataSource.count == 0 ? 1 : self.dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.dataSource.count == 0) {
+        LoadFailedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kFailedCellID forIndexPath:indexPath];
+        [cell refreshUIWith:@{}];
+        
+        return cell;
+    }
+    
     LivingShareListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kLivingShareListTableViewCell forIndexPath:indexPath];
     [cell resetUIWithInfo:self.dataSource[indexPath.row]];
     [cell setSort:indexPath.row];
@@ -78,6 +87,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.dataSource.count == 0) {
+        return tableView.hd_height;
+    }
+    
     return 64;
 }
 

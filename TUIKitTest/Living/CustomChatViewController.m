@@ -630,6 +630,7 @@
                 StoreViewController * vc = [[StoreViewController alloc]init];
                 vc.fromType = FromType_present;
                 UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                nav.modalPresentationStyle = UIModalPresentationFullScreen;
                 [weakSelf presentViewController:nav animated:YES completion:nil];
                 
             }

@@ -84,6 +84,7 @@
     [self.view addSubview:self.tableView];
     self.tableView.backgroundColor = UIColorFromRGB(0xf2f2f2);
     [self.tableView registerClass:[JoinAssociationHeadTableViewCell class] forCellReuseIdentifier:kJoinAssociationHeadTableViewCell];
+    [self.tableView registerClass:[LoadFailedTableViewCell class] forCellReuseIdentifier:kFailedCellID];
     [self.tableView registerClass:[AssociationCommentTableViewCell class] forCellReuseIdentifier:kAssociationCommentTableViewCell];
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
 
@@ -196,7 +197,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 1) {
-        return self.itemArray.count;
+        return self.itemArray.count == 0 ? 1 : self.itemArray.count;
     }
     return 1;
 }
@@ -206,6 +207,14 @@
     __weak typeof(self)weakSelf = self;
     
     if (indexPath.section == 1) {
+        
+        if (self.itemArray.count == 0) {
+            LoadFailedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kFailedCellID forIndexPath:indexPath];
+            [cell refreshUIWith:@{}];
+            
+            return cell;
+        }
+        
         AssociationCommentTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kAssociationCommentTableViewCell forIndexPath:indexPath];
         [cell refreshUIWith:self.itemArray[indexPath.row] andIsCanOperation:NO];
         
@@ -231,6 +240,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 1) {
+        
+        if (self.itemArray.count == 0) {
+            return tableView.hd_height - 280;
+        }
+        
         NSDictionary * info = self.itemArray[indexPath.row];
         NSString * contentStr = [info objectForKey:@"content"];
         CGFloat height = [contentStr boundingRectWithSize:CGSizeMake(tableView.hd_width - 70, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kMainFont} context:nil].size.height;

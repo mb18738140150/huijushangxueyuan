@@ -105,7 +105,7 @@ typedef enum : NSUInteger {
     [self.tableView registerClass:[AssociationCommentTableViewCell class] forCellReuseIdentifier:kAssociationCommentTableViewCell];
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(doResetQuestionRequest)];
     self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(doNextPageQuestionRequest)];
-    
+    [self.tableView registerClass:[LoadFailedTableViewCell class] forCellReuseIdentifier:kFailedCellID];
     self.pubishDynamicBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _pubishDynamicBtn.frame = CGRectMake(kScreenWidth - 80, kScreenHeight - kNavigationBarHeight - kStatusBarHeight - 120, 60, 60 * 408 / 368);
     [_pubishDynamicBtn setImage:[UIImage imageNamed:@"dynamic_编辑"] forState:UIControlStateNormal];
@@ -189,7 +189,7 @@ typedef enum : NSUInteger {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 1) {
-        return self.itemArray.count;
+        return self.itemArray.count == 0 ? 1 : self.itemArray.count;
     }
     return 1;
 }
@@ -199,6 +199,14 @@ typedef enum : NSUInteger {
     __weak typeof(self)weakSelf = self;
     
     if (indexPath.section == 1) {
+        
+        if (self.itemArray.count == 0) {
+            LoadFailedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kFailedCellID forIndexPath:indexPath];
+            [cell refreshUIWith:@{}];
+            
+            return cell;
+        }
+        
         AssociationCommentTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kAssociationCommentTableViewCell forIndexPath:indexPath];
         [cell refreshUIWith:self.itemArray[indexPath.row] andIsCanOperation:YES];
         
@@ -256,6 +264,11 @@ typedef enum : NSUInteger {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 1) {
+        
+        if (self.itemArray.count == 0) {
+            return tableView.hd_height - 210;
+        }
+        
         NSDictionary * info = self.itemArray[indexPath.row];
         NSString * contentStr = [info objectForKey:@"content"];
         CGFloat height = [contentStr boundingRectWithSize:CGSizeMake(tableView.hd_width - 70, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kMainFont} context:nil].size.height;

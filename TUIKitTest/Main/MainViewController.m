@@ -63,7 +63,6 @@
     [self loadData];
 }
 
-
 - (void)category:(NSNotification *)notification
 {
     NSDictionary *infoDic = notification.object;

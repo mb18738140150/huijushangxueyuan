@@ -108,7 +108,7 @@
     [self.view addSubview:self.tableView];
     self.tableView.backgroundColor = UIColorFromRGB(0xf2f2f2);
     [self.tableView registerClass:[MyTeamInfoTableViewCell class] forCellReuseIdentifier:kSecondListTableViewCell];
-    
+    [self.tableView registerClass:[LoadFailedTableViewCell class] forCellReuseIdentifier:kFailedCellID];
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(doResetQuestionRequest)];
     self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(doNextPageQuestionRequest)];
     
@@ -187,11 +187,18 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.itemArray.count;
+    return self.itemArray.count == 0 ? 1 : self.itemArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.itemArray.count == 0) {
+        LoadFailedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kFailedCellID forIndexPath:indexPath];
+        [cell refreshUIWith:@{}];
+        
+        return cell;
+    }
+    
     MyTeamInfoTableViewCell *titleCell = [tableView dequeueReusableCellWithIdentifier:kSecondListTableViewCell forIndexPath:indexPath];
     
     [titleCell refreshUIWithInfo:self.itemArray[indexPath.row]];
@@ -200,6 +207,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.itemArray.count == 0) {
+        return tableView.hd_height;
+    }
     return 125;
 }
 

@@ -211,7 +211,7 @@
         {
             HomeOpenVIPCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kHomeOpenVIPCollectionViewCell forIndexPath:indexPath];
             [cell resetUIWithInfo:@{}];
-            [cell resetContent:@{@"title":@"汇聚播商商学院testing的课堂",@"btn":@"去学习"}];
+            [cell resetContent:@{@"title":@"汇聚播商商学院testing的课堂",@"btn":@"去学习",@"image":@"main_课程"}];
             return cell;
         }
             break;

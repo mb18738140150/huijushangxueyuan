@@ -49,7 +49,7 @@
     }];
     
     //向微信注册
-    [WXApi registerApp:kWeixinAppid universalLink:@"https://bxapi.iluezhi.com/huiju/"];
+    [WXApi registerApp:kWeixinAppid universalLink:@"https://bxapi.luezhi.com/huiju/"];
     
     [WXApiManager sharedManager].delegate = self;
     
