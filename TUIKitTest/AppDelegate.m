@@ -76,17 +76,6 @@
     NSString *lastVersions = [defaults stringForKey:@"lastVersions"];
     NSString *newVersions = [[NSBundle mainBundle].infoDictionary objectForKey:@"CFBundleVersion"];
     [self mainViewSetup];
-//    if([newVersions isEqualToString:lastVersions]){
-//        
-//    }else
-//    {
-//        //设置介绍APP界面为跟视图()
-//        WelcomeViewController * welcomeVC = [[WelcomeViewController alloc]init];
-//        self.window.rootViewController = welcomeVC;
-//        //并储存新版本号
-//        [defaults setObject:newVersions forKey:@"lastVersions"];
-//        [defaults synchronize];
-//    }
     
     [DownloaderManager sharedManager];
        
@@ -244,7 +233,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
       }]];
 //      [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
       
-      [self pushLivingCourseDetailVC:userInfo];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfPushLivingCourse object:userInfo];
+
   }
   else {
     // 判断为本地通知
@@ -275,7 +265,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 //      [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
       
       
-      [self pushLivingCourseDetailVC:userInfo];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationOfPushLivingCourse object:userInfo];
   }
   else {
     // 判断为本地通知
@@ -334,18 +324,18 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
  
 
 #pragma mark - UISceneSession lifecycle
-- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
-    // Called when a new scene session is being created.
-    // Use this method to select a configuration to create the new scene with.
-    return [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];
-}
-
-
-- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions {
-    // Called when the user discards a scene session.
-    // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-    // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-}
+//- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
+//    // Called when a new scene session is being created.
+//    // Use this method to select a configuration to create the new scene with.
+//    return [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];
+//}
+//
+//
+//- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions {
+//    // Called when the user discards a scene session.
+//    // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
+//    // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+//}
 
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options

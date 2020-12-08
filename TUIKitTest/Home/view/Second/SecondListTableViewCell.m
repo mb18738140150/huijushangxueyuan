@@ -49,14 +49,6 @@
     [hzuanshuLB.layer setMask:layer];
     [self.courseImageView addSubview:hzuanshuLB];
     
-    if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled])
-    {
-        
-    }else
-    {
-        hzuanshuLB.hidden = YES;
-    }
-    
     // 直播状态
     self.livingStateView = [[LivingStateView alloc]initWithFrame:CGRectMake(0, self.courseImageView.hd_height - 20, 100, 20)];
     [self.courseImageView addSubview:self.livingStateView];
@@ -162,6 +154,14 @@
         hzuanshuLB.hidden = YES;
         self.livingStateView.hidden = NO;
     }
+    
+    if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] >0 && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue])
+    {
+        
+    }else
+    {
+        hzuanshuLB.hidden = YES;
+    }
 }
 
 
@@ -197,13 +197,7 @@
     [hzuanshuLB.layer setMask:layer];
 //    [self.courseImageView addSubview:hzuanshuLB];
     
-    if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled])
-    {
-        
-    }else
-    {
-        hzuanshuLB.hidden = YES;
-    }
+    
     
     // 直播状态
     self.livingStateView = [[LivingStateView alloc]initWithFrame:CGRectMake(0, self.courseImageView.hd_height - 20, 100, 20)];
@@ -351,7 +345,13 @@
         }
         
     }
-    
+    if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] > 0 && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue])
+    {
+        
+    }else
+    {
+        hzuanshuLB.hidden = YES;
+    }
 }
 
 - (NSString *)getOldStrWithSource1:(NSString *)str1 andSource2:(NSString *)str2

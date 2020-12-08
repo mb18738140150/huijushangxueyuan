@@ -213,9 +213,9 @@ typedef enum : NSUInteger {
         UIWindow * window=[[[UIApplication sharedApplication] delegate] window];
         CGRect rect = [cell convertRect:cell.bounds toView:window];
         cell.imageClickBlock = ^(NSArray * _Nonnull urlArray, int index) {
-            TestImageView *showView = [[TestImageView alloc] initWithFrame:weakSelf.view.frame andImageList:urlArray andCurrentIndex:index];
+            TestImageView *showView = [[TestImageView alloc] initWithFrame:CGRectMake(0, -64, kScreenWidth, kScreenHeight + 64) andImageList:urlArray andCurrentIndex:index];
             showView.outsideFrame = rect;
-            showView.insideFrame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+            showView.insideFrame = CGRectMake(0, -(kNavigationBarHeight + kStatusBarHeight), kScreenWidth, kScreenHeight);
             [showView show];
         };
         

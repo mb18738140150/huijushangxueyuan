@@ -143,6 +143,14 @@
         }
         [weakSelf.navigationController pushViewController:vc animated:YES];
     };
+    
+    if ([weakSelf.vipCardInfo objectForKey:@"my"] != nil && [[weakSelf.vipCardInfo objectForKey:@"my"] allKeys].count > 0) {
+        NSDictionary * myInfo = [weakSelf.vipCardInfo objectForKey:@"my"];
+        if ([[myInfo objectForKey:@"id"] intValue] == [kPartnerCardID intValue] && [[myInfo objectForKey:@"id"] isEqual:[weakSelf.dataSource[indexPath.item] objectForKey:@"id"]]) {
+            [cell hiddenApplayBtn];
+        }
+    }
+    
     return cell;
 }
 

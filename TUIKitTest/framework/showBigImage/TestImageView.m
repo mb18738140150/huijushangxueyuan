@@ -154,12 +154,15 @@
 #pragma mark - action
 
 - (void)show {
-    [UIApplication.sharedApplication.keyWindow addSubview:self];
+    
+    UIWindow * window = [UIApplication sharedApplication].delegate.window;
+    
+    [window addSubview:self];
     self.blackBgView.alpha = 0;
     self.imageView.frame = self.outsideFrame;
     self.blackBgView.userInteractionEnabled = NO;
     [UIView animateWithDuration:0.3 animations:^{
-        self.imageView.frame = self.insideFrame;
+        self.imageView.frame = CGRectMake(0, -(kNavigationBarHeight + kStatusBarHeight), kScreenWidth, kScreenHeight);
         self.blackBgView.alpha = 1.0;
     } completion:^(BOOL finished) {
         self.blackBgView.userInteractionEnabled = YES;
@@ -184,7 +187,7 @@
 #pragma mark - setter & getter
 - (UIView *)blackBgView {
     if (!_blackBgView) {
-        _blackBgView = [[UIView alloc] initWithFrame:self.bounds];
+        _blackBgView = [[UIView alloc] initWithFrame:CGRectMake(0, -(kNavigationBarHeight + kStatusBarHeight), kScreenWidth, kScreenHeight + (kNavigationBarHeight + kStatusBarHeight))];
         _blackBgView.backgroundColor = UIColor.blackColor;
         _blackBgView.userInteractionEnabled = NO;
         [_blackBgView addGestureRecognizer: [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)]];

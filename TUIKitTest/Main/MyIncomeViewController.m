@@ -237,7 +237,7 @@
             weakSelf.isTeacher = NO;
             [weakSelf resetcategoryArray];
             [weakSelf requestContentData];
-            [weakSelf requestDataWith:weakSelf.courseSegment.index];
+//            [weakSelf requestDataWith:weakSelf.courseSegment.index];
             
         };
         cell.teacherBlock = ^(NSDictionary * _Nonnull info) {
@@ -245,7 +245,7 @@
             weakSelf.isTeacher = YES;
             [weakSelf resetcategoryArray];
             [weakSelf requestContentData];
-            [weakSelf requestDataWith:weakSelf.courseSegment.index];
+//            [weakSelf requestDataWith:weakSelf.courseSegment.index];
         };
         return cell;
     }

@@ -14,7 +14,7 @@
 
 #import "NSString+HTML.h"
 
-//#import "RegistViewController.h"
+#import "RegistViewController.h"
 //#import "ForgetPasswordViewController.h"
 //#import "VerifyAccountViewController.h"
 #define kImageWidth 25
@@ -83,7 +83,10 @@
     UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
     imageView.image = [UIImage imageNamed:@"loginImage"];
     [self.view addSubview:imageView];
-    
+    if (self.isAccount) {
+        [self prepareUI];
+        return;
+    }
     UIButton * weichatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     weichatBtn.frame = CGRectMake(20, kScreenHeight - 280, kScreenWidth - 40, 70);
     weichatBtn.backgroundColor = UIColorFromRGB(0xffffff);
@@ -102,34 +105,13 @@
 
 - (void)prepareUI
 {
-    self.logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(kScreenWidth / 2 - 90, 60, 180, 80)];
-    self.logoImageView.image = [UIImage imageNamed:@"loginLogo"];
-    [self.view addSubview:self.logoImageView];
     
-    UIImageView * imageview1 = [[UIImageView alloc]initWithFrame:CGRectMake(self.logoImageView.hd_x+10, CGRectGetMaxY(self.logoImageView.frame)+10, 160, 16)];
-    imageview1.image = [UIImage imageNamed:@"loginLogoBorrom"];
-//    [self.view addSubview:imageview1];
-    
-    UILabel * welcomLB = [[UILabel alloc]initWithFrame:CGRectMake(20, 90, kScreenWidth - 40, 90)];
-    welcomLB.text = @"你好，\n欢迎来到菜瓜网校";
-    welcomLB.numberOfLines = 0;
-    welcomLB.font = [UIFont systemFontOfSize:31];
-    welcomLB.textAlignment = NSTextAlignmentLeft;
-    welcomLB.textColor = UIColorFromRGB(0x333333);
-    [self.view addSubview:welcomLB];
-    
-    _background=[[LoginBackgroundView alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(imageview1.frame) + 10, kScreenWidth-40, kScreenHeight - 160 - 70)];
-    [_background setBackgroundColor:[UIColor whiteColor]];
-//    [[_background layer] setCornerRadius:10];
-//    _background.layer.shadowColor = kCommonMainTextColor_200.CGColor;
-//    _background.layer.shadowOffset = CGSizeMake(5, 5);
-//    _background.layer.shadowOpacity = 0.5;
-//    _background.layer.shadowRadius = 10;
-//    _background.clipsToBounds = NO;
+    _background=[[LoginBackgroundView alloc] initWithFrame:CGRectMake(20, 0, kScreenWidth-40, kScreenHeight )];
+    [_background setBackgroundColor:[UIColor clearColor]];
     _background.userInteractionEnabled = YES;
     [self.view addSubview:_background];
     
-    UIView * accountView = [[UIView alloc]initWithFrame:CGRectMake(20, 40, kScreenWidth - 80, 40)];
+    UIView * accountView = [[UIView alloc]initWithFrame:CGRectMake(20, kScreenHeight - 350, kScreenWidth - 80, 40)];
     accountView.backgroundColor = [UIColor whiteColor];
     [_background addSubview:accountView];
     
@@ -178,19 +160,11 @@
     [self.view addSubview:closeBtn];
     
     
-    UIButton * forgetPsdBTn = [UIButton buttonWithType:UIButtonTypeCustom];
-    forgetPsdBTn.frame = CGRectMake(20, CGRectGetMaxY(passwordView.frame) + 40, 70, 20);
-    forgetPsdBTn.titleLabel.font = kMainFont;
-    [forgetPsdBTn setTitle:@"忘记密码" forState:UIControlStateNormal];
-    [forgetPsdBTn setTitleColor:kCommonMainTextColor_150 forState:UIControlStateNormal];
-    [forgetPsdBTn addTarget:self action:@selector(forgetPasswordAction) forControlEvents:UIControlEventTouchUpInside];
-    [_background addSubview:forgetPsdBTn];
-    
     UIButton * registPsdBTn = [UIButton buttonWithType:UIButtonTypeCustom];
     registPsdBTn.frame = CGRectMake(CGRectGetMaxX(passwordView.frame) -70, CGRectGetMaxY(passwordView.frame) + 40, 70, 20);
     registPsdBTn.titleLabel.font = kMainFont;
     [registPsdBTn setTitle:@"立即注册" forState:UIControlStateNormal];
-    [registPsdBTn setTitleColor:kCommonMainTextColor_150 forState:UIControlStateNormal];
+    [registPsdBTn setTitleColor:kCommonMainTextColor_100 forState:UIControlStateNormal];
     [registPsdBTn addTarget:self action:@selector(registerAction) forControlEvents:UIControlEventTouchUpInside];
     [_background addSubview:registPsdBTn];
     
@@ -204,7 +178,7 @@
     _loginButton.layer.borderColor = kCommonMainTextColor_150.CGColor;
     _loginButton.layer.borderWidth = 0.5;
     [_loginButton addTarget:self action:@selector(doLogin) forControlEvents:UIControlEventTouchUpInside];
-    [_loginButton setBackgroundColor:UIColorFromRGB(0xe2292a)];
+    [_loginButton setBackgroundColor:kCommonMainBlueColor];
     [_loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_background addSubview:_loginButton];
     
@@ -213,14 +187,11 @@
     touristBtn.frame = CGRectMake(0, _background.hd_height - 40, _background.hd_width, 20);
     [touristBtn setTitle:@"游客模式>>>" forState:UIControlStateNormal];
     touristBtn.titleLabel.font = kMainFont;
-    [touristBtn setTitleColor:UIColorFromRGB(0xe2292a) forState:UIControlStateNormal];
-    [touristBtn setBackgroundColor:[UIColor redColor]];
+    [touristBtn setTitleColor:kCommonMainBlueColor forState:UIControlStateNormal];
+    [touristBtn setBackgroundColor:[UIColor clearColor]];
     [_background addSubview:touristBtn];
     [touristBtn addTarget:self action:@selector(touristAction) forControlEvents:UIControlEventTouchUpInside];
     
-    UIImageView * bottomImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, kScreenHeight - 70, kScreenWidth, 70)];
-    bottomImageView.image = [UIImage imageNamed:@"welt"];
-    [self.view addSubview:bottomImageView];
 }
 
 - (void)resignTextFiled
@@ -243,16 +214,7 @@
 
 - (void)doLogin
 {
-    /*
-     <p style="text-align: left;"><br/></p><p style="text-align:center"><img title="uploads/0708/159419762891408860.jpg" style="width: 100%;" alt="报名介绍图.jpg" src="https://qiniu.luezhi.com/uploads/0708/159419762891408860.jpg?imageslim"/></p><p><br/></p><p><br/></p><p style="text-align: center;"><br/></p><p><br/></p><p style="text-align: center;">                          </p>
-
-     */
     
-    NSString * htmlStr = @"";
-    
-    
-//     [[UserManager sharedManager] didRequestTabbarWithWithDic:@{kUrlName:@"api/index/navigation"} WithNotifedObject:nil];
-    return;
     [self.account resignFirstResponder];
     [self.password resignFirstResponder];
     
@@ -262,18 +224,12 @@
     [SVProgressHUD show];
 }
 
-- (void)forgetPasswordAction
-{
-    NSLog(@"忘记密码");
-//    VerifyAccountViewController * forgetVC = [[VerifyAccountViewController alloc]init];
-//    [self.navigationController pushViewController:forgetVC animated:YES];
-}
 
 - (void)registerAction
 {
     NSLog(@"注册");
-//    RegistViewController * registVC = [[RegistViewController alloc]init];
-//    [self.navigationController pushViewController:registVC animated:YES];
+    RegistViewController * registVC = [[RegistViewController alloc]init];
+    [self.navigationController pushViewController:registVC animated:YES];
 }
 
 - (void)touristAction
@@ -283,8 +239,6 @@
         
         [self sendAuthRequest];
         
-        
-//        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }else
     {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"游客最好注册账户，否则会账号信息存在风险" delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];

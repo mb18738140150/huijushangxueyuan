@@ -25,7 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong)NSDictionary * infoDic;
 - (void)refreshUIWith:(NSDictionary *)infoDic;
 
-- (void)hidePayBtn;
+
+- (void)hiddenApplayBtn;
 
 @end
 

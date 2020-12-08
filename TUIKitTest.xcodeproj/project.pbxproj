@@ -90,6 +90,13 @@
 		002B16402542D319008B2607 /* 朋友圈.png in Resources */ = {isa = PBXBuildFile; fileRef = 002B163D2542D319008B2607 /* 朋友圈.png */; };
 		002B164D2542E58A008B2607 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 002B164B2542E58A008B2607 /* AlipaySDK.bundle */; };
 		002B164E2542E58A008B2607 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002B164C2542E58A008B2607 /* AlipaySDK.framework */; };
+		0033C877257B183E00F8FE77 /* RegistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0033C876257B183E00F8FE77 /* RegistViewController.m */; };
+		0033C882257B1CD700F8FE77 /* 手机(1)@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0033C87C257B1CD600F8FE77 /* 手机(1)@3x.png */; };
+		0033C883257B1CD700F8FE77 /* 验证码验证@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0033C87D257B1CD600F8FE77 /* 验证码验证@2x.png */; };
+		0033C884257B1CD700F8FE77 /* 密码@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0033C87E257B1CD600F8FE77 /* 密码@3x.png */; };
+		0033C885257B1CD700F8FE77 /* 验证码验证@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0033C87F257B1CD700F8FE77 /* 验证码验证@3x.png */; };
+		0033C886257B1CD700F8FE77 /* 密码@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0033C880257B1CD700F8FE77 /* 密码@2x.png */; };
+		0033C887257B1CD700F8FE77 /* 手机(1)@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0033C881257B1CD700F8FE77 /* 手机(1)@2x.png */; };
 		00342C752552581E00CE490E /* OrderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00342C742552581E00CE490E /* OrderListViewController.m */; };
 		00342C7B25529A4C00CE490E /* OrderBottomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00342C7A25529A4C00CE490E /* OrderBottomTableViewCell.m */; };
 		00342C802552ECD600CE490E /* livingShoppingCar.png in Resources */ = {isa = PBXBuildFile; fileRef = 00342C7F2552ECD600CE490E /* livingShoppingCar.png */; };
@@ -909,6 +916,7 @@
 		00C236F925417F9A00973347 /* TeacherListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C236F825417F9A00973347 /* TeacherListTableViewCell.m */; };
 		00C236FF2541867200973347 /* TeacherDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C236FE2541867200973347 /* TeacherDetailViewController.m */; };
 		00C237052541A39600973347 /* TeacherArticleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C237042541A39600973347 /* TeacherArticleTableViewCell.m */; };
+		00CFD1F5257B686E0068D016 /* 启动页6.png in Resources */ = {isa = PBXBuildFile; fileRef = 00CFD1F4257B686E0068D016 /* 启动页6.png */; };
 		00D342CA2549A0CE00161F15 /* AssociationListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00D342C92549A0CE00161F15 /* AssociationListTableViewCell.m */; };
 		00D342D12549A51400161F15 /* JoinAssociationHeadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00D342D02549A51400161F15 /* JoinAssociationHeadTableViewCell.m */; };
 		00D342DA2549B2CB00161F15 /* AssociationCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 00D342D92549B2CB00161F15 /* AssociationCommentTableViewCell.m */; };
@@ -1063,6 +1071,14 @@
 		002B163D2542D319008B2607 /* 朋友圈.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "朋友圈.png"; sourceTree = "<group>"; };
 		002B164B2542E58A008B2607 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
 		002B164C2542E58A008B2607 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
+		0033C875257B183C00F8FE77 /* RegistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistViewController.h; sourceTree = "<group>"; };
+		0033C876257B183E00F8FE77 /* RegistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistViewController.m; sourceTree = "<group>"; };
+		0033C87C257B1CD600F8FE77 /* 手机(1)@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "手机(1)@3x.png"; sourceTree = "<group>"; };
+		0033C87D257B1CD600F8FE77 /* 验证码验证@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "验证码验证@2x.png"; sourceTree = "<group>"; };
+		0033C87E257B1CD600F8FE77 /* 密码@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "密码@3x.png"; sourceTree = "<group>"; };
+		0033C87F257B1CD700F8FE77 /* 验证码验证@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "验证码验证@3x.png"; sourceTree = "<group>"; };
+		0033C880257B1CD700F8FE77 /* 密码@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "密码@2x.png"; sourceTree = "<group>"; };
+		0033C881257B1CD700F8FE77 /* 手机(1)@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "手机(1)@2x.png"; sourceTree = "<group>"; };
 		00342C732552581E00CE490E /* OrderListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderListViewController.h; sourceTree = "<group>"; };
 		00342C742552581E00CE490E /* OrderListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderListViewController.m; sourceTree = "<group>"; };
 		00342C7925529A4C00CE490E /* OrderBottomTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderBottomTableViewCell.h; sourceTree = "<group>"; };
@@ -2446,6 +2462,7 @@
 		00C236FE2541867200973347 /* TeacherDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherDetailViewController.m; sourceTree = "<group>"; };
 		00C237032541A39600973347 /* TeacherArticleTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherArticleTableViewCell.h; sourceTree = "<group>"; };
 		00C237042541A39600973347 /* TeacherArticleTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TeacherArticleTableViewCell.m; sourceTree = "<group>"; };
+		00CFD1F4257B686E0068D016 /* 启动页6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "启动页6.png"; sourceTree = "<group>"; };
 		00D342C82549A0CE00161F15 /* AssociationListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssociationListTableViewCell.h; sourceTree = "<group>"; };
 		00D342C92549A0CE00161F15 /* AssociationListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssociationListTableViewCell.m; sourceTree = "<group>"; };
 		00D342CF2549A51400161F15 /* JoinAssociationHeadTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoinAssociationHeadTableViewCell.h; sourceTree = "<group>"; };
@@ -2653,6 +2670,19 @@
 				002B164C2542E58A008B2607 /* AlipaySDK.framework */,
 			);
 			path = alipay;
+			sourceTree = "<group>";
+		};
+		0033C87B257B1CC700F8FE77 /* login */ = {
+			isa = PBXGroup;
+			children = (
+				0033C880257B1CD700F8FE77 /* 密码@2x.png */,
+				0033C87E257B1CD600F8FE77 /* 密码@3x.png */,
+				0033C881257B1CD700F8FE77 /* 手机(1)@2x.png */,
+				0033C87C257B1CD600F8FE77 /* 手机(1)@3x.png */,
+				0033C87D257B1CD600F8FE77 /* 验证码验证@2x.png */,
+				0033C87F257B1CD700F8FE77 /* 验证码验证@3x.png */,
+			);
+			path = login;
 			sourceTree = "<group>";
 		};
 		003458F2253D75A6001F9C3F /* mdpi */ = {
@@ -3845,6 +3875,8 @@
 		0079EBFA25217AF900307D71 /* source */ = {
 			isa = PBXGroup;
 			children = (
+				00CFD1F4257B686E0068D016 /* 启动页6.png */,
+				0033C87B257B1CC700F8FE77 /* login */,
 				00342C7F2552ECD600CE490E /* livingShoppingCar.png */,
 				001CDA062547F0880052B7D7 /* yuandian.png */,
 				002B163D2542D319008B2607 /* 朋友圈.png */,
@@ -4716,6 +4748,8 @@
 				003E6CCF252F3EEA00314535 /* views */,
 				0079EDD025217AFC00307D71 /* LoginViewController.h */,
 				0079EDCC25217AFC00307D71 /* LoginViewController.m */,
+				0033C875257B183C00F8FE77 /* RegistViewController.h */,
+				0033C876257B183E00F8FE77 /* RegistViewController.m */,
 				0079EDCD25217AFC00307D71 /* LoginBackgroundView.h */,
 				0079EDD325217AFC00307D71 /* LoginBackgroundView.m */,
 				0079EDCE25217AFC00307D71 /* ScanSuccessJumpVC.h */,
@@ -5356,6 +5390,7 @@
 				0034594C253D75A6001F9C3F /* 免费专区@2x.png in Resources */,
 				0079EF5025217AFE00307D71 /* kr-video-player-point@2x.png in Resources */,
 				000C1A63253EB2B50002DE10 /* ic_place_border.png in Resources */,
+				0033C883257B1CD700F8FE77 /* 验证码验证@2x.png in Resources */,
 				00930DF82530987800267B62 /* main_待收货@2x.png in Resources */,
 				002B163E2542D319008B2607 /* 微信.png in Resources */,
 				0079EED725217AFE00307D71 /* home_imageAndText.png in Resources */,
@@ -5410,6 +5445,7 @@
 				0079EF5225217AFE00307D71 /* zx-video-player-volumeMute@2x.png in Resources */,
 				00930DF42530987800267B62 /* main_清理缓存@2x.png in Resources */,
 				0079EED125217AFE00307D71 /* homeLivingTipImage.png in Resources */,
+				0033C885257B1CD700F8FE77 /* 验证码验证@3x.png in Resources */,
 				0079EED625217AFE00307D71 /* huiyuan-2@2x.png in Resources */,
 				0040F2072531582D009446F1 /* main_免费专区.png in Resources */,
 				000A75742536F2100065A62C /* GTMNSString-HTML.podspec in Resources */,
@@ -5449,6 +5485,7 @@
 				0092F8B9254C506700EFC21A /* dynamic_点赞1@2x.png in Resources */,
 				0092F8BA254C506700EFC21A /* dynamic_评论@3x.png in Resources */,
 				003459DD253DC487001F9C3F /* ic_unselected_address@2x.png in Resources */,
+				0033C884257B1CD700F8FE77 /* 密码@3x.png in Resources */,
 				0079EEC825217AFE00307D71 /* search@3x.png in Resources */,
 				000A75752536F2100065A62C /* README.md in Resources */,
 				00353E53254D913900221F16 /* guanbi.png in Resources */,
@@ -5534,6 +5571,7 @@
 				0040F2082531582D009446F1 /* main_会员中心头部卡片@2x.png in Resources */,
 				0079EECF25217AFE00307D71 /* home_video@3x.png in Resources */,
 				0092F8C1254C506700EFC21A /* dynamic_点赞1@3x.png in Resources */,
+				0033C886257B1CD700F8FE77 /* 密码@2x.png in Resources */,
 				00345940253D75A6001F9C3F /* 等级3.png in Resources */,
 				0079EF5625217AFE00307D71 /* zx-video-player-unlock@3x.png in Resources */,
 				00345950253D75A6001F9C3F /* 等级3@3x.png in Resources */,
@@ -5561,6 +5599,7 @@
 				007C9C682524D1460040DFD4 /* 1@3x.png in Resources */,
 				002B161D25427D96008B2607 /* comment_评论2@3x.png in Resources */,
 				0034595E253D75A6001F9C3F /* 店铺全部免费@2x.png in Resources */,
+				0033C882257B1CD700F8FE77 /* 手机(1)@3x.png in Resources */,
 				007C9C6F2524D1460040DFD4 /* 4@2x.png in Resources */,
 				0034596F253D75A6001F9C3F /* 加.png in Resources */,
 				0079EF4025217AFE00307D71 /* zx-video-player-rewind@2x.png in Resources */,
@@ -5586,9 +5625,11 @@
 				0079EECA25217AFE00307D71 /* iconfont.ttf in Resources */,
 				000C1A51253E969D0002DE10 /* shoppingCar_selected@3x.png in Resources */,
 				00930E002530987800267B62 /* main_我的收益.png in Resources */,
+				0033C887257B1CD700F8FE77 /* 手机(1)@2x.png in Resources */,
 				00930E012530987800267B62 /* main_我的收益@2x.png in Resources */,
 				0079EA13252174AD00307D71 /* Main.storyboard in Resources */,
 				0092F8BB254C506700EFC21A /* dynamic_评论@2x.png in Resources */,
+				00CFD1F5257B686E0068D016 /* 启动页6.png in Resources */,
 				00345963253D75A6001F9C3F /* 头像加载失败@2x.png in Resources */,
 				000C1A5C253E96A60002DE10 /* shoppingCar_unselected.png in Resources */,
 				00930E0E2530987800267B62 /* main_代付款.png in Resources */,
@@ -6048,6 +6089,7 @@
 				0079EF3325217AFE00307D71 /* WXApiManager.m in Sources */,
 				0079EE7525217AFD00307D71 /* DownloadOperation.m in Sources */,
 				0079EF6125217AFE00307D71 /* YGLoadingView.m in Sources */,
+				0033C877257B183E00F8FE77 /* RegistViewController.m in Sources */,
 				004849FD255444B300CEB429 /* BuyCourseSendViewController.m in Sources */,
 				0079EE1D25217AFD00307D71 /* CourseModuleModel.m in Sources */,
 				0079EE6625217AFD00307D71 /* QuestionManager.m in Sources */,
@@ -6453,6 +6495,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = TUIKitTest/TUIKitTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.1;
 				DEVELOPMENT_TEAM = YL959LPUVS;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6491,6 +6534,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = TUIKitTest/TUIKitTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.1;
 				DEVELOPMENT_TEAM = YL959LPUVS;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

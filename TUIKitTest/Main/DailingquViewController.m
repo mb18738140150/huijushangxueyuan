@@ -39,6 +39,12 @@
 
 }
 
+-(void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+}
+
 #pragma mark - ui
 - (void)navigationViewSetup
 {
@@ -70,8 +76,6 @@
     [self.tableView registerClass:[DailingquTableViewCell class] forCellReuseIdentifier:kDailingquTableViewCell];
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadData)];
     self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(doNextPageQuestionRequest)];
-
-    
 }
 
 -(void)loadData
@@ -110,7 +114,9 @@
     };
     
     cell.livingCourseStartBlock = ^(NSDictionary * _Nonnull info) {
+        weakSelf.currentSelectInfo = info;
         NSLog(@"****** 倒计时完毕");
+        [weakSelf cleanSelectInfo];
     };
     
     return cell;
@@ -130,7 +136,15 @@
 
 - (void)didRequestMockVIPBuySuccessed
 {
-    [self request];
+    [SVProgressHUD dismiss];
+    [self cleanSelectInfo];
+}
+
+- (void)cleanSelectInfo
+{
+    [self.itemArray removeObject:self.currentSelectInfo];
+    self.currentSelectInfo = nil;
+    [self.tableView reloadData];
 }
 
 - (void)needVipCard:(NSNotification *)notification
@@ -180,20 +194,20 @@
     [self.tableView.mj_header endRefreshing];
     NSArray * list = [[UserManager sharedManager] getMyOrderList];
     
-    if (self.currentSelectInfo) {
-        NSDictionary * newInfo ;
-        for (NSDictionary * info in list) {
-            if ([[self.currentSelectInfo objectForKey:@"id"] isEqual:[info objectForKey:@"id"]]) {
-                newInfo = info;
-                break;
-            }
-        }
-        NSInteger index = [self.itemArray indexOfObject:self.currentSelectInfo];
-        [self.itemArray replaceObjectAtIndex:index withObject:newInfo];
-        [self.tableView reloadData];
-        self.currentSelectInfo = nil;
-        return;
-    }
+//    if (self.currentSelectInfo) {
+//        NSDictionary * newInfo ;
+//        for (NSDictionary * info in list) {
+//            if ([[self.currentSelectInfo objectForKey:@"id"] isEqual:[info objectForKey:@"id"]]) {
+//                newInfo = info;
+//                break;
+//            }
+//        }
+//        NSInteger index = [self.itemArray indexOfObject:self.currentSelectInfo];
+//        [self.itemArray replaceObjectAtIndex:index withObject:newInfo];
+//        [self.tableView reloadData];
+//        self.currentSelectInfo = nil;
+//        return;
+//    }
     if (self.page == 1) {
         [self.itemArray removeAllObjects];
     }

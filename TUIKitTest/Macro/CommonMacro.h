@@ -12,7 +12,7 @@
 
 #define isObjectNotNil(a) (a != nil)
 
-#define kAppointUserID      @"1475901"
+#define kAppointUserID      @"1476094"
 
 #define kVIPCardID @"869"
 #define kPartnerCardID @"2250"

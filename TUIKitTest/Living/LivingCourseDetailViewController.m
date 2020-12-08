@@ -254,6 +254,10 @@ typedef enum : NSUInteger {
 }
 - (void)backAction:(UIButton *)button
 {
+    if (self.isPresent) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -353,7 +357,12 @@ typedef enum : NSUInteger {
             self.payStateType = PayStateType_free;
         }else if ([type isEqualToString:@"vip-free"])
         {
-            [_playBackBtn setTitle:@"会员免费观看" forState:UIControlStateNormal];
+            if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+                [_playBackBtn setTitle:@"会员免费观看" forState:UIControlStateNormal];
+            }else
+            {
+                [_playBackBtn setTitle:@"购买后免费观看" forState:UIControlStateNormal];
+            }
             self.payStateType = PayStateType_free;
         }else if ([type isEqualToString:@"plain"])
         {
@@ -370,7 +379,13 @@ typedef enum : NSUInteger {
         }
         else if ([type isEqualToString:@"need_vip"])
         {
-            [_playBackBtn setTitle:@"开通会员免费观看" forState:UIControlStateNormal];
+            if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+                [_playBackBtn setTitle:@"开通会员免费观看" forState:UIControlStateNormal];
+            }else
+            {
+                [_playBackBtn setTitle:@"购买后免费观看" forState:UIControlStateNormal];
+            }
+            
             self.payStateType = PayStateType_Vip;
         }else
         {
@@ -413,8 +428,6 @@ typedef enum : NSUInteger {
         case PayStateType_buy:
         {
             NSLog(@"购买");
-            
-            
             if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
                 ShareAndPaySelectView * payView = [[ShareAndPaySelectView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) andIsShare:NO];
                 UIWindow * window = [UIApplication sharedApplication].delegate.window;
@@ -1189,7 +1202,6 @@ typedef enum : NSUInteger {
 
 - (void)dealloc
 {
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     NSLog(@"界面销毁");
 }

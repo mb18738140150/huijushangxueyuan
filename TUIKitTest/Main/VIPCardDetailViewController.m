@@ -277,6 +277,17 @@ typedef enum : NSUInteger {
     }
     
     if (self.myInfo) {
+        
+        if([[self.myInfo objectForKey:@"id"] intValue] == kPartnerCardID.intValue && [[self.vipCardDetailInfo objectForKey:@"id"] intValue] == kPartnerCardID.intValue)
+        {
+            self.tableView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight - kNavigationBarHeight - kStatusBarHeight);
+
+            return;
+        }else
+        {
+            self.tableView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight - kNavigationBarHeight - kStatusBarHeight - 64);
+        }
+        
         // 当前为vip
         if ([[self.myInfo objectForKey:@"id"] intValue] == kVIPCardID.intValue && [[self.info objectForKey:@"id"] intValue] != kPartnerCardID.intValue) {
             _expiredLB.hidden = NO;

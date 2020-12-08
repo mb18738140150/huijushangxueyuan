@@ -15,6 +15,7 @@
 #import "TUIConversationCellData.h"
 #import "MainViewController.h"
 #import "StoreViewController.h"
+#import "LivingCourseDetailViewController.h"
 
 @interface TabbarViewController ()<UITabBarControllerDelegate,UserModule_CourseDetailProtocol,UserModule_TabbarList>
 
@@ -38,16 +39,14 @@
         [[UserManager sharedManager] didRequestTabbarWithWithDic:@{kUrlName:@"api/index/navigation"} WithNotifedObject:self];
     }
     
-    
-    
-    
     self.tabBar.tintColor = UIColorFromRGB(0xff4550);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(courseClick:) name:kNotificationOfCourseClick object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginClick:) name:kNotificationOfLoginClick object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadCourseClick:) name:kNotificationOfDownloadCourseClick object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(quesitonImageClick:) name:kNotificationOfQuestionImageClick object:nil];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(livingChatClick:) name:kNotificationOfLivingChatClick object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(PushLivingCourse:) name:kNotificationOfPushLivingCourse object:nil];
     
 }
 
@@ -60,11 +59,6 @@
 
 - (void)didTabbarListFailed:(NSString *)failedInfo
 {
-//    [SVProgressHUD dismiss];
-//    [SVProgressHUD showErrorWithStatus:failedInfo];
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [SVProgressHUD dismiss];
-//    });
     [[UserManager sharedManager] didRequestTabbarWithWithDic:@{kUrlName:@"api/index/navigation"} WithNotifedObject:self];
 }
 
@@ -75,6 +69,27 @@
     [[UserManager sharedManager] getCourseDetailWith:@{@"param":[infoDic objectForKey:@"courseId"],kUrlName:@"Course/Get"} withNotifiedObject:self];
 }
 
+- (void)PushLivingCourse:(NSNotification *)notification
+{
+    NSDictionary *infoDic = notification.object;
+    [self pushLivingCourseDetailVC:infoDic];
+}
+
+- (void)pushLivingCourseDetailVC:(NSDictionary *)info
+{
+    NSDictionary * infoDic = @{@"id":[[info objectForKey:@"need_redirect"] objectForKey:@"topic_id"]};
+    
+    UIViewController * rootVC = [self getRootVC];
+    
+    LivingCourseDetailViewController * vc = [[LivingCourseDetailViewController alloc]init];
+    vc.isPresent = YES;
+    vc.info = infoDic;
+    UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    nav.modalPresentationStyle = UIModalPresentationFullScreen;
+    [rootVC presentViewController:nav animated:YES completion:nil];
+//    [rootVC.navigationController pushViewController:vc animated:YES];
+    
+}
 
 
 - (UIViewController * )getRootVC
@@ -93,12 +108,9 @@
 #pragma mark - ui setup
 - (void)setupChildViewControllers
 {
-     LoginViewController * loginVC = [[LoginViewController alloc]init];
-
-       UINavigationController *mainNavigation = [[UINavigationController alloc] initWithRootViewController:loginVC];
-       mainNavigation.tabBarItem.image = [UIImage imageNamed:@"icon_wode_n"];
-       mainNavigation.tabBarItem.selectedImage = [[UIImage imageNamed:@"icon_wode_s"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-       mainNavigation.tabBarItem.title = @"我的";
+    NSLog(@"************** %@", [NSThread currentThread]);
+    
+     
     
     NSMutableArray<UIViewController*> * navArray = [NSMutableArray array];
     
@@ -128,8 +140,8 @@
             {
                 UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
                 imageView.hidden = YES;
-                AppDelegate * delegate = [UIApplication sharedApplication].delegate;
-                [delegate.window addSubview:imageView];
+                UIWindow * window = [UIApplication sharedApplication].delegate.window;
+                [window addSubview:imageView];
                 NSString * imageStr = [[NSString stringWithFormat:@"%@",[UIUtility judgeStr:[tabbarInfo objectForKey:@"icon"]]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 
                 [imageView sd_setImageWithURL:[NSURL URLWithString:imageStr] placeholderImage:[UIImage imageNamed:@""] options:SDWebImageAllowInvalidSSLCertificates completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
@@ -169,8 +181,8 @@
                 UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(120, 120, 130, 130)];
                 NSString * imageStr = [[NSString stringWithFormat:@"%@",[UIUtility judgeStr:[tabbarInfo objectForKey:@"icon"]]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 imageView.hidden = YES;
-                AppDelegate * delegate = [UIApplication sharedApplication].delegate;
-                [delegate.window addSubview:imageView];
+                UIWindow * window = [UIApplication sharedApplication].delegate.window;
+                [window addSubview:imageView];
                 
                 imageStr = [NSString stringWithFormat:@"%@",[UIUtility judgeStr:[tabbarInfo objectForKey:@"icon"]]];
                 [imageView sd_setImageWithURL:[NSURL URLWithString:imageStr] placeholderImage:[UIImage imageNamed:@""] options:SDWebImageAllowInvalidSSLCertificates completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
@@ -207,9 +219,10 @@
         
     }
     
-    self.viewControllers = navArray;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.viewControllers = navArray;
+    });
     
-    return;
 }
 
 
@@ -234,7 +247,13 @@
 - (void)requireLogin
 {
     LoginViewController *login = [[LoginViewController alloc] init];
-
+    if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled])
+    {
+        
+    }else
+    {
+        login.isAccount = YES;
+    }
     UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:login];
     nav.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:nav animated:YES completion:nil];

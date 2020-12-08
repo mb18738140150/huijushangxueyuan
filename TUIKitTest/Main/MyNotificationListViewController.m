@@ -211,7 +211,10 @@
         {
             MainVipCardListViewController * vc = [[MainVipCardListViewController alloc]init];
             vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
+            if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue])
+            {
+                [self.navigationController pushViewController:vc animated:YES];
+            }
         }
         
         else if ([innerType isEqualToString:@"mypay"])

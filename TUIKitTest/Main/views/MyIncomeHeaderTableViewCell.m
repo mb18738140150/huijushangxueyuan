@@ -244,18 +244,18 @@
         return;
     }
     if ([button isEqual:_promotionBtn]) {
-        [self.zixunSegment setSelectedAtIndex:0];
         [self resetIsTeacher:NO];
         if (self.promisionBlock) {
             self.promisionBlock(@{});
         }
+        [self.zixunSegment setSelectedAtIndex:0];
     }else
     {
-        [self.zixunSegment setSelectedAtIndex:0];
         [self resetIsTeacher:YES];
         if (self.teacherBlock) {
             self.teacherBlock(@{});
         }
+        [self.zixunSegment setSelectedAtIndex:0];
     }
     
 }

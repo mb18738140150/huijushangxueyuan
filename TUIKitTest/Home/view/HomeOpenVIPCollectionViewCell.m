@@ -58,6 +58,14 @@
     self.vipTitleView.text = [info objectForKey:@"title"];
     [self.vipTitleView sizeToFit];
     
+    if ([info objectForKey:@"image"]) {
+        self.vipImageView.image = [UIImage imageNamed:[info objectForKey:@"image"]];
+        
+        CGSize size = CGSizeMake(self.vipImageView.image.size.width, self.vipImageView.image.size.width);
+        
+        self.vipImageView.frame = CGRectMake(13, (40 - size.height * 18 / size.width) / 2, 18, size.height * 18 / size.width);
+    }
+    
     NSString * btnStr = [info objectForKey:@"btn"];
     CGFloat width = [btnStr boundingRectWithSize:CGSizeMake(MAXFLOAT, 20) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:kMainFont_12} context:nil].size.width;
     [self.openBtn setTitle:[info objectForKey:@"btn"] forState:UIControlStateNormal];

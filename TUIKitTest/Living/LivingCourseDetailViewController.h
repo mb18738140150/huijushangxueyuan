@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LivingCourseDetailViewController : ViewController
 
+@property (nonatomic, assign)BOOL isPresent;
 @property (nonatomic, assign)int index;
 @property (nonatomic, strong)NSDictionary *info;
 

@@ -10,4 +10,6 @@
 
 @interface LoginViewController : ViewController
 
+@property (nonatomic, assign)BOOL isAccount;
+
 @end

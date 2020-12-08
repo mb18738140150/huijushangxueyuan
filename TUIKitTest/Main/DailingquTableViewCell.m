@@ -199,6 +199,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         weakSelf.timeLB.text = [weakSelf getTimeStrWithday:weakSelf.day andHour:weakSelf.hour andMinute:weakSelf.minute andSecond:weakSelf.sec];
+        
     });
 }
 
@@ -215,6 +216,7 @@
     dateFomatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     
     NSDate * myDate=[NSDate dateWithTimeIntervalSince1970:[timeStr doubleValue]];
+    myDate = [myDate dateByAddingTimeInterval:3600 * 24];
     
     // 当前时间字符串格式
     NSString *nowDateStr = [dateFomatter stringFromDate:nowDate];
@@ -263,5 +265,18 @@
     return timeString;
 }
 
+- (void)willMoveToSuperview:(UIView *)newSuperview
+{
+    [super willMoveToSuperview:newSuperview];
+    if (!newSuperview && self.timer) {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+}
+
+-(void) dealloc
+{
+    NSLog(@"^^^^^ 销毁cell定时器");
+}
 
 @end

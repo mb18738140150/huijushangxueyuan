@@ -110,4 +110,9 @@
     }
 }
 
+- (void)hiddenApplayBtn
+{
+    self.applyBtn.hidden = YES;
+}
+
 @end

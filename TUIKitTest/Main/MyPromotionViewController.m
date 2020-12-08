@@ -320,6 +320,7 @@
 - (void)didPromotionSuccessed
 {
     [SVProgressHUD dismiss];
+    [self.tableView.mj_header endRefreshing];
     self.promotionInfo = [[UserManager sharedManager] getMyPromotionInfo];
     [self.tableView reloadData];
 }

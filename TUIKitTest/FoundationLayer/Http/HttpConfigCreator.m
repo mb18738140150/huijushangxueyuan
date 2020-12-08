@@ -74,8 +74,8 @@
 + (HttpConfigModel *)getLoginHttpConfigWithUserName:(NSString *)userName andPassword:(NSString *)password
 {
     HttpConfigModel *loginHttp = [[HttpConfigModel alloc] init];
-    NSDictionary *dic = @{kUrlName:@"Account/Login",
-                          @"userName":userName,
+    NSDictionary *dic = @{kUrlName:@"api/auth/login",
+                          @"mobile":userName,
                           @"password":password};
     [self setConfigModel:loginHttp withInfo:dic];
     return loginHttp;

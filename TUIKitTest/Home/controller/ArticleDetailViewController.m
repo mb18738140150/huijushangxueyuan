@@ -444,7 +444,13 @@ typedef enum : NSUInteger {
         self.payStateType = PayStateType_free;
     }else if ([type isEqualToString:@"vip-free"])
     {
-        [_payStateBtn setTitle:@"会员免费观看" forState:UIControlStateNormal];
+        if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+            [_payStateBtn setTitle:@"会员免费观看" forState:UIControlStateNormal];
+        }else
+        {
+            [_payStateBtn setTitle:@"购买后免费观看" forState:UIControlStateNormal];
+        }
+        
         self.isShowAllContent = YES;
         self.payStateType = PayStateType_free;
     }else if ([type isEqualToString:@"plain"])
@@ -464,7 +470,13 @@ typedef enum : NSUInteger {
     }
     else if ([type isEqualToString:@"need_vip"])
     {
-        [_payStateBtn setTitle:@"开通会员免费观看" forState:UIControlStateNormal];
+        if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+            [_payStateBtn setTitle:@"开通会员免费观看" forState:UIControlStateNormal];
+        }else
+        {
+            [_payStateBtn setTitle:@"购买后免费观看" forState:UIControlStateNormal];
+        }
+        
         self.isShowAllContent = NO;
         self.payStateType = PayStateType_Vip;
     }else
