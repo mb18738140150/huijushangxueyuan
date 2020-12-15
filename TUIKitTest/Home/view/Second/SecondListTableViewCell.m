@@ -106,7 +106,7 @@
     }else if ([info objectForKey:@"topic_style"])
     {
         int topic_style = [[info objectForKey:@"topic_style"] intValue];
-        // topic_style 为1 或者2 时候才显示直播状态
+        // topic_style 为1 或者2 时候才显示直播状态 其他状态3、6为已结束
         if (topic_style == 1 || topic_style == 2) {
             // topic_status 1.直播中 2.未开始 3.已结束
             int livingStatus = [[info objectForKey:@"topic_status"] intValue];
@@ -136,7 +136,8 @@
         }else
         {
             self.livingStateView.frame = CGRectMake(5, self.courseImageView.hd_height - 25, 100, 20);
-            self.livingStateView.livingState = HomeLivingStateType_living;
+            self.livingStateView.livingState = HomeLivingStateType_end;
+            self.livingStateView.hidden = YES;
             self.priceLabel.text = @"进入";
             self.priceLabel.textColor = UIRGBColor(110, 203, 139);
             self.livingStateView.hidden = YES;
@@ -146,13 +147,13 @@
     BOOL vip_exclusive = [[info objectForKey:@"vip_exclusive"] boolValue];
     if (vip_exclusive) {
         hzuanshuLB.hidden = NO;
-        self.livingStateView.hidden = YES;
+//        self.livingStateView.hidden = YES;
         self.priceLabel.textColor = UIColorFromRGB(0xCCA95D);
         self.priceLabel.attributedText = NewStr;
     }else
     {
         hzuanshuLB.hidden = YES;
-        self.livingStateView.hidden = NO;
+//        self.livingStateView.hidden = NO;
     }
     
     if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] >0 && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue])

@@ -95,7 +95,7 @@
 }
 - (void)navigationViewSetup
 {
-    self.navigationItem.title = @"汇聚商商学院";
+    self.navigationItem.title = @"汇聚播商学院";
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = NO;
     

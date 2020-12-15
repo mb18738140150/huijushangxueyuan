@@ -271,6 +271,12 @@
 		004270BF254972880037F258 /* AssociationMemberListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 004270BE254972880037F258 /* AssociationMemberListViewController.m */; };
 		004270C52549737F0037F258 /* AssociationCommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 004270C42549737F0037F258 /* AssociationCommentDetailViewController.m */; };
 		004270CB254974830037F258 /* AssociationPublishCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 004270CA254974830037F258 /* AssociationPublishCommentViewController.m */; };
+		00445F152587677700DEF697 /* 集成升级必读（iOS）.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 00445EF62587673500DEF697 /* 集成升级必读（iOS）.pdf */; };
+		00445F162587677700DEF697 /* UMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00445EF72587673500DEF697 /* UMCommon.framework */; };
+		00445F172587677700DEF697 /* UMDevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00445EF82587673500DEF697 /* UMDevice.framework */; };
+		00445F182587677700DEF697 /* UMCrash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00445EF92587673500DEF697 /* UMCrash.framework */; };
+		00445F222587677700DEF697 /* UMCommonLog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00445F132587677600DEF697 /* UMCommonLog.framework */; };
+		00445F232587677700DEF697 /* UMCommonLog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 00445F142587677600DEF697 /* UMCommonLog.bundle */; };
 		0044BF1E2532E25E00FACCE8 /* living_guanbi.png in Resources */ = {isa = PBXBuildFile; fileRef = 0044BF1D2532E25E00FACCE8 /* living_guanbi.png */; };
 		0044BF242533402C00FACCE8 /* LivingCourseDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0044BF232533402C00FACCE8 /* LivingCourseDetailTableViewCell.m */; };
 		0044BF29253352F100FACCE8 /* livingTime.png in Resources */ = {isa = PBXBuildFile; fileRef = 0044BF28253352F100FACCE8 /* livingTime.png */; };
@@ -1311,6 +1317,12 @@
 		004270C42549737F0037F258 /* AssociationCommentDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssociationCommentDetailViewController.m; sourceTree = "<group>"; };
 		004270C9254974830037F258 /* AssociationPublishCommentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssociationPublishCommentViewController.h; sourceTree = "<group>"; };
 		004270CA254974830037F258 /* AssociationPublishCommentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssociationPublishCommentViewController.m; sourceTree = "<group>"; };
+		00445EF62587673500DEF697 /* 集成升级必读（iOS）.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "集成升级必读（iOS）.pdf"; sourceTree = "<group>"; };
+		00445EF72587673500DEF697 /* UMCommon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMCommon.framework; sourceTree = "<group>"; };
+		00445EF82587673500DEF697 /* UMDevice.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMDevice.framework; sourceTree = "<group>"; };
+		00445EF92587673500DEF697 /* UMCrash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMCrash.framework; sourceTree = "<group>"; };
+		00445F132587677600DEF697 /* UMCommonLog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMCommonLog.framework; sourceTree = "<group>"; };
+		00445F142587677600DEF697 /* UMCommonLog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UMCommonLog.bundle; sourceTree = "<group>"; };
 		0044BF1D2532E25E00FACCE8 /* living_guanbi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = living_guanbi.png; sourceTree = "<group>"; };
 		0044BF222533402C00FACCE8 /* LivingCourseDetailTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivingCourseDetailTableViewCell.h; sourceTree = "<group>"; };
 		0044BF232533402C00FACCE8 /* LivingCourseDetailTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivingCourseDetailTableViewCell.m; sourceTree = "<group>"; };
@@ -2482,6 +2494,7 @@
 				0079F02C25217CBA00307D71 /* AVFoundation.framework in Frameworks */,
 				0079F02725217CB300307D71 /* libsqlite3.tbd in Frameworks */,
 				0079F02525217CAC00307D71 /* AdSupport.framework in Frameworks */,
+				00445F162587677700DEF697 /* UMCommon.framework in Frameworks */,
 				0079F02025217C9D00307D71 /* libresolv.tbd in Frameworks */,
 				0079F01E25217C9400307D71 /* AssetsLibrary.framework in Frameworks */,
 				0079F01C25217C8A00307D71 /* AudioToolbox.framework in Frameworks */,
@@ -2512,7 +2525,9 @@
 				0079EFDA25217BA200307D71 /* CoreTelephony.framework in Frameworks */,
 				0079EFD825217B9A00307D71 /* CoreFoundation.framework in Frameworks */,
 				0079EFD625217B9300307D71 /* CFNetwork.framework in Frameworks */,
+				00445F172587677700DEF697 /* UMDevice.framework in Frameworks */,
 				002B164E2542E58A008B2607 /* AlipaySDK.framework in Frameworks */,
+				00445F182587677700DEF697 /* UMCrash.framework in Frameworks */,
 				0079EFD425217B8C00307D71 /* WebKit.framework in Frameworks */,
 				0079EFD225217B8400307D71 /* CoreGraphics.framework in Frameworks */,
 				0079EFD025217B7D00307D71 /* Security.framework in Frameworks */,
@@ -2520,6 +2535,7 @@
 				0079EF8225217AFE00307D71 /* jpush-ios-3.3.6.a in Frameworks */,
 				0079EEE125217AFE00307D71 /* libWeChatSDK.a in Frameworks */,
 				E707C6F09A9954E08D15A08E /* libPods-TUIKitTest.a in Frameworks */,
+				00445F222587677700DEF697 /* UMCommonLog.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2744,6 +2760,8 @@
 				0034598A253D764C001F9C3F /* down箭头@2x.png */,
 				0034598B253D764D001F9C3F /* down箭头@3x.png */,
 				003458F3253D75A6001F9C3F /* 地址勾选@2x.png */,
+				00345903253D75A6001F9C3F /* 地址勾选@3x.png */,
+				0034592E253D75A6001F9C3F /* 地址勾选.png */,
 				003458F4253D75A6001F9C3F /* 商城.png */,
 				003458F5253D75A6001F9C3F /* 页面关闭@2x.png */,
 				003458F6253D75A6001F9C3F /* 折扣专区.png */,
@@ -2756,7 +2774,6 @@
 				00345900253D75A6001F9C3F /* 等级2.png */,
 				00345901253D75A6001F9C3F /* 页面关闭@3x.png */,
 				00345902253D75A6001F9C3F /* 位图.png */,
-				00345903253D75A6001F9C3F /* 地址勾选@3x.png */,
 				00345904253D75A6001F9C3F /* 等级1.png */,
 				00345905253D75A6001F9C3F /* 时间.png */,
 				00345906253D75A6001F9C3F /* 时间@3x.png */,
@@ -2799,7 +2816,6 @@
 				0034592B253D75A6001F9C3F /* courseDefaultImage@2x.png */,
 				0034592C253D75A6001F9C3F /* 底图.png */,
 				0034592D253D75A6001F9C3F /* 删除@2x.png */,
-				0034592E253D75A6001F9C3F /* 地址勾选.png */,
 				0034592F253D75A6001F9C3F /* 优惠券.png */,
 				00345930253D75A6001F9C3F /* 商城@3x.png */,
 				00345931253D75A6001F9C3F /* 商城@2x.png */,
@@ -3065,6 +3081,51 @@
 				0040F22C2531F226009446F1 /* huiyuan1-01.png */,
 			);
 			path = "huiyuan1-01_slices";
+			sourceTree = "<group>";
+		};
+		00445EF32587670A00DEF697 /* UM */ = {
+			isa = PBXGroup;
+			children = (
+				00445EF42587673500DEF697 /* common */,
+				00445F112587677600DEF697 /* umcommonlog */,
+			);
+			path = UM;
+			sourceTree = "<group>";
+		};
+		00445EF42587673500DEF697 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				00445EF52587673500DEF697 /* common_ios_7.2.2 */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		00445EF52587673500DEF697 /* common_ios_7.2.2 */ = {
+			isa = PBXGroup;
+			children = (
+				00445EF62587673500DEF697 /* 集成升级必读（iOS）.pdf */,
+				00445EF72587673500DEF697 /* UMCommon.framework */,
+				00445EF82587673500DEF697 /* UMDevice.framework */,
+				00445EF92587673500DEF697 /* UMCrash.framework */,
+			);
+			path = common_ios_7.2.2;
+			sourceTree = "<group>";
+		};
+		00445F112587677600DEF697 /* umcommonlog */ = {
+			isa = PBXGroup;
+			children = (
+				00445F122587677600DEF697 /* umcommonlog_ios_2.0.0 */,
+			);
+			path = umcommonlog;
+			sourceTree = "<group>";
+		};
+		00445F122587677600DEF697 /* umcommonlog_ios_2.0.0 */ = {
+			isa = PBXGroup;
+			children = (
+				00445F132587677600DEF697 /* UMCommonLog.framework */,
+				00445F142587677600DEF697 /* UMCommonLog.bundle */,
+			);
+			path = umcommonlog_ios_2.0.0;
 			sourceTree = "<group>";
 		};
 		0044BF2D2533530A00FACCE8 /* go_blue */ = {
@@ -3991,6 +4052,7 @@
 		0079EC1E25217AFA00307D71 /* framework */ = {
 			isa = PBXGroup;
 			children = (
+				00445EF32587670A00DEF697 /* UM */,
 				003465702562BE2B00ED350F /* MBProgressHUD */,
 				000A75522536A5420065A62C /* showBigImage */,
 				001CDA29254827C00052B7D7 /* chineseCountryJson.txt */,
@@ -5401,6 +5463,7 @@
 				00930DEE2530987800267B62 /* main_订单icon.png in Resources */,
 				0079EEC725217AFE00307D71 /* search@2x.png in Resources */,
 				007C9C6D2524D1460040DFD4 /* 6@3x.png in Resources */,
+				00445F152587677700DEF697 /* 集成升级必读（iOS）.pdf in Resources */,
 				003459DF253DC487001F9C3F /* ic_selected@3x.png in Resources */,
 				0079EF5925217AFE00307D71 /* kr-video-player-fullscreen@2x.png in Resources */,
 				0034594A253D75A6001F9C3F /* 时间.png in Resources */,
@@ -5552,6 +5615,7 @@
 				00345960253D75A6001F9C3F /* 免费专区.png in Resources */,
 				000C1A5B253E96A60002DE10 /* shoppingCar_unselected@3x.png in Resources */,
 				003459DE253DC487001F9C3F /* ic_unselected_address@3x.png in Resources */,
+				00445F232587677700DEF697 /* UMCommonLog.bundle in Resources */,
 				0034597C253D75A6001F9C3F /* 等级2@3x.png in Resources */,
 				003816F3255C3506001FAA72 /* weixinlogin.png in Resources */,
 				00345945253D75A6001F9C3F /* 等级2.png in Resources */,
@@ -6501,6 +6565,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/TUIKitTest/framework/alipay",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/common/common_ios_7.2.2",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/share/share_ios_6.10.1/UMSocialUI",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/share/share_ios_6.10.1",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/umcommonlog/umcommonlog_ios_2.0.0",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/TUIKitTest/PrefixHeader.pch";
 				INFOPLIST_FILE = TUIKitTest/Info.plist;
@@ -6514,7 +6582,12 @@
 					"$(PROJECT_DIR)/TUIKitTest/framework/OpenSDK1.8.7.1",
 					"$(PROJECT_DIR)/TUIKitTest/framework/Lib-noidfa",
 					"$(PROJECT_DIR)/TUIKitTest/framework/AudioTool/lame",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/share/share_ios_6.10.1/SocialLibraries/WeChat",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/share/share_ios_6.10.1/SocialLibraries/WeChat/WechatSDK",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/share/share_ios_6.10.1/SocialLibraries/Sina",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/share/share_ios_6.10.1/SocialLibraries/QQ",
 				);
+				MARKETING_VERSION = 1.2;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-fcxx-modules",
@@ -6540,6 +6613,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/TUIKitTest/framework/alipay",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/common/common_ios_7.2.2",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/share/share_ios_6.10.1/UMSocialUI",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/share/share_ios_6.10.1",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/umcommonlog/umcommonlog_ios_2.0.0",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/TUIKitTest/PrefixHeader.pch";
 				INFOPLIST_FILE = TUIKitTest/Info.plist;
@@ -6553,7 +6630,12 @@
 					"$(PROJECT_DIR)/TUIKitTest/framework/OpenSDK1.8.7.1",
 					"$(PROJECT_DIR)/TUIKitTest/framework/Lib-noidfa",
 					"$(PROJECT_DIR)/TUIKitTest/framework/AudioTool/lame",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/share/share_ios_6.10.1/SocialLibraries/WeChat",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/share/share_ios_6.10.1/SocialLibraries/WeChat/WechatSDK",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/share/share_ios_6.10.1/SocialLibraries/Sina",
+					"$(PROJECT_DIR)/TUIKitTest/framework/UM/share/share_ios_6.10.1/SocialLibraries/QQ",
 				);
+				MARKETING_VERSION = 1.2;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-fcxx-modules",

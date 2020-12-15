@@ -72,7 +72,7 @@
     NSDictionary * attribute = @{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:UIColorFromRGB(0x999999),NSStrikethroughStyleAttributeName:@(NSUnderlinePatternSolid | NSUnderlineStyleSingle)};
     NSMutableAttributedString * NewStr = [[NSMutableAttributedString alloc]initWithString:oldStr];
     
-    [NewStr addAttributes:attribute range:NSMakeRange([[NSString stringWithFormat:@"%@", [info objectForKey:@"show_paymoney"]] length]+ 1, oldStr.length - [[NSString stringWithFormat:@"%@", [info objectForKey:@"show_paymoney"]] length] - 1)];
+    [NewStr addAttributes:attribute range:NSMakeRange([[NSString stringWithFormat:@"%@", [info objectForKey:@"show_paymoney"]] length]+ [SoftManager shareSoftManager].coinName.length, oldStr.length - [[NSString stringWithFormat:@"%@", [info objectForKey:@"show_paymoney"]] length] - [SoftManager shareSoftManager].coinName.length)];
     self.priceLabel.attributedText = NewStr;
     
     // 观看人数

@@ -65,6 +65,7 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, strong)ShareAndPaySelectView * payView;
 @property (nonatomic, strong)NSMutableArray * communities;
+@property (nonatomic, assign)BOOL isHaveWebObserver;
 @end
 
 @implementation LivingCourseDetailViewController
@@ -323,7 +324,7 @@ typedef enum : NSUInteger {
     _webView.navigationDelegate = self;
     _webView.scrollView.delegate = self;
     _webView.scrollView.scrollEnabled = NO;
-    [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+//    [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
     
 }
 
@@ -578,7 +579,10 @@ typedef enum : NSUInteger {
     }
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellID" forIndexPath:indexPath];
     [cell.contentView removeAllSubviews];
-    [cell.contentView addSubview:self.webView];
+    if (self.isHaveWebObserver) {
+        [cell.contentView addSubview:self.webView];
+    }
+    
     return cell;
 }
 
@@ -696,6 +700,11 @@ typedef enum : NSUInteger {
     
     NSString * htmlStr = [UIUtility judgeStr:[self.courseDetailInfo objectForKey:@"topic_desc"]];
     
+    if (self.isHaveWebObserver) {
+        [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
+        self.isHaveWebObserver = NO;
+    }
+    
     [self testLoadHtmlImage:[headerString stringByAppendingString:[htmlStr stringByDecodingHTMLEntities]]];
     
     [self.tableView reloadData];
@@ -721,6 +730,10 @@ typedef enum : NSUInteger {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [SVProgressHUD dismiss];
     });
+    if([failedInfo containsString:@"不存在"])
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)didRequestMockVIPBuySuccessed
@@ -914,9 +927,28 @@ typedef enum : NSUInteger {
                             [UserManager sharedManager].tencentID = [NSString stringWithFormat:@"%@", [chatInfo objectForKey:@"app_id"]];
                         }
                         
-                        if ([[roomDetailInfo objectForKey:@"status"] intValue] == 1) {
-                            chatRoomVC.playUrl = [NSString stringWithFormat:@"%@", [videoInfo objectForKey:@"url_flv"]];
-                        }else if ([[roomDetailInfo objectForKey:@"status"] intValue] == 3)
+                        if([[roomDetailInfo objectForKey:@"topic_style"] intValue] == 1 || [[roomDetailInfo objectForKey:@"topic_style"] intValue] == 2)
+                        {
+                            if ([[roomDetailInfo objectForKey:@"status"] intValue] == 1) {
+                                chatRoomVC.playUrl = [NSString stringWithFormat:@"%@", [videoInfo objectForKey:@"url_flv"]];
+                            }else if ([[roomDetailInfo objectForKey:@"status"] intValue] == 3)
+                            {
+                                chatRoomVC.isPlayBack = [[roomDetailInfo objectForKey:@"is_play_back"] boolValue];
+                                
+                                if (playBackInfo == nil || [playBackInfo isKindOfClass:[NSNull class]]) {
+                                    chatRoomVC.playUrl = @"";
+                                }else
+                                {
+                                    if ([[playBackInfo objectForKey:@"file_type"] isEqualToString:@"url"]) {
+                                        chatRoomVC.playUrl = [NSString stringWithFormat:@"%@", [playBackInfo objectForKey:@"file_id"]];
+                                    }else
+                                    {
+                                        chatRoomVC.tencentPlayID = [NSString stringWithFormat:@"%@", [playBackInfo objectForKey:@"file_id"]];
+                                    }
+                                }
+                            }
+                            
+                        }else if ([[roomDetailInfo objectForKey:@"topic_style"] intValue] == 3 || [[roomDetailInfo objectForKey:@"topic_style"] intValue] == 6)
                         {
                             chatRoomVC.isPlayBack = [[roomDetailInfo objectForKey:@"is_play_back"] boolValue];
                             
@@ -932,6 +964,7 @@ typedef enum : NSUInteger {
                                 }
                             }
                         }
+                        
                         NSLog(@"******** jiazaizhong ****** 2");
                         chatRoomVC.groupId = [roomIdInfo objectForKey:@"room_id"];
                         chatRoomVC.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -939,15 +972,27 @@ typedef enum : NSUInteger {
                         
                     } fail:^(int code, NSString *desc) {
                         [SVProgressHUD dismiss];
+                        [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"%@", desc]];
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            [SVProgressHUD dismiss];
+                        });
                         NSLog(@"joinchatroom setSelfInfo fail %d  %@", code, desc);
                     }];
                     
                 } fail:^(int code, NSString *desc) {
                     [SVProgressHUD dismiss];
+                    [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"%@", desc]];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [SVProgressHUD dismiss];
+                    });
                     NSLog(@"V2TIMManager setSelfInfo fail %d  %@", code, desc);
                 }];
             } fail:^(int code, NSString *msg) {
                 [SVProgressHUD dismiss];
+                [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"%@", msg]];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [SVProgressHUD dismiss];
+                });
                 NSLog(@"imlogin fail %d  %@", code, msg);
             }];
             
@@ -1151,6 +1196,7 @@ typedef enum : NSUInteger {
     
     [self.webView loadHTMLString:html baseURL:nil];
     [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+    self.isHaveWebObserver = YES;
 }
 
 - (void)downloadImageWithUrl:(NSString *)src {
@@ -1159,7 +1205,7 @@ typedef enum : NSUInteger {
     imgView.hidden = YES;
     UIWindow * window = [UIApplication sharedApplication].delegate.window;
     [window addSubview:imgView];
-    
+    __weak typeof(self)weakSelf = self;
     [imgView sd_setImageWithURL:[NSURL URLWithString:src] placeholderImage:nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (image) {
             NSData *data = UIImagePNGRepresentation(image);
@@ -1173,10 +1219,10 @@ typedef enum : NSUInteger {
             {
                 for (NSDictionary * urlDic in self.urlDictsArray) {
                     if ([urlDic.allKeys containsObject:src]) {
-                        NSString * jpg = [self htmlForJPGImage:image];
+                        NSString * jpg = [weakSelf htmlForJPGImage:image];
                         //然后在替换scr
-                        self.detailHtml = [self.detailHtml stringByReplacingOccurrencesOfString:src withString:jpg];
-                        [self.webView loadHTMLString:self.detailHtml baseURL:nil];
+                        weakSelf.detailHtml = [weakSelf.detailHtml stringByReplacingOccurrencesOfString:src withString:jpg];
+                        [weakSelf.webView loadHTMLString:weakSelf.detailHtml baseURL:nil];
                     }
                 }
             }
@@ -1198,10 +1244,11 @@ typedef enum : NSUInteger {
 
 }
 
-
-
 - (void)dealloc
 {
+    if (self.isHaveWebObserver) {
+        [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     NSLog(@"界面销毁");
 }

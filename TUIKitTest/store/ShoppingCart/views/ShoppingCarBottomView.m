@@ -127,7 +127,7 @@
     self.countLB.text = @"0";
     [self addSubview:self.countLB];
     
-    UILabel *priceLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.selectAllBtn.frame) + 15,self.selectAllBtn.hd_y , 200, 15)];
+    UILabel *priceLB = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.selectAllBtn.frame) + 15,self.selectAllBtn.hd_y , 260, 15)];
     priceLB.textColor = kCommonMainBlueColor;
     priceLB.font = kMainFont_16;
     priceLB.text = @"￥";

@@ -103,7 +103,10 @@
         return self.dataSource.count;
     }
     if ([[self.vipCardInfo objectForKey:@"my"] isKindOfClass:[NSDictionary class]]) {
-        return 2;
+        NSDictionary * info = [self.vipCardInfo objectForKey:@"my"];
+        if ([[info allKeys] count] > 0) {
+            return 2;
+        }
     }
     return 1;
 }

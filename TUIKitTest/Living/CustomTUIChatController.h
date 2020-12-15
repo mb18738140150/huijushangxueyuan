@@ -259,6 +259,7 @@
 
 @property (nonatomic, copy)void (^giftBlock)(NSDictionary* info);
 
+- (void)resetInputBar;
 
 @end
 

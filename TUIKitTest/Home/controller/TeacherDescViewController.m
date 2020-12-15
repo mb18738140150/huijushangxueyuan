@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSMutableArray *imageViews;
 @property (nonatomic, strong)NSMutableArray * urlDictsArray;
 @property (nonatomic, strong)NSString * detailHtml;
+@property (nonatomic, assign)BOOL isHaveWebObserver;
 
 @end
 
@@ -58,10 +59,15 @@
     _webView.UIDelegate = self;
     _webView.navigationDelegate = self;
     _webView.scrollView.delegate = self;
-    [self.view addSubview:_webView];
-    [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+//    [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+    
+    if (self.isHaveWebObserver) {
+        [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
+        self.isHaveWebObserver = NO;
+    }
     
     [self testLoadHtmlImage:[self.info objectForKey:@"desc"]];
+    [self.view addSubview:_webView];
 }
 
 
@@ -258,6 +264,7 @@
     
     [self.webView loadHTMLString:html baseURL:nil];
     [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+    self.isHaveWebObserver = YES;
 }
 
 - (void)downloadImageWithUrl:(NSString *)src {
@@ -266,7 +273,7 @@
     imgView.hidden = YES;
     UIWindow * window = [UIApplication sharedApplication].delegate.window;
     [window addSubview:imgView];
-    
+    __weak typeof(self)weakSelf = self;
     [imgView sd_setImageWithURL:[NSURL URLWithString:src] placeholderImage:nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (image) {
             NSData *data = UIImagePNGRepresentation(image);
@@ -280,12 +287,12 @@
                 NSLog(@"写入本地失败：%@", src);
             }else
             {
-                for (NSDictionary * urlDic in self.urlDictsArray) {
+                for (NSDictionary * urlDic in weakSelf.urlDictsArray) {
                     if ([urlDic.allKeys containsObject:src]) {
-                        NSString * jpg = [self htmlForJPGImage:image];
+                        NSString * jpg = [weakSelf htmlForJPGImage:image];
                         //然后在替换scr
-                        self.detailHtml = [self.detailHtml stringByReplacingOccurrencesOfString:src withString:jpg];
-                        [self.webView loadHTMLString:self.detailHtml baseURL:nil];
+                        weakSelf.detailHtml = [weakSelf.detailHtml stringByReplacingOccurrencesOfString:src withString:jpg];
+                        [weakSelf.webView loadHTMLString:weakSelf.detailHtml baseURL:nil];
                     }
                 }
             }
@@ -312,7 +319,9 @@
 
 - (void)dealloc
 {
-    [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
+    if (self.isHaveWebObserver) {
+        [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
+    }
     NSLog(@"界面释放了");
 }
 

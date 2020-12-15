@@ -40,8 +40,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign)BOOL isWechat;
 
 @property (nonatomic, strong)ShareAndPaySelectView * payView;
-
-
+@property (nonatomic, assign)BOOL isLoadWebView;
 @end
 
 @implementation VIPCardDetailViewController
@@ -97,7 +96,9 @@ typedef enum : NSUInteger {
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
+    if (self.isLoadWebView) {
+        [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
+    }
     [self.webView stopLoading];
     _webView.UIDelegate = nil;
     _webView.navigationDelegate = nil;
@@ -235,6 +236,11 @@ typedef enum : NSUInteger {
     
 //    [_webView loadHTMLString:[headerString stringByAppendingString:[htmlStr stringByDecodingHTMLEntities]] baseURL:[NSURL URLWithString:@"https://h5.luezhi.com"]];
 //    [_webView loadHTMLString:[htmlStr stringByDecodingHTMLEntities] baseURL:[NSURL URLWithString:@"https://qiniu.luezhi.com"]];
+    
+    if (self.isLoadWebView) {
+        [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
+        self.isLoadWebView = NO;
+    }
     
     [self testLoadHtmlImage:[headerString stringByAppendingString:[htmlStr stringByDecodingHTMLEntities]]];
     
@@ -730,6 +736,7 @@ typedef enum : NSUInteger {
     
     [self.webView loadHTMLString:html baseURL:nil];
     [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+    self.isLoadWebView = YES;
 }
 
 - (void)downloadImageWithUrl:(NSString *)src {
@@ -738,7 +745,7 @@ typedef enum : NSUInteger {
     imgView.hidden = YES;
     UIWindow * window = [UIApplication sharedApplication].delegate.window;
     [window addSubview:imgView];
-    
+    __weak typeof(self)weakSelf = self;
     [imgView sd_setImageWithURL:[NSURL URLWithString:src] placeholderImage:nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (image) {
             NSData *data = UIImagePNGRepresentation(image);
@@ -752,12 +759,12 @@ typedef enum : NSUInteger {
                 NSLog(@"写入本地失败：%@", src);
             }else
             {
-                for (NSDictionary * urlDic in self.urlDictsArray) {
+                for (NSDictionary * urlDic in weakSelf.urlDictsArray) {
                     if ([urlDic.allKeys containsObject:src]) {
-                        NSString * jpg = [self htmlForJPGImage:image];
+                        NSString * jpg = [weakSelf htmlForJPGImage:image];
                         //然后在替换scr
-                        self.detailHtml = [self.detailHtml stringByReplacingOccurrencesOfString:src withString:jpg];
-                        [self.webView loadHTMLString:self.detailHtml baseURL:nil];
+                        weakSelf.detailHtml = [weakSelf.detailHtml stringByReplacingOccurrencesOfString:src withString:jpg];
+                        [weakSelf.webView loadHTMLString:weakSelf.detailHtml baseURL:nil];
                     }
                 }
             }

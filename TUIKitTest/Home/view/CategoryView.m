@@ -108,7 +108,7 @@
     
     self.coverImageView.image = [UIImage imageNamed:self.categoryCoverUrl];
     
-    self.numberLabel.frame = CGRectMake(CGRectGetMaxX(self.coverImageView.frame), 0, self.coverImageView.frame.size.height / 2, self.coverImageView.frame.size.height / 2);
+    self.numberLabel.frame = CGRectMake(CGRectGetMaxX(self.coverImageView.frame) - 5, 0, self.coverImageView.frame.size.height / 2 + 5, self.coverImageView.frame.size.height / 2 + 5);
     self.numberLabel.textColor = [UIColor whiteColor];
     self.numberLabel.textAlignment = 1;
     self.numberLabel.font = [UIFont systemFontOfSize:9];

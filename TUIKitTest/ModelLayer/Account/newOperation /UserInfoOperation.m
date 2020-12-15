@@ -27,6 +27,11 @@
     NSDictionary * courseInfo = [successInfo objectForKey:@"data"];
     self.infoDic = courseInfo;
     
+    NSString * customStr =  [UIUtility judgeStr:[courseInfo objectForKey:@"custom_name"]];
+    customStr = customStr.length > 0 ? customStr : [[UserManager sharedManager] getUserNickName];
+     
+    [[UserManager sharedManager] refreshUserInfoWith:@{@"nickName":customStr,@"icon":[UIUtility judgeStr:[courseInfo objectForKey:@"avatar"]]}];
+    
     [UserManager sharedManager].isTeacher = NO;
     
     if (![[self.infoDic objectForKey:@"teacher"] isKindOfClass:[NSNull class]]) {

@@ -14,11 +14,13 @@
 
 #import "TUIKit.h"
 #import <SDWebImage/SDWebImageDownloader.h>
+#import <SDWebImage/SDImageCache.h>
 //#import "SDWebImageDownloader.h"
 
 #define kWeixinAppid @"wx7989d2f3f7dbdd02"
 #define kJiGuangAppid @"cb37d2f8228ef7e0930b6c1d"
 #define kTXAppid @"1400051970"
+#define UMAPPKEY @"5fd72e81498d9e0d4d8e2527"
 
 #import "JRSwizzle.h"
 #import "NSDictionary+Unicode.h"
@@ -26,6 +28,7 @@
 #import "WXApiManager.h"
 #import "WelcomeViewController.h"
 #import "LivingCourseDetailViewController.h"
+#import <UMCommon/UMCommon.h>
 
 @interface AppDelegate ()<WXApiDelegate,WXApiManagerDelegate,JPUSHRegisterDelegate,UserModule_TabbarList,UserModule_LoginProtocol>
 
@@ -41,6 +44,7 @@
     [NSDictionary jr_swizzleMethod:@selector(description) withMethod:@selector(my_description) error:nil];
     [self getToken];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [UMConfigure initWithAppkey:UMAPPKEY channel:@"App Store"];
     
     [[TUIKit sharedInstance] setupWithAppId:[kTXAppid longLongValue]];
     
@@ -94,6 +98,10 @@
        
     SDWebImageDownloader * downloader = [SDWebImageDownloader sharedDownloader] ;
     [downloader setValue:@"https://h5.luezhi.com" forHTTPHeaderField:@"Referer"];
+    
+    
+//    [[SDImageCache sharedImageCache] setShouldDecompressImages:NO];
+//    [downloader setShouldDecompressImages:NO];
     
 //    Declaration of 'SDWebImageDownloader' must be imported from module 'SDWebImage.SDWebImageDownloader' before it is required
     return YES;

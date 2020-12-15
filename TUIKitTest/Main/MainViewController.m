@@ -101,7 +101,7 @@
             self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_推广中心",@"title":@"推广中心"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"}];
         }else
         {
-            self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_推广中心",@"title":@"推广中心"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"},@{@"image":@"ApplePayjinbi",@"title":@"金币"}];
+            self.dataSource = @[@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_推广中心",@"title":@"推广中心"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"},@{@"image":@"ApplePayjinbi",@"title":@"金币"}];
         }
     }else
     {
@@ -110,7 +110,7 @@
             self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"}];
         }else
         {
-            self.dataSource = @[@{@"image":@"main_我的收益",@"title":@"我的收益"},@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"},@{@"image":@"ApplePayjinbi",@"title":@"金币"}];
+            self.dataSource = @[@{@"image":@"main_赠送记录",@"title":@"赠送记录"},@{@"image":@"main_地址",@"title":@"地址管理"},@{@"image":@"main_清理缓存",@"title":@"清理缓存"},@{@"image":@"ApplePayjinbi",@"title":@"金币"}];
         }
     }
     [self.tableView reloadData];
@@ -271,6 +271,9 @@
             {
                 [cell resetUIWithInfo:@{}];
                 [cell resetContent:@{@"title":@"会员",@"btn":@"会员中心"}];
+            }else
+            {
+                
             }
             return cell;
         }else if (indexPath.row == 2)

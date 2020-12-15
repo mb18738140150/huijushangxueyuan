@@ -30,6 +30,12 @@
 @property (nonatomic, strong)NSString * areaStr;
 @property (nonatomic, strong)NSString * addressStr;
 @property (nonatomic, strong) YAddressPickerView *addView;
+
+@property (nonatomic, strong)UITextField * nameTF;
+@property (nonatomic, strong)UITextField * phoneTF;
+@property (nonatomic, strong)UITextField * addressTF;
+
+
 @end
 
 @implementation AddressEditViewController
@@ -173,24 +179,25 @@
         __weak typeof(self)weakSelf = self;
         if (indexPath.row == 0) {
             cell.contentTF.text = self.nameStr;
+            self.nameTF = cell.contentTF;
             cell.textBlock = ^(NSString *str) {
                 weakSelf.nameStr = str;
             };
         }else if (indexPath.row == 1){
             cell.contentTF.keyboardType = UIKeyboardTypeNumberPad;
             cell.contentTF.text = self.phoneStr;
+            self.phoneTF = cell.contentTF;
             cell.textBlock = ^(NSString *str) {
                 weakSelf.phoneStr = str;
             };
         }else if (indexPath.row == 3)
         {
             cell.contentTF.text = self.addressStr;
+            self.addressTF = cell.contentTF;
             cell.textBlock = ^(NSString *str) {
                 weakSelf.addressStr = str;
             };
         }
-        
-        
         
     }else{
         [cell refreshUIWith:[self.dataSource_moren objectAtIndex:indexPath.row]];
@@ -342,6 +349,7 @@
 - (void)chooceAddress
 {
 //    __weak typeof(self)weakSelf = self;
+    [self resifirstResponse];
     _addView = [[YAddressPickerView alloc]init];
     [self.view addSubview:_addView];
     _addView.delegate = self;
@@ -351,6 +359,13 @@
     BTAreaPickViewController * vc = [[BTAreaPickViewController alloc]initWithDragDismissEnabal:YES];
     vc.delegate = self;
     [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (void)resifirstResponse
+{
+    [self.nameTF resignFirstResponder];
+    [self.phoneTF resignFirstResponder];
+    [self.addressTF resignFirstResponder];
 }
 
 #pragma mark - BTAreaPickViewControllerDelegate

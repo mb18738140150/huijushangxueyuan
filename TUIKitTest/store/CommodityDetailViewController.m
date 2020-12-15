@@ -13,7 +13,7 @@
 #define kCommodityInfoTableViewCell @"CommodityInfoTableViewCell"
 #import "CategoryView.h"
 #import "ShoppingCarViewController.h"
-
+#import <SDWebImage/SDWebImageDownloader.h>
 
 @interface CommodityDetailViewController ()<UITableViewDelegate, UITableViewDataSource,WKUIDelegate,WKNavigationDelegate,UserModule_CourseDetailProtocol,UserModule_AddShoppingCarProtocol,UserModule_ShoppingCarListProtocol>
 
@@ -37,6 +37,7 @@
 @property (nonatomic, strong)UIButton *applyBtn;
 
 @property (nonatomic, assign)BOOL isApply;
+@property (nonatomic, assign)BOOL isHaveWebObserver;
 
 @end
 
@@ -61,8 +62,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self navigationViewSetup];
-
-    
     self.webView = [[WKWebView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - 45 - kNavigationBarHeight - kStatusBarHeight)];
     
     _webView.UIDelegate = self;
@@ -71,13 +70,17 @@
     _webView.scrollView.scrollEnabled = NO;
     
     self.webViewHeight = 0;
-    
     [self prepareUI];
     
     [self.tableView reloadData];
     [self loadData];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storeClick:) name:kNotificationOfStoreAction object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [[UserManager sharedManager] didRequestShoppingCarListWith:@{kUrlName:@"api/shop/cart/lists",kRequestType:@"get"} withNotifiedObject:self ];
 }
 
 - (void)loadData
@@ -89,16 +92,17 @@
 
 - (void)dealloc
 {
-    [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
-    [self.webView stopLoading];
-    _webView.UIDelegate = nil;
-    _webView.navigationDelegate = nil;
-    _webView.scrollView.delegate = nil;
-    self.webView = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationOfStoreAction object:nil];
+    if (self.isHaveWebObserver) {
+        [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
+    }
+//    [self.webView stopLoading];
+//    _webView.UIDelegate = nil;
+//    _webView.navigationDelegate = nil;
+//    _webView.scrollView.delegate = nil;
+//    self.webView = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    NSLog(@"%@", @"界面已释放 **** ");
 }
-
-
 
 #pragma mark - ui
 - (void)navigationViewSetup
@@ -146,7 +150,6 @@
     [bottomView addSubview:cateView];
     self.storeView = cateView;
     //main_icon
-    
     
     self.shoppingCarView = [[CategoryView alloc] initWithFrame:CGRectMake(50, 5, 50, 40)];
     _shoppingCarView.pageType = Page_Store;
@@ -256,7 +259,9 @@
     }
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellID" forIndexPath:indexPath];
     [cell.contentView removeAllSubviews];
-    [cell.contentView addSubview:self.webView];
+    if (self.isHaveWebObserver) {
+        [cell.contentView addSubview:self.webView];
+    }
     return cell;
 }
 
@@ -333,6 +338,12 @@
     
     NSString *headerString = @"<header><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'><style>img{max-width:100%}</style></header>";
     NSString * htmlStr = [UIUtility judgeStr:[self.goodDetailInfo objectForKey:@"content"]];
+    
+    if (self.isHaveWebObserver) {
+        [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
+        self.isHaveWebObserver = NO;
+    }
+    
     [self testLoadHtmlImage:[headerString stringByAppendingString:[htmlStr stringByDecodingHTMLEntities]]];
     
     [self.tableView reloadData];
@@ -574,6 +585,7 @@
     
     [self.webView loadHTMLString:html baseURL:nil];
     [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+    self.isHaveWebObserver = YES;
 }
 
 - (void)downloadImageWithUrl:(NSString *)src {
@@ -583,30 +595,54 @@
     UIWindow * window = [UIApplication sharedApplication].delegate.window;
     [window addSubview:imgView];
     
-    [imgView sd_setImageWithURL:[NSURL URLWithString:src] placeholderImage:nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+    __weak typeof(self)weakSelf = self;
+    
+    [imgView sd_setImageWithURL:[NSURL URLWithString:src] placeholderImage:nil options:SDWebImageDownloaderAvoidDecodeImage | SDWebImageDownloaderScaleDownLargeImages | SDWebImageDownloaderHighPriority completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (image) {
             NSData *data = UIImagePNGRepresentation(image);
             NSString *docPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"badge"];
             BOOL bo = [[NSFileManager defaultManager] createDirectoryAtPath:docPath withIntermediateDirectories:YES attributes:nil error:nil];
             NSString *localPath = [docPath stringByAppendingPathComponent:[src MD5]];
-            
-            
-            
+
             if (![data writeToFile:localPath atomically:NO]) {
                 NSLog(@"写入本地失败：%@", src);
             }else
             {
-                for (NSDictionary * urlDic in self.urlDictsArray) {
+                for (NSDictionary * urlDic in weakSelf.urlDictsArray) {
                     if ([urlDic.allKeys containsObject:src]) {
-                        NSString * jpg = [self htmlForJPGImage:image];
+                        NSString * jpg = [weakSelf htmlForJPGImage:image];
                         //然后在替换scr
-                        self.detailHtml = [self.detailHtml stringByReplacingOccurrencesOfString:src withString:jpg];
-                        [self.webView loadHTMLString:self.detailHtml baseURL:nil];
+                        weakSelf.detailHtml = [weakSelf.detailHtml stringByReplacingOccurrencesOfString:src withString:jpg];
+                        [weakSelf.webView loadHTMLString:weakSelf.detailHtml baseURL:nil];
                     }
                 }
             }
         }
     }];
+    
+    
+//    [imgView sd_setImageWithURL:[NSURL URLWithString:src] placeholderImage:nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+//        if (image) {
+//            NSData *data = UIImagePNGRepresentation(image);
+//            NSString *docPath = [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"] stringByAppendingPathComponent:@"badge"];
+//            BOOL bo = [[NSFileManager defaultManager] createDirectoryAtPath:docPath withIntermediateDirectories:YES attributes:nil error:nil];
+//            NSString *localPath = [docPath stringByAppendingPathComponent:[src MD5]];
+//
+//            if (![data writeToFile:localPath atomically:NO]) {
+//                NSLog(@"写入本地失败：%@", src);
+//            }else
+//            {
+//                for (NSDictionary * urlDic in weakSelf.urlDictsArray) {
+//                    if ([urlDic.allKeys containsObject:src]) {
+//                        NSString * jpg = [weakSelf htmlForJPGImage:image];
+//                        //然后在替换scr
+//                        weakSelf.detailHtml = [weakSelf.detailHtml stringByReplacingOccurrencesOfString:src withString:jpg];
+//                        [weakSelf.webView loadHTMLString:weakSelf.detailHtml baseURL:nil];
+//                    }
+//                }
+//            }
+//        }
+//    }];
   
   if (self.imageViews == nil) {
     self.imageViews = [[NSMutableArray alloc] init];

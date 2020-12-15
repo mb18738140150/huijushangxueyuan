@@ -71,6 +71,11 @@
     self.openBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 10);
 }
 
+- (void)hiddenAllSubView
+{
+    self.contentView.hidden = YES;
+}
+
 - (void)openVipAction
 {
     if (self.openVIPBlock) {

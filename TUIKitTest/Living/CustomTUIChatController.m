@@ -123,6 +123,13 @@
     [self.view addSubview:self.giftBtn];
     [self.giftBtn addTarget:self action:@selector(giftAction) forControlEvents:UIControlEventTouchUpInside];
     
+    if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+        self.giftBtn.hidden = NO;
+    }else
+    {
+        self.giftBtn.hidden = YES;
+    }
+    
     //input
     _inputController = [[TUIInputController alloc] init];
     _inputController.view.frame = CGRectMake(0, self.view.frame.size.height - TTextView_Height - Bottom_SafeHeight, self.view.frame.size.width, TTextView_Height + Bottom_SafeHeight);
@@ -335,6 +342,11 @@
 }
 
 - (void)didTapInMessageController:(CustomTUIMessageController *)controller
+{
+    [_inputController reset];
+}
+
+- (void)resetInputBar
 {
     [_inputController reset];
 }

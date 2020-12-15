@@ -368,7 +368,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.playFatherView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenWidth * 9 / 16)];
-    self.playFatherView.backgroundColor = [UIColor cyanColor];
+    self.playFatherView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:self.playFatherView];
     
     self.playingVideo = [[ZXVideo alloc] init];
@@ -571,7 +571,7 @@
     [self.view addSubview:self.rightBarView];
     self.rightBarView.rightTabbarActionBlock = ^(NSDictionary * _Nonnull info) {
         NSLog(@"%@", [info objectForKey:@"type"]);
-        
+        [weakSelf resetInputBar];
         switch ([[info objectForKey:@"type"] intValue]) {
             case RightTabbarOperationType_shutUp:
             {
@@ -672,6 +672,7 @@
 
 - (void)giftAction
 {
+    [self resetInputBar];
     [self.giftView showInView:self.view];
 }
 
@@ -778,6 +779,8 @@
 }
 
 
+#pragma merk - 发送消息
+
 - (void)sendMessage:(TUIMessageCellData*)msg {
     
     NSDictionary * info = [[UserManager sharedManager] getUserInfos];
@@ -845,6 +848,11 @@
     [self.chatRecordList insertObject:jsonDic atIndex:0];
     
     [self.chat.messageController sendMessage:data];
+}
+
+- (void)resetInputBar
+{
+    [self.chat resetInputBar];
 }
 
 

@@ -83,8 +83,15 @@
     __weak typeof(self)weakSelf = self;
     self.topView.searchBlock = ^(NSString * _Nonnull key) {
         weakSelf.keyword = key;
-        [weakSelf requestDataWith:weakSelf.courseSegment.index];
         
+        NSUInteger index = weakSelf.courseSegment.index;
+        NSMutableDictionary * info = [weakSelf.pageIndexArray objectAtIndex:index];
+        int page = [[info objectForKey:kPageNo] intValue];
+        page = 1;
+        [info setObject:@(page) forKey:kPageNo];
+        [weakSelf.pageIndexArray replaceObjectAtIndex:index withObject:info];
+        
+        [weakSelf requestDataWith:weakSelf.courseSegment.index];
     };
     
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.topView.frame), kScreenWidth, kScreenHeight - kNavigationBarHeight - kStatusBarHeight - 85) style:UITableViewStylePlain];
@@ -343,7 +350,20 @@
                [weakSelf requestDataWith:index];
            }else
            {
-               [weakSelf.tableView reloadData];
+               if(weakSelf.keyword.length > 0)
+               {
+                   NSMutableDictionary * info = [weakSelf.pageIndexArray objectAtIndex:index];
+                   int page = [[info objectForKey:kPageNo] intValue];
+                   pageNo = 1;
+                   [info setObject:@(page) forKey:kPageNo];
+                   [weakSelf.pageIndexArray replaceObjectAtIndex:index withObject:info];
+                   
+                   [weakSelf requestDataWith:index];
+               }else
+               {
+                   [weakSelf.tableView reloadData];
+               }
+               
            }
         
     }];

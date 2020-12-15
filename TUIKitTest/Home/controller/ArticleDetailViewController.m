@@ -81,6 +81,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, strong)NSMutableArray * communities;
 
+@property (nonatomic, assign)BOOL isHaveWebObserver;
+
 @end
 
 @implementation ArticleDetailViewController
@@ -405,7 +407,14 @@ typedef enum : NSUInteger {
     self.storeView.hidden = YES;
     
     
-    
+//    if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+//        self.tableView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight - kNavigationBarHeight - kStatusBarHeight - 50);
+//    }else
+//    {
+//        self.storeView.hidden = YES;
+//        self.payStateBtn.hidden = YES;
+//        self.tableView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight - kNavigationBarHeight - kStatusBarHeight );
+//    }
     
     // webview
     self.webView = [[WKWebView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 10)];
@@ -414,7 +423,7 @@ typedef enum : NSUInteger {
     _webView.navigationDelegate = self;
     _webView.scrollView.delegate = self;
     _webView.scrollView.scrollEnabled = NO;
-    [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+//    [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 
@@ -433,6 +442,16 @@ typedef enum : NSUInteger {
     
     NSDictionary * purchase = [self.courseDetailInfo objectForKey:@"purchase"];
     NSString * type = [purchase objectForKey:@"type"];
+    
+    if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled] && [[UserManager sharedManager] getUserId] != [kAppointUserID intValue]) {
+        
+    }else
+    {
+        if ([type isEqualToString:@"vip-free"] || [type isEqualToString:@"need_vip"] || [type isEqualToString:@"vip-discount"]) {
+            type = @"purchased";
+        }
+    }
+    
     if ([type isEqualToString:@"free"]) {
         [_payStateBtn setTitle:@"免费" forState:UIControlStateNormal];
         self.isShowAllContent = YES;
@@ -448,7 +467,9 @@ typedef enum : NSUInteger {
             [_payStateBtn setTitle:@"会员免费观看" forState:UIControlStateNormal];
         }else
         {
-            [_payStateBtn setTitle:@"购买后免费观看" forState:UIControlStateNormal];
+            self.storeView.hidden = YES;
+            self.payStateBtn.hidden = YES;
+            self.tableView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight - kNavigationBarHeight - kStatusBarHeight );
         }
         
         self.isShowAllContent = YES;
@@ -475,6 +496,9 @@ typedef enum : NSUInteger {
         }else
         {
             [_payStateBtn setTitle:@"购买后免费观看" forState:UIControlStateNormal];
+            self.storeView.hidden = YES;
+            self.payStateBtn.hidden = YES;
+            self.tableView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight - kNavigationBarHeight - kStatusBarHeight );
         }
         
         self.isShowAllContent = NO;
@@ -528,7 +552,7 @@ typedef enum : NSUInteger {
         self.articleType = ArticleType_video;
         self.free_Num = [[articleTypeInfo objectForKey:@"free_num"] intValue];
     }
- 
+    
     NSString *headerString = @"<header><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'><style>img{max-width:100%}</style></header>";
     
     NSString * htmlStr = @"";
@@ -540,6 +564,11 @@ typedef enum : NSUInteger {
     }else
     {
         htmlStr =  [UIUtility judgeStr:self.desc];
+    }
+    
+    if (self.isHaveWebObserver) {
+        [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
+        self.isHaveWebObserver = NO;
     }
     
     [self testLoadHtmlImage:[headerString stringByAppendingString:[htmlStr stringByDecodingHTMLEntities]]];
@@ -615,7 +644,9 @@ typedef enum : NSUInteger {
                 if (indexPath.row == self.images.count + 1) {
                     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellID" forIndexPath:indexPath];
                     [cell.contentView removeAllSubviews];
-                    [cell.contentView addSubview:self.webView];
+                    if (self.isHaveWebObserver) {
+                        [cell.contentView addSubview:self.webView];
+                    }
                     return cell;
                 }
             }else
@@ -623,7 +654,9 @@ typedef enum : NSUInteger {
                 if (indexPath.row == self.free_Num + 1) {
                     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellID" forIndexPath:indexPath];
                     [cell.contentView removeAllSubviews];
-                    [cell.contentView addSubview:self.webView];
+                    if (self.isHaveWebObserver) {
+                        [cell.contentView addSubview:self.webView];
+                    }
                     return cell;
                 }
             }
@@ -647,7 +680,9 @@ typedef enum : NSUInteger {
         {
             UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellID" forIndexPath:indexPath];
             [cell.contentView removeAllSubviews];
-            [cell.contentView addSubview:self.webView];
+            if (self.isHaveWebObserver) {
+                [cell.contentView addSubview:self.webView];
+            }
             return cell;
         }else
         {
@@ -703,7 +738,9 @@ typedef enum : NSUInteger {
             {
                 UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cellID" forIndexPath:indexPath];
                 [cell.contentView removeAllSubviews];
-                [cell.contentView addSubview:self.webView];
+                if (self.isHaveWebObserver) {
+                    [cell.contentView addSubview:self.webView];
+                }
                 return cell;
             }
         }
@@ -1056,6 +1093,10 @@ typedef enum : NSUInteger {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [SVProgressHUD dismiss];
     });
+    if([failedInfo containsString:@"不存在"])
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)getShareInfo:(NSDictionary *)info
@@ -1305,6 +1346,7 @@ typedef enum : NSUInteger {
     
     [self.webView loadHTMLString:html baseURL:nil];
     [_webView.scrollView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+    self.isHaveWebObserver = YES;
 }
 
 - (void)downloadImageWithUrl:(NSString *)src {
@@ -1313,7 +1355,7 @@ typedef enum : NSUInteger {
     imgView.hidden = YES;
     UIWindow * window = [UIApplication sharedApplication].delegate.window;
     [window addSubview:imgView];
-    
+    __weak typeof(self)weakSelf = self;
     [imgView sd_setImageWithURL:[NSURL URLWithString:src] placeholderImage:nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (image) {
             NSData *data = UIImagePNGRepresentation(image);
@@ -1325,12 +1367,12 @@ typedef enum : NSUInteger {
                 NSLog(@"写入本地失败：%@", src);
             }else
             {
-                for (NSDictionary * urlDic in self.urlDictsArray) {
+                for (NSDictionary * urlDic in weakSelf.urlDictsArray) {
                     if ([urlDic.allKeys containsObject:src]) {
-                        NSString * jpg = [self htmlForJPGImage:image];
+                        NSString * jpg = [weakSelf htmlForJPGImage:image];
                         //然后在替换scr
-                        self.detailHtml = [self.detailHtml stringByReplacingOccurrencesOfString:src withString:jpg];
-                        [self.webView loadHTMLString:self.detailHtml baseURL:nil];
+                        weakSelf.detailHtml = [weakSelf.detailHtml stringByReplacingOccurrencesOfString:src withString:jpg];
+                        [weakSelf.webView loadHTMLString:weakSelf.detailHtml baseURL:nil];
                     }
                 }
             }
@@ -1360,8 +1402,10 @@ typedef enum : NSUInteger {
         self.playerview = nil;
     }
     [[BTVoicePlayer share] stop];
-    
-    [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
+    if (self.isHaveWebObserver) {
+        [_webView.scrollView removeObserver:self forKeyPath:@"contentSize"];
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     NSLog(@"界面释放了");
 }
 

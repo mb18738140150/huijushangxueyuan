@@ -249,7 +249,7 @@
     LoginViewController *login = [[LoginViewController alloc] init];
     if ([WXApi isWXAppSupportApi] && [WXApi isWXAppInstalled])
     {
-        
+//        login.isAccount = YES;
     }else
     {
         login.isAccount = YES;

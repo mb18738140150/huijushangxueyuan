@@ -75,7 +75,7 @@
 #import "TestImageView.h"
 #import "CategoryView.h"
 #import "LoadFailedTableViewCell.h"
-
+#import "SDWebImage.h"
 //#import <KSYMediaPlayer/KSYMediaPlayer.h>
 
 #import "TUIKit.h"

@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)resetUIWithInfo:(NSDictionary *)info;
 - (void)resetContent:(NSDictionary *)info;
+- (void)hiddenAllSubView;
 
 @end
 
